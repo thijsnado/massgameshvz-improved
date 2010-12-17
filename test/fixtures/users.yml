@@ -1,0 +1,42 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  first_name: MyString
+  last_name: MyString
+  username: MyString
+  email_address: MyString
+  phone: MyString
+  crypted_password: MyString
+  password_salt: MyString
+  persistence_token: MyString
+
+two:
+  first_name: MyString
+  last_name: MyString
+  username: MyString
+  email_address: MyString
+  phone: MyString
+  crypted_password: MyString
+  password_salt: MyString
+  persistence_token: MyString
+
+not_signed_up:
+  first_name: Bob
+  last_name: Loblaw
+  username: bobloblaw
+  email_address: bobloblaw@student.umass.edu
+  phone: 4135551234
+  
+unreported:
+  first_name: Joe
+  last_name: Slacker
+  username: imaslowzombie
+  email_address: jslacker@admin.umass.edu
+  phone: 41325551234
+  
+clean_human:
+  first_name: Mac
+  last_name: Daddy
+  username: macdaddy
+  email_address: macdaddy@admin.umass.edu
+  phone: 4135554321

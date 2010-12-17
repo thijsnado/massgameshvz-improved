@@ -1,0 +1,27 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+# This model initially had no columns defined.  If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+one: {}
+# column: value
+#
+two: {}
+#  column: value
+
+unassigned_pariticipation:
+  user: unassigned_user
+  game: current_game
+  
+unreported_participation:
+  user: unreported
+  game: current_game
+  creature_id: normal
+  creature_type: human
+  
+clean_human_participation:
+  user: clean_human
+  game: current_game
+  creature_id: normal
+  creature_type: human

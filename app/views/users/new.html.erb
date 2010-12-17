@@ -1,0 +1,53 @@
+<div>
+  <%=form_for @user do |f|%>
+    <% if @user.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@user.errors.count, "error") %> prevented you from saving:</h2>
+
+        <ul>
+        <% @user.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <p>
+      <%=f.label :first_name%>
+      <%=f.text_field :first_name%>
+    </p>
+    <p>
+      <%=f.label :last_name%>
+      <%=f.text_field :last_name%>
+    </p>
+    <p>
+      <%=f.label :username%>
+      <%=f.text_field :username%>
+    </p>
+    <p>
+      <%=f.label :password%>
+      <%=f.password_field :password%>
+    </p>
+    <p>
+      <%=f.label :password_confirmation%>
+      <%=f.password_field :password_confirmation%>
+    </p>
+    <p>
+      <%=f.label :email_address%>
+      <%=f.text_field :email_address%>
+    </p>
+    <p>
+      <%=f.label :phone%>
+      <%=f.text_field :phone%>
+    <p>
+      By checking and submitting this Player Agreement Statement, I hereby agree and acknowledge that it is my sole responsibility to follow all rules and policies displayed and stated by the Mass Games game administrators and those of the University of Massachusetts. My potential ignorance of the rules is not an excuse for anything.
+      I also acknowledge that it is my responsibility to regularly check my email, and the game websites for news, updates, rule changes, statistics, rosters, and discussion for in game events.
+      I also understand that the rulings of the admins are final and indisputable. By my participation in the game, I agree to abide by administrative decisions, play safely, and be sportsmanlike.
+      By accepting this Player Agreement Statement, I also understand that my image, likeness, and voice may be captured and used for promotional and fund raising purposes. If I do not wish for my image, likeness, and voice to be used, I hereby understand that I should not sign up and play this game.<br /><br />
+      <%= f.label  :rules_read, "Agree with Player Agreement Statement and Read Rules"%>
+      <%= f.check_box :rules_read%>
+    </p>
+    <p>
+      <%=submit_tag :submit%>
+    </p>
+  <%end%>
+</div>
