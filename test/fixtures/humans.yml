@@ -11,4 +11,5 @@ two: {}
 #  column: value
 
 normal:
+  code: normal
   immortal_when_bitten: false

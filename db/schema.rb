@@ -10,7 +10,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101129232726) do
+ActiveRecord::Schema.define(:version => 20101218034849) do
+
+  create_table "events", :force => true do |t|
+    t.integer  "responsible_object_id"
+    t.string   "responsible_object_type"
+    t.integer  "game_participation_id"
+    t.string   "type"
+    t.datetime "occured_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "game_participations", :force => true do |t|
     t.integer  "user_id"
@@ -39,6 +49,7 @@ ActiveRecord::Schema.define(:version => 20101129232726) do
   end
 
   create_table "humans", :force => true do |t|
+    t.string   "code"
     t.string   "name"
     t.boolean  "immortal_when_bitten"
     t.string   "color_string"
@@ -66,6 +77,7 @@ ActiveRecord::Schema.define(:version => 20101129232726) do
   end
 
   create_table "zombies", :force => true do |t|
+    t.string   "code"
     t.string   "name"
     t.boolean  "vaccinatable"
     t.boolean  "immortal"

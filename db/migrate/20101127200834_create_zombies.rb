@@ -1,6 +1,7 @@
 class CreateZombies < ActiveRecord::Migration
   def self.up
     create_table :zombies do |t|
+      t.string :code
       t.string :name
       t.boolean :vaccinatable
       t.boolean :immortal

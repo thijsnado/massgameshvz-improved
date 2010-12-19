@@ -1,42 +1,49 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
-one:
-  first_name: MyString
-  last_name: MyString
-  username: MyString
-  email_address: MyString
-  phone: MyString
-  crypted_password: MyString
-  password_salt: MyString
-  persistence_token: MyString
-
-two:
-  first_name: MyString
-  last_name: MyString
-  username: MyString
-  email_address: MyString
-  phone: MyString
-  crypted_password: MyString
-  password_salt: MyString
-  persistence_token: MyString
-
 not_signed_up:
   first_name: Bob
   last_name: Loblaw
   username: bobloblaw
   email_address: bobloblaw@student.umass.edu
   phone: 4135551234
-  
+
+#A zombie who has not been reported as bitten yet  
 unreported:
   first_name: Joe
   last_name: Slacker
   username: imaslowzombie
   email_address: jslacker@admin.umass.edu
   phone: 41325551234
-  
+
+#Not been bitten  
 clean_human:
   first_name: Mac
   last_name: Daddy
   username: macdaddy
   email_address: macdaddy@admin.umass.edu
   phone: 4135554321
+
+#normal zombie  
+zombie:
+  first_name: Been
+  last_name: Eating
+  username: lovebrains
+  email_address: brains@umass.edu
+  phone: 4135554321
+
+#self bitten zombie  
+self_bitten_zombie:
+  first_name: Un
+  last_name: Popular
+  username: unpopular
+  email_address: unpopular@cs.umass.edu
+  phone: 4132212930
+  
+#immortal zombie
+immortal_zombie:
+  first_name: Merlin
+  last_name: Wizard
+  username: mwizard
+  email_address: mwizard@umass.edu
+  phone: 4132212930
+  
+  

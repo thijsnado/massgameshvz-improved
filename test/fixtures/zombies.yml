@@ -4,8 +4,27 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+
+normal:
+  code: normal
+  name: Normal Zombie
+  vaccinatable: true
+  immortal: false
+    
+self_bitten:
+  code: self_bitten
+  name: Self Bitten Zombie
+  vaccinatable: false
+  immortal: false
+  
+original_zombie:
+  code: original_zombie
+  name: Original Zombie
+  vaccinatable: false
+  immortal: true
+  
+immortal_zombie:
+  code: immortal_zombie
+  name: Immortal Zombie
+  vaccinatable: true
+  immortal: true

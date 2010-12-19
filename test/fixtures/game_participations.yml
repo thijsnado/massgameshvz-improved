@@ -4,12 +4,7 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
-#
-two: {}
-#  column: value
-
+ 
 unassigned_pariticipation:
   user: unassigned_user
   game: current_game
@@ -17,11 +12,29 @@ unassigned_pariticipation:
 unreported_participation:
   user: unreported
   game: current_game
-  creature_id: normal
-  creature_type: human
+  creature: normal
+  creature_type: Human
   
-clean_human_participation:
+human_participation:
   user: clean_human
   game: current_game
-  creature_id: normal
-  creature_type: human
+  creature: normal
+  creature_type: Human
+  
+zombie_participation:
+  user: zombie
+  game: current_game
+  creature: normal
+  creature_type: Zombie
+  
+self_bitten_zombie_participation:
+  user: self_bitten_zombie
+  game: current_game
+  creature: self_bitten
+  creature_type: Zombie
+  
+immortal_zombie_participation:
+  user: immortal_zombie
+  game: current_game
+  creature: immortal_zombie
+  creature_type: Zombie
