@@ -8,7 +8,7 @@ class Zombie < ActiveRecord::Base
     when :NORMAL
       const_set(:NORMAL, find_by_code(:normal))
     when :SELF_BITTEN
-      const_set(:SQUAD_LEADER, find_by_code(:self_bitten))
+      const_set(:SELF_BITTEN, find_by_code(:self_bitten))
     when :IMMORTAL
       const_set(:IMMORTAL, find_by_code(:immortal))
     when :ORIGINAL

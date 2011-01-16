@@ -1,14 +1,62 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Massgameshvz</title>
-  <%= stylesheet_link_tag :all %>
-  <%= javascript_include_tag :defaults %>
-  <%= csrf_meta_tag %>
-</head>
-<body>
+<% 
+@playable = false
+@playable = true if @current_game
+%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<%= yield %>
-
-</body>
+<html  xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Humans Vs. Zombies</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <%=stylesheet_link_tag 'main', 'error'%>
+  </head>
+  <body>
+    <div id="container">
+      <div id="banner" class="box">
+        <%=image_tag 'hvzsitebanner.jpg'%>
+      </div>
+      <div id="menu">
+        <a href="/">home</a> |
+        <%= link_to 'rules', 'http://massgames.org/blog/tag/rules/'%> |
+        <%= link_to 'game status',  games_url%> |
+        <% if @current_user #logged in %>
+          <% if @playable %>
+            <% if @current_user.creature_type == 'Human' #human urls %>
+              <%= link_to 'self bite', self_bites_url%> |
+            <% elsif @current_user.creature_type == 'Zombie' #zombie urls %>
+              <% unless @current_user.is_expired %>
+                <%= link_to 'bites', bites_url %> |
+                <% if @current_user.creature.vaccinatable%>
+                  <%= link_to 'vaccinate', vaccines_url%> |
+                <% end %>
+              <% end %>
+            <% end %>
+          <%end %>
+            <% if @current_user.is_admin %>
+              <%= link_to 'admin', admin_url %> |
+            <% end %>
+            <%= link_to 'status', user_url(@current_user)%> |
+            <%= link_to 'profile', profile_url%> |
+            <%= link_to 'logout', logout_url %>
+        <% else #all non logged in users %>
+          <%= link_to 'login', login_url%> | 
+          <%= link_to 'register', register_url %>
+        <% end %>
+      </div>
+      <div id="main" class="box">
+        <%= yield %>
+      </div>
+      <div id="footer">&copy; 2009 <a href="http://massgames.org/">Mass Games</a></div>
+    </div>
+  </body>
+  <script type="text/javascript"> 
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script> 
+  <script type="text/javascript"> 
+  try {
+  var pageTracker = _gat._getTracker("UA-13119850-1");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
 </html>

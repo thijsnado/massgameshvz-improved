@@ -1,8 +1,10 @@
 class User < ActiveRecord::Base
+  acts_as_authentic
+  
   has_many :game_participations
   
-  attr_accessor :password
-  attr_accessor :password_confirmation
+  validates :email_address, :email_domain => true
+  
   attr_accessor :rules_read
   
   def current_participation

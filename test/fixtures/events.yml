@@ -5,6 +5,7 @@ normal_zombie_bite_event:
   responsible_object: original_zombie_participation
   responsible_object_type: GameParticipation
   game_participation: zombie_participation
+  occured_at: 2011-01-08 00:00:01
   type: BiteEvent
   
 #The bite event that created the self bitten zombie  
@@ -12,4 +13,5 @@ self_bitten_bite_event:
   responsible_object: self_bitten_zombie_participation
   responsible_object_type: GameParticipation
   game_participation: self_bitten_zombie_participation
+  occured_at: 2011-01-08 00:00:01
   type: BiteEvent

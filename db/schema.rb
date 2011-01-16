@@ -10,7 +10,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101218034849) do
+ActiveRecord::Schema.define(:version => 20110101160443) do
+
+  create_table "email_domains", :force => true do |t|
+    t.string   "description"
+    t.string   "rule"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "events", :force => true do |t|
     t.integer  "responsible_object_id"
@@ -72,6 +79,7 @@ ActiveRecord::Schema.define(:version => 20101218034849) do
     t.string   "crypted_password"
     t.string   "password_salt"
     t.string   "persistence_token"
+    t.boolean  "is_admin",          :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -52,18 +52,23 @@ class GameParticipation < ActiveRecord::Base
     time = Time.now
     if user_participation.is_human?
       user_participation.creature = Zombie::NORMAL
+      user_participation.zombie_expires_at = time + game.time_per_food
       user_participation.save
       bite_event = BiteEvent.new
       bite_event.responsible_object = self
       bite_event.game_participation = user_participation
       bite_event.occured_at = time
       bite_event.save
+      self.update_attribute :zombie_expires_at, bite_event.occured_at + self.game.time_per_food
     elsif user_participation.creature == Zombie::SELF_BITTEN
       user_participation.creature = Zombie::NORMAL
       user_participation.save
       bite_event = user_participation.bitten_events.order('occured_at desc').first
       bite_event.responsible_object = self
       bite_event.save
+      if bite_event.occured_at + self.game.time_per_food > self.zombie_expires_at
+        self.update_attribute :zombie_expires_at, bite_event.occured_at + self.game.time_per_food
+      end
     end
   end
   
