@@ -1,0 +1,57 @@
+body{
+	background-color: black;
+	color: white;
+}
+
+a{
+	text-decoration: none;
+	color: blue;
+}
+
+a:hover{
+	text-decoration: underline;
+}
+
+div{
+	padding: 10px;
+}
+
+#container{
+	margin-left: auto;
+	margin-right: auto;
+	width: 800px;
+}
+
+.box{
+	min-width: 800px;
+	min-height: 80px;
+	border: 1px solid red;
+}
+
+#menu{
+	font-size: 18px;
+	display: inline-block;
+}
+
+#menu ul{
+	list-style: none;
+}
+
+#main{
+	vertical-align: top;
+	display: inline-block;
+}
+
+#right{
+	vertical-align: top;
+	text-align: left;
+}
+
+/*TODO: move to another css file*/
+.types{
+	margin-bottom: 10px;
+	width: 780px;
+}
+.types .type{
+	display: inline-block;
+}
