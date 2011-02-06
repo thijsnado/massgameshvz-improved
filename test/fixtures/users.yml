@@ -1,3 +1,11 @@
+admin:
+  first_name: Admin
+  last_name: Van Supervises
+  username: admin
+  email_address: admin@umass.edu
+  is_admin: true
+  phone: 4135551234
+
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 not_signed_up:
   first_name: Bob
@@ -18,7 +26,7 @@ unreported:
 clean_human:
   first_name: Mac
   last_name: Daddy
-  username: macdaddy
+  username: normal_human
   email_address: macdaddy@admin.umass.edu
   phone: 4135554321
 
@@ -26,7 +34,7 @@ clean_human:
 zombie:
   first_name: Been
   last_name: Eating
-  username: lovebrains
+  username: normal_zombie
   email_address: brains@umass.edu
   phone: 4135554321
 

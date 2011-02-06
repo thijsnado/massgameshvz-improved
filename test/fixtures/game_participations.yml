@@ -26,7 +26,7 @@ zombie_participation:
   game: current_game
   creature: normal
   creature_type: Zombie
-  zombie_expires_at: 2011-01-10 03:00:00
+  zombie_expires_at: 2011-01-11 03:00:00
   
 self_bitten_zombie_participation:
   user: self_bitten_zombie

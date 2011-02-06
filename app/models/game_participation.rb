@@ -79,4 +79,8 @@ class GameParticipation < ActiveRecord::Base
       return nil
     end
   end
+  
+  def is_expired
+    return zombie_expires_at < Time.now 
+  end
 end

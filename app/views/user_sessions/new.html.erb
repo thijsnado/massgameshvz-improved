@@ -1,6 +1,6 @@
 Use the form below to login. You must have a confirmed email address to log in. If you have not received a confirmation email, use the 
 form below to get your confirmation
-<% form_for :user_session, :url => { :action => "create" } do |f|%>
+<%= form_for :user_session, :url => { :action => "create" } do |f|%>
   <% if @user_session.errors.any? %>
     Invalid Login!<br/>
 	<div id="error_explanation">
@@ -28,7 +28,7 @@ form below to get your confirmation
 <% end %><br/>
 OR <br /><br />
 Resend Confirmation Email.<br /><br />
-<% form_tag resend_confirmation_url, :method => 'post' do %>
+<%= form_tag resend_confirmation_url, :method => 'post' do %>
 Email Address <%= text_field_tag :email_address %><br />
 <%= submit_tag :resend %>
 <% end %>

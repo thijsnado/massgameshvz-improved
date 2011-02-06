@@ -35,4 +35,4 @@ domain.save
 #admin, change password immediatly after deploying. 
 admin = User.new(:username => 'admin', :password => 'test123')
 admin.is_admin = true
-admin.save(false)
+admin.save(:validate => false)
