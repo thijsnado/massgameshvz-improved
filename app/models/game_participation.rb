@@ -4,7 +4,7 @@ class GameParticipation < ActiveRecord::Base
   belongs_to :user
   belongs_to :creature, :polymorphic => true
   belongs_to :living_area
-  has_many :biting_events, :as => :responsible_object
+  has_many :biting_events, :as => :responsible_object, :class_name => 'BiteEvent'
   has_many :bitten_events, :class_name => 'BiteEvent'
   
   validate :validate_not_outside_signup_period
@@ -81,6 +81,7 @@ class GameParticipation < ActiveRecord::Base
   end
   
   def is_expired
-    return zombie_expires_at < Time.now 
+    return self.zombie_expires_at < Time.now unless self.creature.immortal
+    return false
   end
 end

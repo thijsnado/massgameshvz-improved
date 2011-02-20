@@ -18,12 +18,14 @@ unreported_participation:
 human_participation:
   user: clean_human
   game: current_game
+  user_number: human bite code
   creature: normal
   creature_type: Human
   
 zombie_participation:
   user: zombie
   game: current_game
+  user_number: zombie bite code
   creature: normal
   creature_type: Zombie
   zombie_expires_at: 2011-01-11 03:00:00
@@ -38,4 +40,10 @@ immortal_zombie_participation:
   user: immortal_zombie
   game: current_game
   creature: immortal_zombie
+  creature_type: Zombie
+  
+original_zombie_participation:
+  user: original_zombie
+  game: current_game
+  creature: original_zombie
   creature_type: Zombie

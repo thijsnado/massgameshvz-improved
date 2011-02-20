@@ -42,7 +42,7 @@ zombie:
 self_bitten_zombie:
   first_name: Un
   last_name: Popular
-  username: unpopular
+  username: self_bitten_zombie
   email_address: unpopular@cs.umass.edu
   phone: 4132212930
   
@@ -50,8 +50,15 @@ self_bitten_zombie:
 immortal_zombie:
   first_name: Merlin
   last_name: Wizard
-  username: mwizard
+  username: immortal_zombie
   email_address: mwizard@umass.edu
+  phone: 4132212930
+  
+original_zombie:
+  first_name: Original
+  last_name: Zombie
+  username: original_zombie
+  email_address: ieatbrains@umass.edu
   phone: 4132212930
   
   

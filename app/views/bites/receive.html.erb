@@ -1,0 +1,10 @@
+<%= form_for @bite_event, :url => bites_url do |f| %>
+<%= hidden_field_tag :bite_type, 'receive' %>
+<p>
+  <%= f.label :zombie_code, 'Enter Bite Code' %>
+  <%= f.text_field :zombie_code %>
+</p>
+<p>
+  <input type='submit' value='submit'>
+</p>
+<% end %>
