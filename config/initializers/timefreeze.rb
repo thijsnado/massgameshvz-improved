@@ -1,0 +1,1 @@
+Timecop.freeze("2011-01-10 00:00:01".to_datetime) if Rails.env == 'development'

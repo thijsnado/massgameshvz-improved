@@ -12,7 +12,12 @@ Massgameshvz::Application.routes.draw do
       get :give
     end
   end
-  resources :vaccines
+  resources :vaccines do
+    collection do
+      get :enter
+      put :take
+    end
+  end
   
   match "login", :to => "user_sessions#new"
   match "logout", :to => "user_sessions#destroy"
@@ -20,6 +25,7 @@ Massgameshvz::Application.routes.draw do
   match "resend_confirmation", :to => 'TODO'
   match "admin", :to => 'admin#index'
   match "profile", :to => "users#index"
+  
   
   namespace :admin do
     resources :living_areas

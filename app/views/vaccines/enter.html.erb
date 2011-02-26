@@ -1,0 +1,9 @@
+<%= form_for @vaccine, :url => take_vaccines_url, :html => {:method => 'put'} do |f| %>
+<p>
+  <%= f.label :code, 'Enter Vaccine Code' %>
+  <%= f.text_field :code %>
+</p>
+<p>
+  <input type='submit' value='submit'>
+</p>
+<% end %>

@@ -25,7 +25,7 @@
               <% unless @current_user.current_participation.is_expired %>
                 <%= link_to 'report bite', give_new_bite_url %> |
                 <% if @current_user.current_participation.creature.vaccinatable%>
-                  <%= link_to 'vaccinate', vaccines_url%> |
+                  <%= link_to 'vaccinate', enter_vaccines_url %> |
                 <% end %>
               <% end %>
             <% end %>

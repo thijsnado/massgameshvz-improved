@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110101160443) do
+ActiveRecord::Schema.define(:version => 20110220202220) do
 
   create_table "email_domains", :force => true do |t|
     t.string   "description"
@@ -80,6 +80,15 @@ ActiveRecord::Schema.define(:version => 20110101160443) do
     t.string   "password_salt"
     t.string   "persistence_token"
     t.boolean  "is_admin",          :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "vaccines", :force => true do |t|
+    t.string   "code"
+    t.datetime "valid_after"
+    t.boolean  "used",        :default => false
+    t.integer  "game_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
