@@ -14,7 +14,6 @@ ActiveRecord::Schema.define(:version => 20110220202221) do
 
   create_table "bite_shares", :force => true do |t|
     t.integer  "bite_event_id"
-    t.integer  "game_participation_id"
     t.boolean  "used"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -33,6 +32,7 @@ ActiveRecord::Schema.define(:version => 20110220202221) do
     t.integer  "game_participation_id"
     t.string   "type"
     t.datetime "occured_at"
+    t.datetime "zombie_expiration_calculation"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

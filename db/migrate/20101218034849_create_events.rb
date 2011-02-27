@@ -5,7 +5,8 @@ class CreateEvents < ActiveRecord::Migration
       t.string :responsible_object_type
       t.integer :game_participation_id
       t.string :type
-      t.datetime :occured_at 
+      t.datetime :occured_at
+      t.datetime :zombie_expiration_calculation 
 
       t.timestamps
     end

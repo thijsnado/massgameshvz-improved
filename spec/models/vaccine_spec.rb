@@ -5,13 +5,13 @@ describe Vaccine do
     let(:current_game){Factory(:current_game)}
     let(:vaccine){Factory(:vaccine, :code => 'abc123', :used => false)}
     let(:zombie_participation) do
-      Factory.stub(:game_participation,
+      Factory(:game_participation,
         :creature => Zombie::NORMAL,
         :game => current_game
       )
     end
     let(:human_participation) do
-      Factory.stub(:game_participation,
+      Factory(:game_participation,
         :creature => Human::Normal,
         :game => current_game
       )
@@ -26,7 +26,7 @@ describe Vaccine do
     end
     it "should not let anyone take vaccine if used" do
       vaccine.take(zombie_participation)
-      another_zombie_participation = Factory.stub(:game_participation,
+      another_zombie_participation = Factory(:game_participation,
         :creature => Zombie::NORMAL,
         :game => current_game
       )

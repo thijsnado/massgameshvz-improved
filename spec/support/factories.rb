@@ -1,4 +1,7 @@
 #Define base factories
+Factory.define :bite_event do |f|
+end
+
 Factory.define :email_domain do |f|
   f.description 'umass'
   f.rule 'umass'
