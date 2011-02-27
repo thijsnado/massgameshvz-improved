@@ -16,21 +16,17 @@ class GameParticipation < ActiveRecord::Base
     end
   end
   
-  def is_human?
-    return !is_zombie?
+  def human?
+    return creature_type == 'Human'
   end
   
-  def is_zombie?
-    if creature_type == 'Zombie'
-      return true
-    else
-      return false
-    end
+  def zombie?
+    return creature_type == 'Zombie'
   end
   
   #Used when reporting who a user bit (A zombie reports he bit a human)
   def report_bite(user_participation)
-    if is_zombie? && (user_participation.is_human? || user_participation.creature == Zombie::SELF_BITTEN)
+    if zombie? && (user_participation.human? || user_participation.creature == Zombie::SELF_BITTEN)
       record_bite(user_participation)
       return true
     else
@@ -40,7 +36,7 @@ class GameParticipation < ActiveRecord::Base
   
   #Used when reporting that a user got bitten (A human reports he got bit by a zombie)
   def report_bitten(user_participation)
-    if is_human?
+    if human?
       user_participation.record_bite(self)
       return true
     else
@@ -48,32 +44,8 @@ class GameParticipation < ActiveRecord::Base
     end
   end
   
-  def record_bite(user_participation)
-    time = Time.now
-    if user_participation.is_human?
-      user_participation.creature = Zombie::NORMAL
-      user_participation.zombie_expires_at = time + game.time_per_food
-      user_participation.save
-      bite_event = BiteEvent.new
-      bite_event.responsible_object = self
-      bite_event.game_participation = user_participation
-      bite_event.occured_at = time
-      bite_event.save
-      self.update_attribute :zombie_expires_at, bite_event.occured_at + self.game.time_per_food
-    elsif user_participation.creature == Zombie::SELF_BITTEN
-      user_participation.creature = Zombie::NORMAL
-      user_participation.save
-      bite_event = user_participation.bitten_events.order('occured_at desc').first
-      bite_event.responsible_object = self
-      bite_event.save
-      if bite_event.occured_at + self.game.time_per_food > self.zombie_expires_at
-        self.update_attribute :zombie_expires_at, bite_event.occured_at + self.game.time_per_food
-      end
-    end
-  end
-  
   def current_parent
-    if is_zombie?
+    if zombie?
       return bitten_events.order('occured_at desc').first.biter_participation
     else
       return nil
@@ -83,5 +55,29 @@ class GameParticipation < ActiveRecord::Base
   def is_expired
     return self.zombie_expires_at < Time.now unless self.creature.immortal
     return false
+  end
+  
+  protected
+  
+  def record_bite(user_participation)
+    time = Time.now
+    if user_participation.human?
+      user_participation.creature = Zombie::NORMAL
+      user_participation.zombie_expires_at = time + game.time_per_food
+      user_participation.save
+      bite_event = BiteEvent.new
+      bite_event.responsible_object = self
+      bite_event.game_participation = user_participation
+      bite_event.occured_at = time
+      bite_event.save
+      self.zombie_expires_at = bite_event.occured_at + self.game.time_per_food
+    elsif user_participation.creature == Zombie::SELF_BITTEN
+      user_participation.creature = Zombie::NORMAL
+      user_participation.save
+    end
+    if self.human?
+      self.creature = Zombie::SELF_BITTEN
+    end
+    save
   end
 end

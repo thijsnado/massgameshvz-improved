@@ -1,11 +1,14 @@
 #Define base factories
 Factory.define :email_domain do |f|
+  f.description 'umass'
+  f.rule 'umass'
 end
 
 Factory.define :event do |f|
 end
 
 Factory.define :game_participation do |f|
+  f.association :user, :factory => :user
 end
 
 Factory.define :game do |f|
@@ -17,7 +20,19 @@ end
 Factory.define :living_area do |f|
 end
 
+Factory.sequence :email_address do |n|
+  "email#{n}@umass.edu"
+end
+
+Factory.sequence :username do |n|
+  "bob#{n}"
+end
+
 Factory.define :user do |f|
+  f.email_address { Factory.next(:email_address) }
+  f.username { Factory.next(:username) }
+  f.password 'password'
+  f.password_confirmation 'password'
 end
 
 Factory.define :vaccine do |f|

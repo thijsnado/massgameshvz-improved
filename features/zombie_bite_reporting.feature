@@ -12,3 +12,4 @@ Feature: Play as Zombie
     And I press "submit"
     Then the human should be a Zombie
     And I should get credit for biting the human
+    And I should have a number of bite share as specified by the current game attributes
