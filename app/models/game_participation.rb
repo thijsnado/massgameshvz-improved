@@ -26,9 +26,9 @@ class GameParticipation < ActiveRecord::Base
   end
   
   #Used when reporting who a user bit (A zombie reports he bit a human)
-  def report_bite(user_participation)
-    if zombie? && (user_participation.human? || user_participation.creature == Zombie::SELF_BITTEN)
-      record_bite(user_participation)
+  def report_bite(game_participation)
+    if zombie? && (game_participation.human? || game_participation.creature == Zombie::SELF_BITTEN)
+      record_bite(game_participation)
       return true
     else
       return false
@@ -36,9 +36,9 @@ class GameParticipation < ActiveRecord::Base
   end
   
   #Used when reporting that a user got bitten (A human reports he got bit by a zombie)
-  def report_bitten(user_participation)
+  def report_bitten(game_participation)
     if human?
-      user_participation.record_bite(self)
+      game_participation.record_bite(self)
       return true
     else
       return false
@@ -64,26 +64,26 @@ class GameParticipation < ActiveRecord::Base
   
   protected
   
-  def record_bite(user_participation)
+  def record_bite(game_participation)
     time = Time.now
     
     #adjust starvation time
-    if user_participation.human?
-      user_participation.creature = Zombie::NORMAL
-      user_participation.zombie_expires_at = time + self.game.time_per_food
-      user_participation.save
+    if game_participation.human?
+      game_participation.creature = Zombie::NORMAL
+      game_participation.zombie_expires_at = time + self.game.time_per_food
+      game_participation.save
       self.zombie_expires_at = time + self.game.time_per_food
-    elsif user_participation.creature == Zombie::SELF_BITTEN
-      user_participation.creature = Zombie::NORMAL
-      user_participation.save
-      zombie_expires_at = user_participation.zombification_event.zombie_expiration_calculation
+    elsif game_participation.creature == Zombie::SELF_BITTEN
+      game_participation.creature = Zombie::NORMAL
+      game_participation.save
+      zombie_expires_at = game_participation.zombification_event.zombie_expiration_calculation
       self.zombie_expires_at = zombie_expires_at unless zombie_expires_at < self.zombie_expires_at
     end
     
     #record bite event
     bite_event = BiteEvent.new
     bite_event.responsible_object = self
-    bite_event.game_participation = user_participation
+    bite_event.game_participation = game_participation
     bite_event.occured_at = time
     bite_event.zombie_expiration_calculation = self.zombie_expires_at
     bite_event.save

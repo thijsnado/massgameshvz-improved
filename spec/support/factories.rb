@@ -2,6 +2,9 @@
 Factory.define :bite_event do |f|
 end
 
+Factory.define :bite_share do |f|
+end
+
 Factory.define :email_domain do |f|
   f.description 'umass'
   f.rule 'umass'
@@ -53,5 +56,6 @@ Factory.define :current_game, :parent => :game do |f|
   f.time_per_food 1.day
   f.bite_shares_per_food 1
 end
+
 
 
