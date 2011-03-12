@@ -1,0 +1,34 @@
+<p>
+  You can set the users to either zombie or human below. Zombies will be considered original zombies,
+  and humans will be considered normal humans. If you want to assign a user to something other than
+  an original zombie, or normal human, visit the <%=link_to 'users', admin_users_url %> page to edit the user
+  manually. Keep in mind that this only lists people who have requested to be original zombies. After you
+  are done assigning zombies, visit the <%=link_to 'misc tasks', admin_misc_tasks_url %> to assign all unassigned 
+  users to normal humans.
+</p>
+<table>
+  <tr>
+    <th>username</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>add/remove</th>
+  </tr>
+  <% for user in @users %>
+  <tr>
+    <td><%=h(user.username)%></td>
+    <td><%=h(user.first_name)%></td>
+    <td><%=h(user.last_name)%></td>
+    <td>
+      <% if user.is_original_zombie %>
+        <% form_for user, :url => make_regular_admin_original_zombie_url(:id => user.id), :html => {:style => 'display: inline;'} do%>
+          <input type='submit' value='humanize'>
+        <% end %>
+      <% else %>
+        <% form_for user, :url => make_zombie_admin_original_zombie_url(:id => user.id), :html => {:style => 'display: inline;'}do%>
+          <input type='submit' value='make original'>
+        <% end %>
+      <%end %>
+    </td>
+  </tr>
+  <% end %>
+</table>

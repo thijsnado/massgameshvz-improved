@@ -11,6 +11,18 @@ class GameParticipation < ActiveRecord::Base
   validate :validate_not_outside_signup_period
   validates_uniqueness_of :user_id, :scope => :game_id
   
+  def self.zombie
+    where(:creature_type => 'Zombie')
+  end
+  
+  def self.not_immortal
+    joins("INNER JOIN zombies on game_participations.creature_id = zombies.id").where(:zombies => {:immortal => false})
+  end
+  
+  def self.not_dead
+    where("zombie_expires_at > ?", Time.now)
+  end
+  
   def validate_not_outside_signup_period
     unless Time.now.between? game.signup_start_at, game.signup_end_at or not new_record?
       errors.add(:game, "Signup period for this game has passed")

@@ -12,6 +12,11 @@ Massgameshvz::Application.routes.draw do
       get :give
     end
   end
+  resources :bite_shares do
+    member do
+      get :share
+    end
+  end
   resources :vaccines do
     collection do
       get :enter
@@ -36,7 +41,7 @@ Massgameshvz::Application.routes.draw do
     resources :pseudo_bites
     resources :users, :collection => {:get_creatures => :get}
     resources :sarcastic_comments
-    resources :game_attributes 
+    resources :games 
     resources :events
     resource :mailer, :member => {:sender => :post}
     

@@ -1,0 +1,16 @@
+<% unless @bite_shares.blank? %>
+  <table>
+    <tr>
+      <th>Bite Date</th>
+      <th>Calculated Expiration Date</th>
+      <th>Share</th>
+    </tr>
+    <% for bite_share in @bite_shares %>
+      <tr>
+        <td><%= bite_share.bite_event.occured_at %></td>
+        <td><%= bite_share.bite_event.zombie_expiration_calculation %></td>
+        <td><%= link_to "Share", share_bite_share_url(bite_share) %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>

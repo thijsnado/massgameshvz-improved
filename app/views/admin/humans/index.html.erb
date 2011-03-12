@@ -1,0 +1,30 @@
+<table>
+  <tr>
+    <th>
+      name
+    </th>
+    <th>
+      immortal when bitten
+    </th>
+    <th>
+      display color
+    </th>
+  </tr>
+  <% for human in @humans %>
+    <tr>
+      <td>
+        <%= h(human.name) %>
+      </td>
+      <td>
+        <%= h(human.immortal_when_bitten) %>
+      </td>
+      <td>
+        <div style="border: 1px solid black;height: 10px; width: 40px; background-color: #<%=h(human.color_string.to_s)%>"></div>
+      </td>
+      <td>
+        <%= link_to 'edit', edit_admin_human_url(human)%>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<%= link_to 'new', new_admin_human_url%>

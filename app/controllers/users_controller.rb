@@ -1,18 +1,4 @@
 class UsersController < ApplicationController
-  # GET /users
-  # GET /users.xml
-  def index
-    @humans = Human.find(:all)
-    @zombies = Zombie.find(:all)
-    @living_areas = LivingArea.find(:all, 
-      :include => {:game_participations => :user}
-    )
-
-    respond_to do |format|
-      format.html # index.html.erb
-    end
-  end
-
   # GET /users/1
   # GET /users/1.xml
   def show
@@ -28,6 +14,7 @@ class UsersController < ApplicationController
   # GET /users/new.xml
   def new
     @user = User.new
+    @game_participation = Game.current.game_participations.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -44,6 +31,7 @@ class UsersController < ApplicationController
   # POST /users.xml
   def create
     @user = User.new(params[:user])
+    @game_participation = GameParticpation.new(params[:game_participation])
 
     respond_to do |format|
       if @user.save

@@ -1,0 +1,10 @@
+<p>
+  Note, you can only edit the valid after and used fields.
+</p>
+<% form_for @vaccine, :url => admin_vaccine_url do |f| %>
+  <%= f.label :valid_after%>
+  <%= f.datetime_select :valid_after %><br />
+  <%= f.label :used %>
+  <%= f.check_box :used %>
+  <%= submit_tag 'save'%>
+<% end %>

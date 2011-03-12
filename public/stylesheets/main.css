@@ -28,7 +28,7 @@ div{
 	border: 1px solid red;
 }
 
-#menu{
+.menu{
 	font-size: 30px;
 	width: 800px;
 	margin-left: auto;

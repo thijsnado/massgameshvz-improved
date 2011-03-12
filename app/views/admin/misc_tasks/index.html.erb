@@ -1,0 +1,15 @@
+<h3>Set Unassigned to Human</h3>
+This will cause all unassigned users who are confirmed to become regular humans. 
+<% form_tag set_unassigned_to_human_admin_misc_tasks_url, :method => :put do %>
+  <%= submit_tag 'unassigned to human', :confirm => 'are you sure you want to assign all unassigned as humans?'%>
+<% end %>
+<hr>
+
+<h3>Resurrect Dead</h3>
+This will move all zombie expirations, for both dead and alive humans ahead by the value
+of food game attribute. This should be used at the end of the game to bring the dead back
+for the final mission.
+<% form_tag resurrect_dead_admin_misc_tasks_url, :method => :put do %>
+  <%= submit_tag 'resurrect dead', :confirm => 'are you sure you want to resurrect the dead?' %>
+<% end %>
+<hr>

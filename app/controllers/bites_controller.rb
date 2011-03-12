@@ -5,7 +5,6 @@ class BitesController < ApplicationController
   end
   
   def give
-    
       @bite_event = BiteEvent.new
   end
   

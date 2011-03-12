@@ -1,0 +1,11 @@
+<% form_for :sarcastic_comment, :url => admin_sarcastic_comments_url do |f| %>
+  <%= f.text_area :description%><br />
+  <%= submit_tag 'create'%>
+<% end %>
+<ul>
+<% for sc in @sarcastic_comments %>
+<li><%= h(sc.description)%><br />
+  <%= link_to 'delete', admin_sarcastic_comments_url, :method => 'delete'%>
+</li>
+<% end %>
+</ul>

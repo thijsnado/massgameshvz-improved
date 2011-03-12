@@ -1,0 +1,42 @@
+<h1>Vaccines</h1>
+<% form_for :vaccine, :url => admin_vaccines_url, :method => 'post' do |f|%>
+  <%= f.label :valid_after%>
+  <%= f.datetime_select :valid_after%><br/ >
+  <%= submit_tag 'Create Vaccine'%>
+<% end %>
+<table>
+  <tr>
+    <th>
+      Code
+    </th>
+    <th>
+      Valid After
+    </th>
+    <th>
+      Used
+    </th>
+    <th>
+      Creation Date
+    </th>
+  </tr>
+  <% for vaccine in @vaccines %>
+    <tr>
+      <td>
+        <%= h(vaccine.code) %>
+      </td>
+      <td>
+        <%= h(vaccine.valid_after)%>
+      </td>
+      <td>
+        <%= h(vaccine.used) %>
+      </td>
+      <td>
+        <%= h(vaccine.created_at)%>
+      </td>
+      <td>
+        <%=link_to 'edit', edit_admin_vaccine_url(vaccine)%> |
+        <%= link_to 'destroy', admin_vaccine_url(vaccine), :method => 'delete'%>
+      </td>
+    </tr>
+  <% end %>
+</table>

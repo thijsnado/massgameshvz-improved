@@ -1,0 +1,38 @@
+<% 
+  if(@zombie.id)
+    url = admin_zombie_url(@zombie)
+  else
+    url = admin_zombies_url()
+  end
+%>
+<% form_for @zombie, :url => url do |f| %>
+  <p>
+    <%= f.label :name%>
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :vaccinatable%>
+    <%= f.check_box :vaccinatable %>
+  </p>
+  <p>
+    <%= f.label :immortal%>
+    <%= f.check_box :immortal %>
+  </p>
+  <p>
+    <% @color_picker_id = 'zombie_color_string'%>
+    <%= render :partial => 'layouts/color_picker'%>
+    <%= f.label :color_string, 'display color'%>
+    <%= f.text_field :color_string, :id => @color_picker_id%>
+    <script type="text/javascript">
+
+    Event.observe(window,'load',function() {
+    	<%=@color_picker_id %> = new Refresh.Web.ColorPicker('<%=@color_picker_id %>',{startHex: '<%=@zombie.color_string || "ffcc00"%>', startMode:'s'});
+    });
+
+
+    </script>
+  </p>
+  <p>
+    <%= f.submit :save%>
+  </p>
+<% end %>

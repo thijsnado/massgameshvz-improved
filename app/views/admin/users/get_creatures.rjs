@@ -1,0 +1,2 @@
+
+page.replace_html :user_creature_id, options_for_select(@creatures.map{|a| [a.name, a.id]})

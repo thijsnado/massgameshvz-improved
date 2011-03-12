@@ -1,0 +1,20 @@
+<h2>Games</h2>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Signup Start</th>
+    <th>Signup End</th>
+    <th>Game Starts</th>
+    <th>Game Ends</th>
+  </tr>
+  <% for game in @games %>
+  <tr>
+    <td><%= game.game_name %></td>
+    <td><%= game.signup_start_at %></td>
+    <td><%= game.signup_end_at %></td>
+    <td><%= game.start_at %></td>
+    <td><%= game.end_at %></td>
+  </tr>
+  <% end %>
+</table>
+<%= link_to 'Create New Game', new_admin_game_url %>

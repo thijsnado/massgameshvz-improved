@@ -1,0 +1,18 @@
+<table>
+  <tr>
+    <th>
+      name
+    </th>
+  </tr>
+  <%@living_areas.each do |la|%>
+    <tr>
+      <td>
+        <%=h(la.name)%>
+      </td>
+      <td>
+        <%= link_to 'edit', edit_admin_living_area_url(la)%>
+      </td>
+    </tr>
+  <%end%>
+</table>
+<%=link_to 'new', new_admin_living_area_url()%>

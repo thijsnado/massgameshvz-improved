@@ -1,0 +1,36 @@
+<table>
+  <tr>
+    <th>
+      name
+    </th>
+    <th>
+      vaccinatable
+    </th>
+    <th>
+      immortal
+    </th>
+    <th>
+      color string
+    </th>
+  </tr>
+  <% for zombie in @zombies %>
+    <tr>
+      <td>
+        <%=h(zombie.name)%>
+      </td>
+      <td>
+        <%=h(zombie.vaccinatable)%>
+      </td>
+      <td>
+        <%=h(zombie.immortal)%>
+      </td>
+      <td>
+        <div style="border: 1px solid black;height: 10px; width: 40px; background-color: #<%=h(zombie.color_string.to_s)%>"></div>
+      </td>
+      <td>
+        <%=link_to 'edit', edit_admin_zombie_url(zombie)%>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<%=link_to 'new', new_admin_zombie_url%>

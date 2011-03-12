@@ -1,0 +1,34 @@
+<% 
+  if(@human.id)
+    url = admin_human_url(@human)
+  else
+    url = admin_humans_url()
+  end
+%>
+<% form_for @human, :url => url do |f| %>
+  <p>
+    <%= f.label :name%>
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :immortal_when_bitten%>
+    <%= f.check_box :immortal_when_bitten %>
+  </p>
+  <p>
+    <% @color_picker_id = 'human_color_string'%>
+    <%= render :partial => 'layouts/color_picker'%>
+    <%= f.label :color_string, 'display color'%>
+    <%= f.text_field :color_string, :id => @color_picker_id%>
+    <script type="text/javascript">
+
+    Event.observe(window,'load',function() {
+    	<%=@color_picker_id %> = new Refresh.Web.ColorPicker('<%=@color_picker_id %>',{startHex: '<%=@human.color_string || "EEF21A"%>', startMode:'s'});
+    });
+
+
+    </script>
+  </p>
+  <p>
+    <%= f.submit :save%>
+  </p>
+<% end %>

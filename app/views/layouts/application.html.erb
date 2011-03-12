@@ -12,25 +12,10 @@
       <div id="banner" class="box">
         <%=image_tag 'hvzsitebanner.jpg'%>
       </div>
-      <div id="menu">
+      <div class="menu">
         <a href="/">home</a> |
         <%= link_to 'rules', 'http://massgames.org/blog/tag/rules/'%> |
-        <%= link_to 'game status',  games_url%> |
         <% if @current_user #logged in %>
-          <% if @playable %>
-            <% if @current_user.current_participation && @current_user.current_participation.creature_type == 'Human' #human urls %>
-              <%= link_to 'self bite', self_bites_url%> |
-              <%= link_to 'report being bitten', receive_new_bite_url %>
-            <% elsif @current_user.current_participation && @current_user.current_participation.creature_type == 'Zombie' #zombie urls %>
-              <% unless @current_user.current_participation.is_expired %>
-                <%= link_to 'report bite', give_new_bite_url %> |
-                <% if @current_user.current_participation.creature.vaccinatable%>
-                  <%= link_to 'vaccinate', enter_vaccines_url %> |
-                <% end %>
-              <% end %>
-            <% end %>
-          <% else %>
-          <% end %>
           <% if @current_user.is_admin %>
             <%= link_to 'admin', admin_url %> |
           <% end %>
@@ -42,6 +27,23 @@
           <%= link_to 'register', register_url %>
         <% end %>
       </div>
+      
+      <% if @current_user && @playable %>
+      <div class='menu'>
+          <% if @current_user.current_participation && @current_user.current_participation.creature_type == 'Human' #human urls %>
+            <%= link_to 'self bite', self_bites_url%> |
+            <%= link_to 'report being bitten', receive_new_bite_url %>
+          <% elsif @current_user.current_participation && @current_user.current_participation.creature_type == 'Zombie' #zombie urls %>
+            <% unless @current_user.current_participation.is_expired %>
+              <%= link_to 'report bite', give_new_bite_url %> |
+              <%= link_to 'share bite', bite_shares_url %>
+              <% if @current_user.current_participation.creature.vaccinatable%>
+                | <%= link_to 'vaccinate', enter_vaccines_url %> |
+              <% end %>
+            <% end %>
+          <% end %>
+      </div>
+      <% end %>
       <div id="main" class="box">
         <%= yield %>
       </div>

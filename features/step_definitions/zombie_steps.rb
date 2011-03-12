@@ -19,3 +19,6 @@ Then /^I should become a human$/ do
 end
 
 
+Then /^I should have a number of bite share as specified by the current game attributes$/ do
+  game_participations(:zombie_participation).bite_shares.count.should == games(:current_game).bite_shares_per_food
+end
