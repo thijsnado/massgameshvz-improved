@@ -55,10 +55,23 @@ class Admin::UsersController < AdminController
 
 
   def show
-    if @user.current_participation.creature_type == 'Human'
-      @status = :human
-    elsif @user.current_participation.creature_type == 'Zombie'
-      @status = :normal_zombie
+    @current_participation = @user.current_participation
+    if @current_participation
+      if @current_participation.creature_type == 'Human'
+        @status = :human
+      elsif @current_participation.creature_type == 'Zombie'
+        if @current_participation.creature.immortal
+          @status = :immortal_zombie
+        else
+          if @current_participation.dead?
+            @status = :dead
+          else
+            @status = :mortal_zombie
+          end
+        end
+      end
+    else
+      @status = :no_participation
     end
   end
   

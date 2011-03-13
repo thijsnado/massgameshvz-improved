@@ -8,6 +8,9 @@ class GameParticipation < ActiveRecord::Base
   has_many :bitten_events, :class_name => 'BiteEvent'
   has_many :bite_shares, :through => :biting_events
   
+  before_create :generate_user_number
+  before_create :set_zombie_expires_at
+  
   validate :validate_not_outside_signup_period
   validates_uniqueness_of :user_id, :scope => :game_id
   
@@ -35,6 +38,14 @@ class GameParticipation < ActiveRecord::Base
   
   def zombie?
     return creature_type == 'Zombie'
+  end
+  
+  def dead?
+    return true if mortal? && self.zombie_expires_at < Time.now
+  end
+  
+  def mortal?
+    return true if zombie? && self.creature.immortal == false
   end
   
   #Used when reporting who a user bit (A zombie reports he bit a human)
@@ -73,8 +84,16 @@ class GameParticipation < ActiveRecord::Base
   def zombification_event
     self.bitten_events.first
   end
-  
+    
   protected
+  
+  def generate_user_number
+    self.user_number = Digest::SHA1.hexdigest(rand.to_s + "HVZ RAWKS!!!" + Time.now.to_s)[0, 10]
+  end
+  
+  def set_zombie_expires_at
+    self.zombie_expires_at = Time.now + self.game.time_per_food.seconds unless self.zombie_expires_at || !self.mortal?
+  end
   
   def record_bite(game_participation)
     time = Time.now

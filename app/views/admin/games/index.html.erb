@@ -14,6 +14,7 @@
     <td><%= game.signup_end_at %></td>
     <td><%= game.start_at %></td>
     <td><%= game.end_at %></td>
+    <td><%= link_to 'edit', edit_admin_game_url(game) %>
   </tr>
   <% end %>
 </table>
