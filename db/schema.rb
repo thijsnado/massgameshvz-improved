@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110220202221) do
+ActiveRecord::Schema.define(:version => 20110313163734) do
 
   create_table "bite_shares", :force => true do |t|
     t.integer  "bite_event_id"
@@ -74,6 +74,12 @@ ActiveRecord::Schema.define(:version => 20110220202221) do
 
   create_table "living_areas", :force => true do |t|
     t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "sarcastic_comments", :force => true do |t|
+    t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
