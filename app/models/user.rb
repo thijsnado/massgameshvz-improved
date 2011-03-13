@@ -21,5 +21,6 @@ class User < ActiveRecord::Base
   def send_confirmation_email
     ConfirmationEmail.confirmation_message(self).deliver
   end
+
   
 end

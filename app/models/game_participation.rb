@@ -18,13 +18,37 @@ class GameParticipation < ActiveRecord::Base
     where(:creature_type => 'Zombie')
   end
   
+  def self.joins_with_zombie
+    joins("INNER JOIN zombies on game_participations.creature_id = zombies.id")
+  end
+  
+  def self.original_zombies
+    zombie.joins_with_zombie.where(:zombies => {:id => Zombie::ORIGINAL.id})
+  end
+  
   def self.not_immortal
-    joins("INNER JOIN zombies on game_participations.creature_id = zombies.id").where(:zombies => {:immortal => false})
+    zombie.joins_with_zombie.where(:zombies => {:immortal => false})
   end
   
   def self.not_dead
     where("zombie_expires_at > ?", Time.now)
   end
+  
+  def self.original_zombie_requests
+    where(:original_zombie_request => true)
+  end
+  
+  def self.original_zombies_and_zombie_requests
+    current_game = Game.current
+    if current_game
+      game_participations = current_game.game_participations.original_zombies.includes('user').order(:user => :username)
+      game_participations = game_participations.to_a +  current_game.game_participations.original_zombie_requests.where("creature_type != 'Zombie'").includes('user').order(:user => :username).to_a
+      return game_participations.sort{|a, b| a.user.username <=> b.user.username}
+    else
+      return []
+    end
+  end
+  
   
   def validate_not_outside_signup_period
     unless Time.now.between? game.signup_start_at, game.signup_end_at or not new_record?
@@ -46,6 +70,10 @@ class GameParticipation < ActiveRecord::Base
   
   def mortal?
     return true if zombie? && self.creature.immortal == false
+  end
+  
+  def original_zombie?
+    return true if zombie? && self.creature == Zombie::ORIGINAL
   end
   
   #Used when reporting who a user bit (A zombie reports he bit a human)

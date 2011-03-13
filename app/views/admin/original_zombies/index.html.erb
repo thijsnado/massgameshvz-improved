@@ -13,18 +13,19 @@
     <th>Last Name</th>
     <th>add/remove</th>
   </tr>
-  <% for user in @users %>
+  <% for game_participation in @game_participations %>
+  <% user = game_participation.user %>
   <tr>
-    <td><%=h(user.username)%></td>
-    <td><%=h(user.first_name)%></td>
-    <td><%=h(user.last_name)%></td>
+    <td><%= user.username %></td>
+    <td><%= user.first_name %></td>
+    <td><%= user.last_name %></td>
     <td>
-      <% if user.is_original_zombie %>
-        <% form_for user, :url => make_regular_admin_original_zombie_url(:id => user.id), :html => {:style => 'display: inline;'} do%>
+      <% if game_participation.original_zombie? %>
+        <%= form_for game_participation, :url => make_regular_admin_original_zombie_url(:id => game_participation.id), :html => {:style => 'display: inline;'} do %>
           <input type='submit' value='humanize'>
         <% end %>
       <% else %>
-        <% form_for user, :url => make_zombie_admin_original_zombie_url(:id => user.id), :html => {:style => 'display: inline;'}do%>
+        <%= form_for game_participation, :url => make_zombie_admin_original_zombie_url(:id => game_participation.id), :html => {:style => 'display: inline;'} do %>
           <input type='submit' value='make original'>
         <% end %>
       <%end %>

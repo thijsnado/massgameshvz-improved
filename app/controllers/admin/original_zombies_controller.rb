@@ -1,6 +1,6 @@
 class Admin::OriginalZombiesController < AdminController
   def index
-    @users = User.original_zombies_and_zombie_requests
+    @game_participations = GameParticipation.original_zombies_and_zombie_requests
   end
   
   def show
@@ -8,18 +8,16 @@ class Admin::OriginalZombiesController < AdminController
   end
 
   def make_zombie
-    @user = User.find(params[:id])
-    @user.creature_type = 'Zombie'
-    @user.creature_id = Zombie::DEFAULT_TYPES[:original_zombie]
-    @user.save
+    @game_participation = GameParticipation.find(params[:id])
+    @game_participation.creature = Zombie::ORIGINAL
+    @game_participation.save
     redirect_to admin_original_zombies_url
   end
   
   def make_regular
-    @user = User.find(params[:id])
-    @user.creature_type = 'Human'
-    @user.creature_id = Human::DEFAULT_TYPES[:normal]
-    @user.save
+    @game_participation = GameParticipation.find(params[:id])
+    @game_participation.creature = Human::NORMAL
+    @game_participation.save
     redirect_to admin_original_zombies_url
   end
 
