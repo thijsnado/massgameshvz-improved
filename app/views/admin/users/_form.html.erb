@@ -1,0 +1,65 @@
+<% if @user.errors.any? || @game_participation.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@user.errors.count, "error") %> prevented you from saving:</h2>
+
+    <ul>
+    <% @user.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    <% @game_participation.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+<p>
+  <%= f.label :first_name %>
+  <%= f.text_field :first_name %>
+</p>
+<p>
+  <%= f.label :last_name %>
+  <%= f.text_field :last_name %>
+</p>
+<p>
+  <%= f.label :username %>
+  <%= f.text_field :username %>
+</p>
+<p>
+  <%= f.label :email_address %>
+  <%= f.text_field :email_address %>
+</p>
+<p>
+  <%= f.label :phone %>
+  <%= f.text_field :phone %>
+</p>
+<% if @game_participation %>
+  <%= fields_for @game_participation do |g| %>
+  <p>
+    <%= g.label :living_area_id %>
+    <%= g.collection_select :living_area_id, @living_areas, :id, :name %>
+  </p>
+  <p>
+    <%= g.label :creature %>
+    <%= g.collection_select :creature_type, ['', 'Human', 'Zombie'], :to_s, :to_s%>
+    <%= observe_field :game_participation_creature_type, :method => 'get', :url => get_creatures_admin_users_url() %>
+  </p>
+  <p>
+    <%= g.label :creature_id, "creature class"%>
+    <%= g.collection_select :creature_id, @creatures, :id, :name %>
+  </p>
+  <% if @game_participation.creature_type == 'Zombie' and not @game_participation.creature.immortal %>
+  <p>
+    Expiration Date
+    <%
+      expiration_date = @game_participation.zombie_expires_at if @game_participation
+      expiration_date = Time.now + 3.days unless expiration_date
+
+    %>
+    <%= g.datetime_select :zombie_expires_at, :default => expiration_date %>
+  </p>
+  <% end %>
+  <% end %>
+<% end %>
+<p>
+  <%= f.submit%>
+</p>

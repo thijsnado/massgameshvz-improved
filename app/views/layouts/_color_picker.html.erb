@@ -1,0 +1,161 @@
+<%= javascript_include_tag :defaults, 'colormethods', 'colorvaluepicker', 'colorpicker', 'Slider'%>
+
+  <table>
+    <tr>
+      <td valign="top">
+        <div id="<%=@color_picker_id %>_ColorMap"></div>
+      </td>
+      <td valign="top">
+        <div id="<%=@color_picker_id %>_ColorBar"></div>
+      </td>
+
+      <td valign="top">
+
+
+        <table>
+          <tr>
+            <td colspan="3">
+              <div id="<%=@color_picker_id %>_Preview" style="background-color: #fff; width: 60px; height: 60px; padding: 0; margin: 0; border: solid 1px #000;">
+                <br />
+              </div>
+            </td>
+          </tr>
+          <tr>
+
+            <td>
+              <input type="radio" id="<%=@color_picker_id %>_HueRadio" name="<%=@color_picker_id %>_Mode" value="0" />
+            </td>
+            <td>
+              <label for="<%=@color_picker_id %>_HueRadio">H:</label>
+            </td>
+            <td>
+              <input type="text" id="<%=@color_picker_id %>_Hue" value="0" style="width: 40px;" /> &deg;
+
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <input type="radio" id="<%=@color_picker_id %>_SaturationRadio" name="<%=@color_picker_id %>_Mode" value="1" />
+            </td>
+            <td>
+              <label for="<%=@color_picker_id %>_SaturationRadio">S:</label>
+
+            </td>
+            <td>
+              <input type="text" id="<%=@color_picker_id %>_Saturation" value="100" style="width: 40px;" /> %
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <input type="radio" id="<%=@color_picker_id %>_BrightnessRadio" name="<%=@color_picker_id %>_Mode" value="2" />
+            </td>
+
+            <td>
+              <label for="<%=@color_picker_id %>_BrightnessRadio">B:</label>
+            </td>
+            <td>
+              <input type="text" id="<%=@color_picker_id %>_Brightness" value="100" style="width: 40px;" /> %
+            </td>
+          </tr>
+
+          <tr>
+
+            <td colspan="3" height="5">
+
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <input type="radio" id="<%=@color_picker_id %>_RedRadio" name="<%=@color_picker_id %>_Mode" value="r" />
+            </td>
+            <td>
+              <label for="<%=@color_picker_id %>_RedRadio">R:</label>
+
+            </td>
+            <td>
+              <input type="text" id="<%=@color_picker_id %>_Red" value="255" style="width: 40px;" />
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <input type="radio" id="<%=@color_picker_id %>_GreenRadio" name="<%=@color_picker_id %>_Mode" value="g" />
+            </td>
+
+            <td>
+              <label for="<%=@color_picker_id %>_GreenRadio">G:</label>
+            </td>
+            <td>
+              <input type="text" id="<%=@color_picker_id %>_Green" value="0" style="width: 40px;" />
+            </td>
+          </tr>
+
+          <tr>
+
+            <td>
+              <input type="radio" id="<%=@color_picker_id %>_BlueRadio" name="<%=@color_picker_id %>_Mode" value="b" />
+            </td>
+            <td>
+              <label for="<%=@color_picker_id %>_BlueRadio">B:</label>
+            </td>
+            <td>
+              <input type="text" id="<%=@color_picker_id %>_Blue" value="0" style="width: 40px;" />
+
+            </td>
+          </tr>
+          <tr>
+            <td>
+            </td>
+            <td colspan="2">
+            </td>
+
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table><br />
+  
+
+<div style="display:none;">
+  <img src="/images/colorpicker/rangearrows.gif" />
+  <img src="/images/colorpicker/mappoint.gif" />
+  
+  <img src="/images/colorpicker/bar-saturation.png" />
+
+  <img src="/images/colorpicker/bar-brightness.png" />
+  
+  <img src="/images/colorpicker/bar-blue-tl.png" />
+  <img src="/images/colorpicker/bar-blue-tr.png" />
+  <img src="/images/colorpicker/bar-blue-bl.png" />
+  <img src="/images/colorpicker/bar-blue-br.png" />
+  <img src="/images/colorpicker/bar-red-tl.png" />
+  <img src="/images/colorpicker/bar-red-tr.png" />
+  <img src="/images/colorpicker/bar-red-bl.png" />
+  <img src="/images/colorpicker/bar-red-br.png" />  
+  <img src="/images/colorpicker/bar-green-tl.png" />
+
+  <img src="/images/colorpicker/bar-green-tr.png" />
+  <img src="/images/colorpicker/bar-green-bl.png" />
+  <img src="/images/colorpicker/bar-green-br.png" />
+  
+  <img src="/images/colorpicker/map-red-max.png" />
+  <img src="/images/colorpicker/map-red-min.png" />
+  <img src="/images/colorpicker/map-green-max.png" />
+  <img src="/images/colorpicker/map-green-min.png" />
+  <img src="/images/colorpicker/map-blue-max.png" />
+  <img src="/images/colorpicker/map-blue-min.png" />
+
+  
+  <img src="/images/colorpicker/map-saturation.png" />
+  <img src="/images/colorpicker/map-saturation-overlay.png" />
+  <img src="/images/colorpicker/map-brightness.png" />
+  <img src="/images/colorpicker/map-hue.png" />
+  
+  
+  
+</div>
+

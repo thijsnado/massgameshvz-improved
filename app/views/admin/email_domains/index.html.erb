@@ -1,0 +1,15 @@
+<h2>Email Domains</h2>
+<table>
+  <tr>
+    <th>description</th>
+    <th>rule</th>
+  </tr>
+  <% for email_domain in @email_domains %>
+    <tr>
+      <td><%= email_domain.description %></td>
+      <td><%= email_domain.rule %></td>
+      <td><%= link_to 'edit', edit_admin_email_domain_url(email_domain) %>
+    </tr>
+  <% end %>
+</table>
+<%= link_to 'Add Domain', new_admin_email_domain_url %>
