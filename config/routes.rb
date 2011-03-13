@@ -3,7 +3,11 @@ Massgameshvz::Application.routes.draw do
   get "welcome/index"
 
   resources :games
-  resources :users
+  resources :users do
+    member do
+      get :confirm
+    end
+  end
   resources :user_sessions
   resources :self_bites
   resources :bites do
@@ -36,13 +40,24 @@ Massgameshvz::Application.routes.draw do
     resources :living_areas
     resources :humans
     resources :zombies
-    resources :original_zombies, :member => {:make_zombie => :put, :make_regular => :put}
+    resources :original_zombies do 
+     member do
+       put 'make_zombie'
+       put 'make_regular'
+     end
+    end
+    resources :squads
     resources :vaccines
     resources :pseudo_bites
-    resources :users, :collection => {:get_creatures => :get}
+    resources :users do
+      collection do
+        get 'get_creatures'
+      end
+    end
     resources :sarcastic_comments
     resources :games 
     resources :events
+    resources :email_domains
     resource :mailer, :member => {:sender => :post}
     
     #misc admin tasks, not really a resource but easier to work with this way

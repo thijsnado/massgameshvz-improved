@@ -1,5 +1,7 @@
 class BiteSharesController < ApplicationController
   
+  before_filter :must_be_playable
+  
   def index
     @bite_shares = @current_user.current_participation.bite_shares
   end

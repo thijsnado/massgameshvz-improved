@@ -1,5 +1,5 @@
 class Admin::UsersController < AdminController
-  before_filter :find_user, :except => ['index', 'get_creatures']
+  before_filter :find_user, :except => ['index', 'get_creatures', 'new', 'create']
   
   def index
     @order = params[:order] || 'id'
@@ -13,32 +13,53 @@ class Admin::UsersController < AdminController
   end
 
   def edit
+    @user = User.find(params[:id])
+    @game_participation = @user.current_participation ? @user.current_participation : Game.current.game_participations.new rescue nil
     @living_areas = LivingArea.all
-    @creatures = @user.creature.class.all rescue []
+    @creatures = @game_participation.creature.class.all rescue []
+  end
+  
+  def new
+    @user = User.new
+    @game_participation =  Game.current.game_participations.new rescue nil
+    @living_areas = LivingArea.all
+    @creatures = []
   end
 
   def update
     @user.attributes = params[:user]
-    @user.creature_type = params[:user][:creature_type]
-    @user.creature_id = params[:user][:creature_id]
-    @user.is_admin = params[:user][:is_admin] if params[:user][:is_admin]
-    @user.confirmed = params[:user][:confirmed] if params[:user][:confirmed]
-    if @user.save_without_validation
-      if params[:date]
-        date_hash = params[:date]
-        date = "#{date_hash[:year]}-#{date_hash[:month]}-#{date_hash[:day]} #{date_hash[:hour]}:#{date_hash[:minute]}:#{date_hash[:second]}"
-        ZombieExpirationDate.update_or_create(@user, date)
-      end
-      redirect_to admin_users_url
+    @game_participation = @user.current_participation ? @user.current_participation : Game.current.game_participations.new
+    @game_participation.attributes = params[:game_participation]
+    @game_participation.user_id = @user.id if @game_participation
+    respond_to do |format|
+      @user.save(:validate => false)
+      @game_participation.save(:validate => false)
+      format.html { redirect_to(admin_user_url(@user), :notice => 'User was successfully updated.') }
+      format.xml  { head :ok }
     end
   end
+  
+  def create
+    @user = User.new(params[:user])
+    @game_participation = Game.current.game_participations.new rescue nil
+    @game_participation.attributes = params[:game_participation]
+    @game_participation.user = @user if @game_participation
+    respond_to do |format|
+      @user.save(:validate => false)
+      @game_participation.save(:validate => false) if @game_participation
+      format.html { redirect_to(admin_user_url(@user), :notice => 'User was successfully created.') }
+      format.xml  { head :ok }
+    end
+  end
+  
+
 
   def show
-    @stats = Stat.find(:all, 
-      :conditions => ["user_id = ? or (action_type = 'Share' and action_id = ?) or (action_type = 'User' and action_id = ?)", 
-                      @user.id, @user.id, @user.id],
-      :order => 'created_at asc'
-    )
+    if @user.current_participation.creature_type == 'Human'
+      @status = :human
+    elsif @user.current_participation.creature_type == 'Zombie'
+      @status = :normal_zombie
+    end
   end
   
   def destroy

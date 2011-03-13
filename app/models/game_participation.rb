@@ -111,10 +111,6 @@ class GameParticipation < ActiveRecord::Base
     if self.human?
       self.creature = Zombie::SELF_BITTEN
     end
-    
-    #handle bite shares
-    
-    
     save
   end
 end

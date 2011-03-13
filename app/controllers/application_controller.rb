@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   
   before_filter :current_user
   before_filter :playable
+  before_filter :signupable
   
   def current_user_session
     return @current_user_session if defined?(@current_user_session)
@@ -22,7 +23,42 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  def current_game
+    @game||=Game.current
+  end
+  
   def playable
-    @playable||=Game.current
+    @playable = false
+    if current_game && Time.now.between?(current_game.start_at, current_game.end_at)
+      if current_user && current_user.current_participation
+        @playable = true
+      end
+    end
+    return @playable
+  end
+  
+  def signupable
+    if current_game && Time.now.between?(current_game.signup_start_at, current_game.signup_end_at)
+      @signupable = true
+    else
+      @signupable = false
+    end
+    return @signupable
+  end
+  
+  def must_be_playable
+    if playable
+      return
+    else
+      redirect_to root_url
+    end
+  end
+  
+  def must_be_signupable
+    if signupable
+      return
+    else
+      redirect_to root_url
+    end
   end
 end

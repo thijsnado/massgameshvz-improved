@@ -4,6 +4,7 @@ admin:
   username: admin
   email_address: admin@umass.edu
   is_admin: true
+  confirmed: true
   phone: 4135551234
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
@@ -12,6 +13,7 @@ not_signed_up:
   last_name: Loblaw
   username: bobloblaw
   email_address: bobloblaw@student.umass.edu
+  confirmed: true
   phone: 4135551234
 
 #A zombie who has not been reported as bitten yet  
@@ -20,6 +22,7 @@ unreported:
   last_name: Slacker
   username: imaslowzombie
   email_address: jslacker@admin.umass.edu
+  confirmed: true
   phone: 41325551234
 
 #Not been bitten  
@@ -28,6 +31,7 @@ clean_human:
   last_name: Daddy
   username: normal_human
   email_address: macdaddy@admin.umass.edu
+  confirmed: true
   phone: 4135554321
 
 #normal zombie  
@@ -36,6 +40,7 @@ zombie:
   last_name: Eating
   username: normal_zombie
   email_address: brains@umass.edu
+  confirmed: true
   phone: 4135554321
 
 #self bitten zombie  
@@ -44,6 +49,7 @@ self_bitten_zombie:
   last_name: Popular
   username: self_bitten_zombie
   email_address: unpopular@cs.umass.edu
+  confirmed: true
   phone: 4132212930
   
 #immortal zombie
@@ -52,6 +58,7 @@ immortal_zombie:
   last_name: Wizard
   username: immortal_zombie
   email_address: mwizard@umass.edu
+  confirmed: true
   phone: 4132212930
   
 original_zombie:
@@ -59,6 +66,7 @@ original_zombie:
   last_name: Zombie
   username: original_zombie
   email_address: ieatbrains@umass.edu
+  confirmed: true
   phone: 4132212930
   
   

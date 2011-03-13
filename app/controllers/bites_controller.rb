@@ -1,5 +1,7 @@
 class BitesController < ApplicationController
   
+  before_filter :must_be_playable
+  
   def receive
     @bite_event = BiteEvent.new
   end

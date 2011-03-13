@@ -1,6 +1,16 @@
 <h2>Status</h2>
+<% case @status %>
+<% when :human %>
+  <%= @user.username %> is a human. His/her user number is <% @user.current_participation.user_number %>
+<% when :normal_zombie %>
+  <%= @user.username %> is a normal zombie. His/her user number is <% @user.current_participation.user_number %>. 
+  if he/she does not eat, he/she will be dead at <%= @user.current_participation.zombie_expires_at %>.
+<% else %>
+  I hate case statements
+<% end %>
+<% if false %>
 <% if @user.creature_type == 'Human'%>
-  <%= h(@user.username)%> a human! his/her user number is <%=h(@user.user_number)%>
+  <%= h(@user.username)%> is a human. His/her user number is <%=h(@user.user_number)%>
 <% elsif @user.creature and @user.creature.immortal %>
   <%= h(@user.username)%> is an immortal zombie.
 <% elsif not @user.is_expired %>
@@ -8,8 +18,9 @@
 <% else %>
   <%= h(@user.username)%> is dead
 <% end %>
+<% end %>
 
-
+<% if false %>
 <h2><%= h(@user.username)%>s History</h2>
 <% if @stats.size > 0 %>
 <table>
@@ -65,4 +76,6 @@
 </table>
 <% else %>
 Has not been bit or anything yet
+<% end %>
+
 <% end %>
