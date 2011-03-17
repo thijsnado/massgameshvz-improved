@@ -1,5 +1,7 @@
 Massgameshvz::Application.routes.draw do
 
+  resources :squads
+
   get "welcome/index"
 
   resources :games
@@ -46,7 +48,11 @@ Massgameshvz::Application.routes.draw do
        put 'make_regular'
      end
     end
-    resources :squads
+    resources :squads do
+      collection do
+        get :usernames
+      end
+    end
     resources :vaccines
     resources :pseudo_bites
     resources :users do

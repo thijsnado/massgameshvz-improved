@@ -4,6 +4,9 @@ class GameParticipation < ActiveRecord::Base
   belongs_to :user
   belongs_to :creature, :polymorphic => true
   belongs_to :living_area
+  belongs_to :squad
+  has_one :squad
+  
   has_many :biting_events, :as => :responsible_object, :class_name => 'BiteEvent'
   has_many :bitten_events, :class_name => 'BiteEvent'
   has_many :bite_shares, :through => :biting_events

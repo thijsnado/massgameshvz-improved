@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110313163734) do
+ActiveRecord::Schema.define(:version => 20110313173326) do
 
   create_table "bite_shares", :force => true do |t|
     t.integer  "bite_event_id"
@@ -80,6 +80,13 @@ ActiveRecord::Schema.define(:version => 20110313163734) do
 
   create_table "sarcastic_comments", :force => true do |t|
     t.string   "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "squads", :force => true do |t|
+    t.string   "squad_name"
+    t.integer  "squad_leader_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
