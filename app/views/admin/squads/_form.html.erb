@@ -1,0 +1,40 @@
+<%= form_for(@squad, :url => admin_squads_url) do |f| %>
+  <% if @squad.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@squad.errors.count, "error") %> prohibited this squad from being saved:</h2>
+
+      <ul>
+      <% @squad.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :squad_name %><br />
+    <%= f.text_field :squad_name %>
+  </div>
+  <div class="field">
+    <%= f.label :squad_leader_username, "Squad Leader" %><br />
+    <%= f.text_field :squad_leader_username, :id => 'squad_leader_username' %>
+  </div>
+  <div id='squad_leader_usernames' class='autocomplete' style='display: none;'>
+  </div>
+  <script type='text/javascript'>
+    new Ajax.Autocompleter('squad_leader_username', 'squad_leader_usernames', '<%=usernames_admin_squads_url%>', {method: 'get'});
+  </script>
+  <div class='field'>
+    Squad Members:<br />
+    <% 5.times do |i|%>
+    <%= f.text_field :squad_member_usernames, :name => 'squad[squad_member_usernames][]', :id => "squad_leader_usernames_textfield_#{i}" %><br />
+    <div id="squad_member_usernames_<%=i%>" class='autocomplete' style='display: none'></div>
+    <script type='text/javascript'>
+      new Ajax.Autocompleter('squad_leader_usernames_textfield_<%=i%>', 'squad_member_usernames_<%=i%>', '<%=usernames_admin_squads_url%>', {method: 'get'});
+    </script>
+    <% end %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

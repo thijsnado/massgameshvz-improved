@@ -1,0 +1,18 @@
+<h1>Listing squads</h1>
+
+<table>
+  <tr>
+    <th>Squald name</th>
+    <th>Squad leader</th>
+    <th></th>
+  </tr>
+
+<% @squads.each do |squad| %>
+  <tr>
+    <td><%= squad.squad_name %></td>
+    <td><%= squad.squad_leader.user.username %></td>
+    <td><%= link_to 'Show', squad %></td>
+  </tr>
+<% end %>
+</table>
+

@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Squald name:</b>
+  <%= @squad.squad_name %>
+</p>
+
+<p>
+  <b>Squad leader:</b>
+  <%= @squad.squad_leader %>
+</p>
+
+
+<%= link_to 'Edit', edit_squad_path(@squad) %> |
+<%= link_to 'Back', squads_path %>
