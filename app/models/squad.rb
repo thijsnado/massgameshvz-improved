@@ -7,6 +7,12 @@ class Squad < ActiveRecord::Base
   
   before_validation :set_squad_leader_by_username
   before_validation :set_squad_members_by_usernames
+
+  def validate
+    no_errors_on_squad_leader
+    no_errors_on_squad_members
+  end
+  
   
   def squad_leader_username
     unless @squad_leader_username
@@ -36,14 +42,22 @@ class Squad < ActiveRecord::Base
   end
   
   def set_squad_members_by_usernames
-    @add_squad_members_error 
-    self.squad_member_usernames.each do |username|
-      game_participation = User.find_by_username(self.squad_leader_username).current_participation rescue nil
-      unless game_participation || !username
+    @add_squad_members_error ||= []
+    @squad_member_usernames.each do |username|
+      game_participation = User.find_by_username(username).current_participation rescue nil
+      unless game_participation || username.blank?
         @add_squad_members_error << username
       else
-        
+        self.squad_members << game_participation unless username.blank?
       end
     end
+  end
+  
+  def no_errors_on_squad_leader
+    self.errors.add(:squad_leader, "#{@add_squad_leader_error} is not a real username") if @add_squad_leader_error
+  end
+  
+  def no_errors_on_squad_members
+    self.errors.add(:squad_members, "#{@add_squad_members_error.join(',')} are not real usernames") unless @add_squad_members_error.blank?
   end
 end

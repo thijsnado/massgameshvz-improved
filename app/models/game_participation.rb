@@ -5,7 +5,7 @@ class GameParticipation < ActiveRecord::Base
   belongs_to :creature, :polymorphic => true
   belongs_to :living_area
   belongs_to :squad
-  has_one :squad
+  has_one :squadrin, :class_name => 'Squad', :foreign_key => 'squad_leader_id'
   
   has_many :biting_events, :as => :responsible_object, :class_name => 'BiteEvent'
   has_many :bitten_events, :class_name => 'BiteEvent'

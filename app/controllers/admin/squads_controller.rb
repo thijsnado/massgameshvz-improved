@@ -44,7 +44,7 @@ class Admin::SquadsController < AdminController
 
     respond_to do |format|
       if @squad.save
-        format.html { redirect_to(@squad, :notice => 'Squad was successfully created.') }
+        format.html { redirect_to(admin_squad_url(@squad), :notice => 'Squad was successfully created.') }
         format.xml  { render :xml => @squad, :status => :created, :location => @squad }
       else
         format.html { render :action => "new" }
@@ -60,7 +60,7 @@ class Admin::SquadsController < AdminController
 
     respond_to do |format|
       if @squad.update_attributes(params[:squad])
-        format.html { redirect_to(@squad, :notice => 'Squad was successfully updated.') }
+        format.html { redirect_to(admin_squad_url(@squad), :notice => 'Squad was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -76,7 +76,7 @@ class Admin::SquadsController < AdminController
     @squad.destroy
 
     respond_to do |format|
-      format.html { redirect_to(squads_url) }
+      format.html { redirect_to(admin_squads_url) }
       format.xml  { head :ok }
     end
   end
