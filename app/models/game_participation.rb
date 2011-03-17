@@ -16,6 +16,7 @@ class GameParticipation < ActiveRecord::Base
   
   validate :validate_not_outside_signup_period
   validates_uniqueness_of :user_id, :scope => :game_id
+  validates_uniqueness_of :user_number
   
   def self.zombie
     where(:creature_type => 'Zombie')

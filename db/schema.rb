@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110317224948) do
+ActiveRecord::Schema.define(:version => 20110317232634) do
 
   create_table "bite_shares", :force => true do |t|
     t.integer  "bite_event_id"
@@ -78,6 +78,17 @@ ActiveRecord::Schema.define(:version => 20110317224948) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "pseudo_bites", :force => true do |t|
+    t.string   "code"
+    t.datetime "valid_after"
+    t.integer  "game_participation_id"
+    t.boolean  "used",                  :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "pseudo_bites", ["code"], :name => "index_pseudo_bites_on_code"
 
   create_table "sarcastic_comments", :force => true do |t|
     t.string   "description"
