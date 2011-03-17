@@ -1,5 +1,5 @@
-<% form_tag sender_admin_mailer_url() do %>
-  Message:<br/>
-  <%= text_area_tag :message, nil, :rows => 10, :cols => 100%><br />
-  <%= submit_tag 'send message to players'%>
+<textarea cols='60' rows='20'>
+<% for address in @email_addresses %>
+<%= address %>
 <% end %>
+</textarea>

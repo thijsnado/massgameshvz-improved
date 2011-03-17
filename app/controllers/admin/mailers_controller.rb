@@ -1,9 +1,5 @@
 class Admin::MailersController < AdminController
   def show
-  end
-  
-  def sender
-    message = Message.create :body => params[:message]
-    call_rake :send_mailing, :message => message.id
+    @email_addresses = Game.current.game_participations.includes(:user).map{|gp| gp.user.email_address rescue nil}# rescue []
   end
 end
