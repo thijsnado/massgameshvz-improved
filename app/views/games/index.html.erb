@@ -71,34 +71,34 @@
         Status
       </th>
     </tr>
-  <% for user in living_area.game_participations.map{|gp| gp.user} %>
+  <% for game_participation in living_area.game_participations %>
     <% 
     main_color = nil
-    if user.creature_type == 'Zombie'
-      if user.is_expired
+    if game_participation.zombie?
+      if game_participation.dead?
         main_color = 'green'
       else
         main_color = 'red';
       end
-    elsif user.creature_type == 'Human'
+    elsif game_participation.chuman?
       main_color = 'blue'
     end 
-    creature_name = user.creature_name
-    creature_name = 'Dead' if user.creature_name == 'Zombie' and user.is_expired
+    creature_name = game_participation.creature.name
+    creature_name = 'Dead' if game_participation.dead?
     %>
     <tr style="<%="color:" + h(main_color)%>">
       
-      <td style="<%="color:\#" + h(user.creature.color_string) if user.creature%>">
-        <%= h(user.username) %>
+      <td style="<%="color:\#" + h(game_participation.creature.color_string) if game_participation.creature%>">
+        <%= game_participation.user.username %>
       </td>
       <td>
-        <%= h(user.first_name) %>
+        <%= game_participation.user.first_name %>
       </td>
       <td>
-        <%= h(user.last_name) %>
+        <%= game_participation.user.last_name %>
       </td>
       <td>
-        <%= h(creature_name)%>
+        <%= game_participation.creature.name %>
       </td>
     </tr>
   <% end %>

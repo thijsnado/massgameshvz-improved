@@ -1,5 +1,4 @@
 <%= form_for @bite_event, :url => bites_url do |f| %>
-<%= hidden_field_tag :bite_type, 'give' %>
 <p>
   <%= f.label :human_code, 'Enter Bite Code' %>
   <%= f.text_field :human_code %>

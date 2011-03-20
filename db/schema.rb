@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110317232634) do
+ActiveRecord::Schema.define(:version => 20110320155512) do
 
   create_table "bite_shares", :force => true do |t|
     t.integer  "bite_event_id"
@@ -27,14 +27,14 @@ ActiveRecord::Schema.define(:version => 20110317232634) do
   end
 
   create_table "events", :force => true do |t|
-    t.integer  "responsible_object_id"
-    t.string   "responsible_object_type"
     t.integer  "game_participation_id"
     t.string   "type"
     t.datetime "occured_at"
     t.datetime "zombie_expiration_calculation"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "target_object_type"
+    t.integer  "target_object_id"
   end
 
   create_table "game_participations", :force => true do |t|
@@ -86,6 +86,7 @@ ActiveRecord::Schema.define(:version => 20110317232634) do
     t.boolean  "used",                  :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "game_id"
   end
 
   add_index "pseudo_bites", ["code"], :name => "index_pseudo_bites_on_code"

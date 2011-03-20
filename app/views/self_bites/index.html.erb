@@ -1,0 +1,6 @@
+<p>
+  <%= @sarcastic_comment %>
+</p>
+<% form_tag self_bites_url() do %>
+  <%= submit_tag "Bite!!", :confirm => "Are you sure you want to bite yourself? Unlike becoming a regular zombie, you cannot be vaccinated after this!"%>
+<% end %>

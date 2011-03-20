@@ -1,5 +1,6 @@
 class Game < ActiveRecord::Base
   has_many :game_participations
+  has_many :pseudo_bites
   
   def self.current
     return @current||= where("? BETWEEN signup_start_at AND end_at", Time.now).first

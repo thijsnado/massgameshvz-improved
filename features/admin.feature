@@ -14,7 +14,7 @@ Feature: Navigate Admin Page
 		And I should see a "original zombies" link
 		And I should see a "squads" link
 		And I should see a "vaccines" link
-		And I should see a "psuedo bites" link
+		And I should see a "pseudo bites" link
 		And I should see a "games" link
 		And I should see an "events" link
 		And I should see a "mass mailer" link

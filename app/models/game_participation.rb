@@ -7,8 +7,9 @@ class GameParticipation < ActiveRecord::Base
   belongs_to :squad
   has_one :squadrin, :class_name => 'Squad', :foreign_key => 'squad_leader_id'
   
-  has_many :biting_events, :as => :responsible_object, :class_name => 'BiteEvent'
-  has_many :bitten_events, :class_name => 'BiteEvent'
+  has_many :biting_events, :class_name => 'BiteEvent'
+  has_many :bitten_events, :class_name => 'BiteEvent', :as => :target_object
+  has_many :pseudo_bite_events
   has_many :bite_shares, :through => :biting_events
   
   before_create :generate_user_number
@@ -46,17 +47,32 @@ class GameParticipation < ActiveRecord::Base
     current_game = Game.current
     if current_game
       game_participations = current_game.game_participations.original_zombies.includes('user').order(:user => :username)
-      game_participations = game_participations.to_a +  current_game.game_participations.original_zombie_requests.where("creature_type != 'Zombie'").includes('user').order(:user => :username).to_a
+      game_participations = game_participations.to_a +  current_game.game_participations.original_zombie_requests.where("creature_type != 'Zombie' OR creature_type is null").includes('user').order(:user => :username).to_a
       return game_participations.sort{|a, b| a.user.username <=> b.user.username}
     else
       return []
     end
   end
   
+  def self_bite
+    time = Time.now
+    self.creature = Zombie::SELF_BITTEN
+    self.biting_events.create(:bitten_participation => self, :occured_at => time)
+    self.zombie_expires_at = time + self.game.time_per_food.seconds
+    return save
+  end
   
-  def validate_not_outside_signup_period
-    unless Time.now.between? game.signup_start_at, game.signup_end_at or not new_record?
-      errors.add(:game, "Signup period for this game has passed")
+  def enter_user_number(val)
+    game_participation = Game.current.game_participations.find_by_user_number(val)
+    if zombie?
+      if game_participation
+        return report_bite(game_participation) if game_participation
+      else
+        pseudo_bite = Game.current.pseudo_bites.find_by_code(val)
+        return record_pseudo_bite(pseudo_bite) if pseudo_bite
+      end
+    elsif human?
+      return report_bitten(game_participation) if game_participation
     end
   end
   
@@ -74,6 +90,10 @@ class GameParticipation < ActiveRecord::Base
   
   def mortal?
     return true if zombie? && self.creature.immortal == false
+  end
+  
+  def immortal?
+    return !mortal?
   end
   
   def original_zombie?
@@ -127,8 +147,21 @@ class GameParticipation < ActiveRecord::Base
     self.zombie_expires_at = Time.now + self.game.time_per_food.seconds unless self.zombie_expires_at || !self.mortal?
   end
   
+  def record_pseudo_bite(pseudo_bite)
+    return false if pseudo_bite.used? || dead?
+    self.zombie_expires_at = Time.now + self.game.time_per_food
+    pseudo_bite_event = PseudoBiteEvent.new :pseudo_bite => pseudo_bite, :zombie_participation => self
+    pseudo_bite_event.save
+    pseudo_bite.used = true
+    pseudo_bite.save
+    return save
+  end
+  
   def record_bite(game_participation)
     time = Time.now
+    if dead?
+      return false
+    end
     
     #adjust starvation time
     if game_participation.human?
@@ -145,8 +178,8 @@ class GameParticipation < ActiveRecord::Base
     
     #record bite event
     bite_event = BiteEvent.new
-    bite_event.responsible_object = self
-    bite_event.game_participation = game_participation
+    bite_event.biter_participation = self
+    bite_event.bitten_participation = game_participation
     bite_event.occured_at = time
     bite_event.zombie_expiration_calculation = self.zombie_expires_at
     bite_event.save
@@ -162,6 +195,12 @@ class GameParticipation < ActiveRecord::Base
     if self.human?
       self.creature = Zombie::SELF_BITTEN
     end
-    save
+    return save
+  end
+  
+  def validate_not_outside_signup_period
+    unless Time.now.between? game.signup_start_at, game.signup_end_at or not new_record?
+      errors.add(:game, "Signup period for this game has passed")
+    end
   end
 end

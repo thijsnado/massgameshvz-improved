@@ -6,11 +6,6 @@ class GamesController < ApplicationController
     @humans = Human.find(:all)
     @zombies = Zombie.find(:all)
     @living_areas = LivingArea.includes(:game_participations => :user)
-    if @game  
-      @living_areas = @living_areas.where(
-        :game_participations => {:game_id => @game.id}
-      )
-    end
 
     respond_to do |format|
       format.html # index.html.erb

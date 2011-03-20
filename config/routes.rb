@@ -14,8 +14,7 @@ Massgameshvz::Application.routes.draw do
   resources :self_bites
   resources :bites do
     new do
-      get :receive
-      get :give
+      get :report
     end
   end
   resources :bite_shares do
@@ -67,7 +66,12 @@ Massgameshvz::Application.routes.draw do
     resource :mailer
     
     #misc admin tasks, not really a resource but easier to work with this way
-    resources :misc_tasks
+    resources :misc_tasks do
+      collection do
+        put 'set_unassigned_to_human'
+        put 'resurrect_dead'
+      end
+    end
   end
 
   root :to => "welcome#index"

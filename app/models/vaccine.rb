@@ -9,7 +9,7 @@ class Vaccine < ActiveRecord::Base
       game_participation.creature = Human::NORMAL
       game_participation.save
       self.used = true
-      self.save
+      return save
     end
   end
   

@@ -26,6 +26,9 @@ end
 Factory.define :living_area do |f|
 end
 
+Factory.define :pseudo_bite do |f|
+end
+
 Factory.sequence :email_address do |n|
   "email#{n}@umass.edu"
 end

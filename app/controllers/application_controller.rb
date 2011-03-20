@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
   end
   
   def current_game
-    @game||=Game.current
+    @current_game||=Game.current
   end
   
   def playable

@@ -7,6 +7,8 @@ class Squad < ActiveRecord::Base
   
   before_validation :set_squad_leader_by_username
   before_validation :set_squad_members_by_usernames
+  
+  after_create :make_leader_squad_leader
 
   def validate
     no_errors_on_squad_leader
@@ -59,5 +61,11 @@ class Squad < ActiveRecord::Base
   
   def no_errors_on_squad_members
     self.errors.add(:squad_members, "#{@add_squad_members_error.join(',')} are not real usernames") unless @add_squad_members_error.blank?
+  end
+  
+  def make_leader_squad_leader
+    l = self.squad_leader
+    l.creature = Human::SQUAD
+    l.save(false)
   end
 end

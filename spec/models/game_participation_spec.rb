@@ -95,7 +95,7 @@ describe GameParticipation do
         zombie_participation.send(:record_bite, self_bitten_zombie_participation)
         self_bitten_zombie_participation.creature.should == Zombie::NORMAL
       end
-      it "adjusts the zombies expiration date to the zombification caluclation of self bitten zombification event" do
+      it "adjusts the zombies expiration date to the zombification calculation of self bitten zombification event" do
         zombie_participation.send(:record_bite, self_bitten_zombie_participation)
         zombie_participation.zombie_expires_at.should == self_bitten_zombie_participation.zombification_event.zombie_expiration_calculation
       end
@@ -105,5 +105,66 @@ describe GameParticipation do
         zombie_participation.zombie_expires_at.should_not == self_bitten_zombie_participation.zombification_event.zombie_expiration_calculation
       end
     end
-  end  
+    context "a already dead zombie" do
+      it "wont increase zombie expiration date" do
+        time = Time.now - 1.day
+        zombie_participation.zombie_expires_at = time
+        zombie_participation.send(:record_bite, human_participation)
+        zombie_participation.zombie_expires_at.should == time
+      end
+    end
+  end
+  describe "record_pseudo_bite" do
+    let(:pseudo_bite){Factory(:pseudo_bite, :used => false)}
+    it "increases the zombie expiration date" do
+      zombie_participation.send :record_pseudo_bite, pseudo_bite
+      zombie_participation.zombie_expires_at.should == Time.now + current_value_of_food.seconds
+    end
+    it "gives the zombie a pseudo_bite event" do
+      zombie_participation.send :record_pseudo_bite, pseudo_bite
+      zombie_participation.pseudo_bite_events.last.pseudo_bite.should == pseudo_bite
+    end
+    it "does not increase zombie expiration date if used" do
+      pseudo_bite.used = true; pseudo_bite.save
+      current_zombie_expires_at = zombie_participation.zombie_expires_at
+      zombie_participation.send :record_pseudo_bite, pseudo_bite
+      zombie_participation.zombie_expires_at.should == current_zombie_expires_at
+    end
+    
+    it "does not increase zombie expiration date if zombie is dead" do
+      zombie_participation.zombie_expires_at = Time.now - 1.day; zombie_participation.save
+      zombie_participation.send :record_pseudo_bite, pseudo_bite
+      zombie_participation.zombie_expires_at.should == Time.now - 1.day
+    end
+  end
+  describe "enter_user_number" do
+    let(:pseudo_bite){Factory(:pseudo_bite, :used => false, :game => current_game)}
+    it "calls report_bite if number is of a game participation and reporter is zombie" do
+      zombie_participation.should_receive(:report_bite).with(human_participation)
+      zombie_participation.enter_user_number(human_participation.user_number)
+    end
+    it "calls report_bitten if number is of a game_participation and reporter is a human" do
+      human_participation.should_receive(:report_bitten).with(zombie_participation)
+      human_participation.enter_user_number(zombie_participation.user_number)
+    end
+    it "calls record_pseudo_bite if number is of type pseudo_bite and game_participation is zombie" do
+      zombie_participation.should_receive(:record_pseudo_bite).with(pseudo_bite)
+      zombie_participation.enter_user_number(pseudo_bite.code)
+    end
+  end 
+  describe "self_bite" do
+    it "turns a human into a self bitten zombie" do
+      human_participation.self_bite
+      human_participation.creature.should == Zombie::SELF_BITTEN
+    end
+    it "creates a bite event where the participation and target are self" do
+      human_participation.self_bite
+      biting_event = human_participation.biting_events.last
+      biting_event.target_object = human_participation
+    end
+    it "increases zombie_expires_at by value of food" do
+      human_participation.self_bite
+      human_participation.zombie_expires_at.should == Time.now + current_value_of_food
+    end
+  end 
 end

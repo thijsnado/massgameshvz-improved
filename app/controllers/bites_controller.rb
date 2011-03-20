@@ -2,33 +2,19 @@ class BitesController < ApplicationController
   
   before_filter :must_be_playable
   
-  def receive
+  def report
     @bite_event = BiteEvent.new
   end
   
-  def give
-      @bite_event = BiteEvent.new
-  end
-  
   def create
-    if params[:bite_type] == 'receive'
-      @bite_event = BiteEvent.new(params[:bite_event])
-      @zombie_participation = Game.current.game_participations.find_by_user_number(@bite_event.zombie_code)
-      if @zombie_participation
-        @current_user.current_participation.report_bitten(@zombie_participation)
-        redirect_to root_url
-      else
-        redirect_to root_url
-      end
-    elsif params[:bite_type] == 'give'
-      @bite_event = BiteEvent.new(params[:bite_event])
-      @human_participation = Game.current.game_participations.find_by_user_number(@bite_event.human_code)
-      if @human_participation
-        @current_user.current_participation.report_bite(@human_participation)
-        redirect_to root_url
-      else
-        redirect_to root_url
-      end 
+    code = params[:bite_event][:code]
+    success = @current_user.current_participation.enter_user_number code
+    if success
+      flash[:notice] = "you bit somebody!"
+      redirect_to root_url
+    else
+      flash[:notice] = "invalid bite code!"
+      redirect_to report_new_bite_url
     end
   end
 end

@@ -1,6 +1,5 @@
 class PseudoBite < ActiveRecord::Base
-  
-  belongs_to :game_participation
+  belongs_to :game
   
   validates_uniqueness_of :code
   
