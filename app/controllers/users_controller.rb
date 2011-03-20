@@ -1,10 +1,12 @@
 class UsersController < ApplicationController
   before_filter :must_be_signupable, :only => [:new, :create]
+  before_filter :can_only_view_edit_delete_self, :only => [:show, :edit, :update]
   
   # GET /users/1
   # GET /users/1.xml
   def show
     @user = User.find(params[:id])
+    @game_participation = @user.current_participation
 
     respond_to do |format|
       format.html # show.html.erb
@@ -28,6 +30,9 @@ class UsersController < ApplicationController
   # GET /users/1/edit
   def edit
     @user = User.find(params[:id])
+    @game_participation = @user.current_participation
+    @game_participation ||= @user.game_participations.new
+    @living_areas = LivingArea.all
   end
 
   # POST /users
@@ -54,7 +59,16 @@ class UsersController < ApplicationController
   # PUT /users/1
   # PUT /users/1.xml
   def update
-    #TODO, write this shit
+    @user = User.find(params[:id])
+    @game_participation = @user.current_participation
+    @game_participation ||= @user.game_participations.new
+    @living_areas = LivingArea.all
+    if @user.update_attributes(params[:user]) && @game_participation.update_attributes(params[:game_participation])
+      flash[:notice] = 'updated profile'
+      redirect_to root_url
+    else
+      render :action => 'edit'
+    end
   end
   
   def confirm
@@ -66,4 +80,9 @@ class UsersController < ApplicationController
     end
   end
 
+  def can_only_view_edit_delete_self
+    if current_user.id != params[:id].to_i
+      redirect_to root_url 
+    end
+  end
 end

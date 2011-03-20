@@ -34,7 +34,6 @@ Massgameshvz::Application.routes.draw do
   match "register", :to => "users#new"
   match "resend_confirmation", :to => 'TODO'
   match "admin", :to => 'admin#index'
-  match "profile", :to => "users#index"
   
   
   namespace :admin do

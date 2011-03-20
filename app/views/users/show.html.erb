@@ -1,4 +1,32 @@
-<p id="notice"><%= notice %></p>
+<div>
+    <p>
+      First Name:
+      <%= @user.first_name %>
+    </p>
+    <p>
+      Last Name:
+      <%= @user.last_name %>
+    </p>
+    <p>
+      Username:
+      <%= @user.username %>
+    </p>
+    <p>
+      Email Address:
+      <%= @user.email_address %>
+    </p>
+    <p>
+      Phone:
+      <%= @user.phone %>
+    </p>
+    <p>
+      Living Area:
+      <%= @game_participation.living_area.name %>
+    </p>
+</div>
+<h2>Events!</h2>
+<div id='events'>
+</div>
 
 
 <%= link_to 'Edit', edit_user_path(@user) %> |

@@ -7,17 +7,17 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <%=stylesheet_link_tag 'main', 'error'%>
     <%= csrf_meta_tag %>
-    <script type='text/javascript'>
-    <% if flash[:notice] %>
-      alert("<%= flash[:notice] %>");
-    <% end %>
-    </script>
   </head>
   <body>
     <div id="container">
       <div id="banner" class="box">
         <%=image_tag 'hvzsitebanner.jpg'%>
       </div>
+      <% if flash[:notice] %>
+        <div id="notice">
+          <%= flash[:notice] %>
+        </div>
+      <% end %>
       <div class="menu">
         <a href="/">home</a> |
         <%= link_to 'rules', 'http://massgames.org/blog/tag/rules/'%> |

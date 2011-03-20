@@ -1,11 +1,14 @@
 <div>
   <%=form_for @user do |f|%>
-    <% if @user.errors.any? %>
+    <% if @user.errors.any? || @game_participation.errors.any? %>
       <div id="error_explanation">
         <h2><%= pluralize(@user.errors.count, "error") %> prevented you from saving:</h2>
 
         <ul>
         <% @user.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        <% @game_participation.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
         <% end %>
         </ul>
@@ -38,9 +41,15 @@
     <p>
       <%=f.label :phone%>
       <%=f.text_field :phone%>
-    <p>
+    </p>
+    <%= fields_for @game_participation do |g| %>
+      <p>
+        <%= g.label :living_area_id%>
+        <%= g.collection_select :living_area_id, @living_areas, :id, :name %>
+      </p>
+    <% end %>
     <p>
       <%=submit_tag :submit%>
     </p>
-  <% end %>
+  <%end%>
 </div>
