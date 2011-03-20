@@ -33,6 +33,6 @@ domain.rule = 'umass'
 domain.save
 
 #admin, change password immediatly after deploying. 
-admin = User.new(:username => 'admin', :password => 'test123', :confirmed => true)
+admin = User.new(:username => 'admin', :password => 'test123', :confirmed => true, :email_address => 'tdevries.development@gmail.com')
 admin.is_admin = true
 admin.save(:validate => false)
