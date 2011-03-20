@@ -19,10 +19,12 @@
       Phone:
       <%= @user.phone %>
     </p>
+    <% if @game_participation %>
     <p>
       Living Area:
       <%= @game_participation.living_area.name %>
     </p>
+    <% end %>
 </div>
 <h2>Events!</h2>
 <div id='events'>

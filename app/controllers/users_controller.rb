@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   # GET /users/1.xml
   def show
     @user = User.find(params[:id])
-    @game_participation = @user.current_participation
+    @game_participation = @user.current_participation rescue nil
 
     respond_to do |format|
       format.html # show.html.erb
@@ -30,8 +30,7 @@ class UsersController < ApplicationController
   # GET /users/1/edit
   def edit
     @user = User.find(params[:id])
-    @game_participation = @user.current_participation
-    @game_participation ||= @user.game_participations.new
+    @game_participation = @user.current_participation rescue nil
     @living_areas = LivingArea.all
   end
 
@@ -60,10 +59,10 @@ class UsersController < ApplicationController
   # PUT /users/1.xml
   def update
     @user = User.find(params[:id])
-    @game_participation = @user.current_participation
-    @game_participation ||= @user.game_participations.new
+    @game_participation = @user.current_participation rescue nil
     @living_areas = LivingArea.all
-    if @user.update_attributes(params[:user]) && @game_participation.update_attributes(params[:game_participation])
+    if @user.update_attributes(params[:user])
+      @game_participation.save if @game_participation
       flash[:notice] = 'updated profile'
       redirect_to root_url
     else
