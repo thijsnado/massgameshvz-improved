@@ -15,6 +15,14 @@ class Squad < ActiveRecord::Base
     no_errors_on_squad_members
   end
   
+  def add_squad_members
+    return unless self.squad_members.blank?
+    @squad_member_usernames = []
+    8.times do 
+      @squad_member_usernames << nil
+    end
+  end
+  
   
   def squad_leader_username
     unless @squad_leader_username

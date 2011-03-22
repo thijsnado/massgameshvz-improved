@@ -25,6 +25,7 @@ class Admin::SquadsController < AdminController
   # GET /squads/new.xml
   def new
     @squad = Squad.new
+    @squad.add_squad_members
 
     respond_to do |format|
       format.html # new.html.erb
