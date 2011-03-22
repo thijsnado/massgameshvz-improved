@@ -150,7 +150,8 @@ class GameParticipation < ActiveRecord::Base
   def record_pseudo_bite(pseudo_bite)
     return false if pseudo_bite.used? || dead?
     self.zombie_expires_at = Time.now + self.game.time_per_food
-    pseudo_bite_event = PseudoBiteEvent.new :pseudo_bite => pseudo_bite, :zombie_participation => self
+    pseudo_bite_event = PseudoBiteEvent.new :pseudo_bite => pseudo_bite, :zombie_participation => self, :zombie_expiration_calculation => self.zombie_expires_at
+    create_bite_shares(pseudo_bite_event)
     pseudo_bite_event.save
     pseudo_bite.used = true
     pseudo_bite.save
@@ -184,18 +185,21 @@ class GameParticipation < ActiveRecord::Base
     bite_event.zombie_expiration_calculation = self.zombie_expires_at
     bite_event.save
     
-    #create bite shares
-    game.bite_shares_per_food.times do
-      bite_share = BiteShare.new
-      bite_share.bite_event = bite_event
-      bite_share.save
-    end
+    create_bite_shares(bite_event)
     
     #handle different creature types
     if self.human?
       self.creature = Zombie::SELF_BITTEN
     end
     return save
+  end
+  
+  def create_bite_shares(bite_event)
+    game.bite_shares_per_food.times do
+      bite_share = BiteShare.new
+      bite_share.bite_event = bite_event
+      bite_share.save
+    end
   end
   
   def validate_not_outside_signup_period

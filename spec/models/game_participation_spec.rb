@@ -130,11 +130,14 @@ describe GameParticipation do
       zombie_participation.send :record_pseudo_bite, pseudo_bite
       zombie_participation.zombie_expires_at.should == current_zombie_expires_at
     end
-    
     it "does not increase zombie expiration date if zombie is dead" do
       zombie_participation.zombie_expires_at = Time.now - 1.day; zombie_participation.save
       zombie_participation.send :record_pseudo_bite, pseudo_bite
       zombie_participation.zombie_expires_at.should == Time.now - 1.day
+    end
+    it "gives the zombie a number of bite shares defined by the bite_shares_per_food" do
+      zombie_participation.send(:record_pseudo_bite, pseudo_bite)
+      zombie_participation.bite_shares.count.should == bite_shares_per_food
     end
   end
   describe "enter_user_number" do

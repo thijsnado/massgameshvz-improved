@@ -1,4 +1,4 @@
-class PseudoBiteEvent < Event
+class PseudoBiteEvent < BiteEvent
   belongs_to :zombie_participation, :class_name => 'GameParticipation', :foreign_key => :game_participation_id
   
   def pseudo_bite
