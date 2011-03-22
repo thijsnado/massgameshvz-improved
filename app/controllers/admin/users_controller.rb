@@ -27,13 +27,14 @@ class Admin::UsersController < AdminController
   end
 
   def update
+    @user = User.find(params[:id])
     @user.attributes = params[:user]
-    @game_participation = @user.current_participation ? @user.current_participation : Game.current.game_participations.new
-    @game_participation.attributes = params[:game_participation]
+    @game_participation = @user.current_participation ? @user.current_participation : Game.current.game_participations.new rescue nil
+    @game_participation.attributes = params[:game_participation] if @game_participation
     @game_participation.user_id = @user.id if @game_participation
     respond_to do |format|
       @user.save(:validate => false)
-      @game_participation.save(:validate => false)
+      @game_participation.save(:validate => false) if @game_participation
       format.html { redirect_to(admin_user_url(@user), :notice => 'User was successfully updated.') }
       format.xml  { head :ok }
     end
@@ -42,7 +43,7 @@ class Admin::UsersController < AdminController
   def create
     @user = User.new(params[:user])
     @game_participation = Game.current.game_participations.new rescue nil
-    @game_participation.attributes = params[:game_participation]
+    @game_participation.attributes = params[:game_participation] if @game_participation
     @game_participation.user = @user if @game_participation
     respond_to do |format|
       @user.save(:validate => false)

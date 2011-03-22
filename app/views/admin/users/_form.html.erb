@@ -1,4 +1,4 @@
-<% if @user.errors.any? || @game_participation.errors.any? %>
+<% if @user.errors.any? || (@game_participation && @game_participation.errors.any?) %>
   <div id="error_explanation">
     <h2><%= pluralize(@user.errors.count, "error") %> prevented you from saving:</h2>
 
@@ -8,10 +8,14 @@
     <% end %>
     <% @game_participation.errors.full_messages.each do |msg| %>
       <li><%= msg %></li>
-    <% end %>
+    <% end if @game_participation %>
     </ul>
   </div>
 <% end %>
+<p>
+  <%= f.label :is_admin, "Make Administrator"%>
+  <%= f.check_box :is_admin %>
+</p>
 <p>
   <%= f.label :first_name %>
   <%= f.text_field :first_name %>
