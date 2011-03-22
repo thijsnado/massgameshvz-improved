@@ -1,6 +1,7 @@
 class Vaccine < ActiveRecord::Base
   
   before_create :set_code_if_not_set
+  before_save :trim_whitespace
   
   validates_uniqueness_of :code
   
@@ -26,6 +27,10 @@ class Vaccine < ActiveRecord::Base
   
   def set_code_if_not_set
     self.code = Digest::SHA1.hexdigest(rand.to_s + "HVZ RAWKS!!!" + Time.now.to_s)[0, 10] if self.code.blank?
+  end
+  
+  def trim_whitespace
+    self.code = self.code.strip
   end
   
 end
