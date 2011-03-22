@@ -26,12 +26,14 @@
   </script>
   <div class='field'>
     Squad Members:<br />
-    <% 5.times do |i|%>
-    <%= f.text_field :squad_member_usernames, :name => 'squad[squad_member_usernames][]', :id => "squad_leader_usernames_textfield_#{i}" %><br />
+    <% i = 0%>
+    <% for squad_member_username in @squad.squad_member_usernames%>
+    <%= text_field_tag 'squad[squad_member_usernames][]', squad_member_username, :id => "squad_leader_usernames_textfield_#{i}" %><br />
     <div id="squad_member_usernames_<%=i%>" class='autocomplete' style='display: none'></div>
     <script type='text/javascript'>
       new Ajax.Autocompleter('squad_leader_usernames_textfield_<%=i%>', 'squad_member_usernames_<%=i%>', '<%=usernames_admin_squads_url%>', {method: 'get'});
     </script>
+    <% i+= 1%>
     <% end %>
   </div>
   <div class="actions">
