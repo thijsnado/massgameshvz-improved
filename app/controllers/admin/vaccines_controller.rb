@@ -21,8 +21,12 @@ class Admin::VaccinesController < AdminController
 
   def create
     @vaccine = Vaccine.new(params[:vaccine])
-    @vaccine.save
-    redirect_to admin_vaccines_url
+    if @vaccine.save
+      redirect_to admin_vaccines_url
+    else
+      @vaccines = Vaccine.all
+      render :action => 'index'
+    end
   end
 
 end

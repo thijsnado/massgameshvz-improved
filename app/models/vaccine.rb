@@ -1,5 +1,6 @@
 class Vaccine < ActiveRecord::Base
-  before_save :_format_code
+  before_validation :_format_code
+  before_save :set_game_id
   
   validates_uniqueness_of :code
   
@@ -23,7 +24,7 @@ class Vaccine < ActiveRecord::Base
   end
   
   def _format_code
-    set_code unless self.code
+    set_code_if_not_set
     self.code = self.class.format_code(self.code)
   end
   
@@ -42,5 +43,8 @@ class Vaccine < ActiveRecord::Base
     self.code = Digest::SHA1.hexdigest(rand.to_s + "HVZ RAWKS!!!" + Time.now.to_s)[0, 10] if self.code.blank?
   end
   
+  def set_game_id
+    self.game_id = Game.current.id unless self.game_id || !Game.current
+  end
   
 end
