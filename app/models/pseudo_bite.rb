@@ -4,7 +4,6 @@ class PseudoBite < ActiveRecord::Base
   validates_uniqueness_of :code
   
   before_save :_format_code
-  has_one :stat, :as => :action
   
   private 
   

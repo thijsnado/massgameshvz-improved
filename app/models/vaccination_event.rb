@@ -1,0 +1,3 @@
+class VaccinationEvent < Event
+  
+end

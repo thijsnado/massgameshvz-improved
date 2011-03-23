@@ -1,0 +1,13 @@
+<% for event in @events %>
+<%= event.game_participation.user.username %>
+<% case event.target_object.class.to_s %>
+<% when 'GameParticipation' %>
+   bit <%= event.target_object.user.username %>
+<% when 'Vaccine' %>
+  took a vaccine
+<% when 'PseudoBite' %>
+  took a psuedo_bite
+<% end %>
+at <%= event.occured_at %>
+<br />
+<% end %>

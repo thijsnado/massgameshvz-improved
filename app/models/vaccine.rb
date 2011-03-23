@@ -1,5 +1,4 @@
 class Vaccine < ActiveRecord::Base
-  
   before_save :_format_code
   
   validates_uniqueness_of :code
@@ -9,6 +8,7 @@ class Vaccine < ActiveRecord::Base
       game_participation.creature = Human::NORMAL
       game_participation.save
       self.used = true
+      VaccinationEvent.create(:occured_at => Time.now, :game_participation => game_participation, :target_object => self)
       return save
     end
   end

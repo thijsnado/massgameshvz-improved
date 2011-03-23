@@ -46,7 +46,7 @@ class UsersController < ApplicationController
         @user.save
         @game_participation.user_id = @user.id
         @game_participation.save
-        format.html { redirect_to(@user, :notice => 'User was successfully created.') }
+        format.html { redirect_to(root_url, :notice => 'You have registered, please check email for confirmation') }
         format.xml  { render :xml => @user, :status => :created, :location => @user }
       else
         format.html { render :action => "new" }
