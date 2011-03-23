@@ -8,7 +8,7 @@ Feature: Play as Human
     And I go to the home page
     When I follow "report being bitten"
     Then I should see "Enter Bite Code"
-    When I fill in "Enter Bite Code" with "zombie bite code"
+    When I fill in "Enter Bite Code" with "ZOMBIE BITE CODE"
     And I press "submit"  
     Then I should be a Zombie
     And the Zombie should get credit for biting me

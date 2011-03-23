@@ -3,7 +3,6 @@ class PseudoBite < ActiveRecord::Base
   
   validates_uniqueness_of :code
   
-  before_create :set_code
   before_save :_format_code
   has_one :stat, :as => :action
   
@@ -23,6 +22,7 @@ class PseudoBite < ActiveRecord::Base
   end
   
   def _format_code
+    set_code unless self.code
     self.code = self.class.format_code(self.code)
   end
 end

@@ -1,6 +1,5 @@
 class Vaccine < ActiveRecord::Base
   
-  before_create :set_code_if_not_set
   before_save :_format_code
   
   validates_uniqueness_of :code
@@ -24,6 +23,7 @@ class Vaccine < ActiveRecord::Base
   end
   
   def _format_code
+    set_code unless self.code
     self.code = self.class.format_code(self.code)
   end
   

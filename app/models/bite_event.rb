@@ -1,6 +1,5 @@
 class BiteEvent < Event
-  attr_accessor :human_code
-  attr_accessor :zombie_code
+  attr_accessor :code
   
   belongs_to :biter_participation, :class_name => 'GameParticipation', :foreign_key => :game_participation_id
   has_many :bite_shares

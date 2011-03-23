@@ -12,7 +12,6 @@ class GameParticipation < ActiveRecord::Base
   has_many :pseudo_bite_events
   has_many :bite_shares, :through => :biting_events
   
-  before_create :generate_user_number
   before_create :set_zombie_expires_at
   before_save :format_user_number
   
@@ -64,6 +63,7 @@ class GameParticipation < ActiveRecord::Base
   end
   
   def enter_user_number(val)
+    val = self.class.format_code(val)
     game_participation = Game.current.game_participations.find_by_user_number(val)
     if zombie?
       if game_participation
@@ -148,6 +148,7 @@ class GameParticipation < ActiveRecord::Base
   end
   
   def format_user_number
+    generate_user_number unless self.user_number
     self.user_number = self.class.format_code(self.user_number)
   end
     
