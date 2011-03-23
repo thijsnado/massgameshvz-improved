@@ -5,7 +5,7 @@ class VaccinesController < ApplicationController
   end
   
   def take
-    @vaccine = Vaccine.find_by_code(params[:vaccine][:code])
+    @vaccine = Vaccine.find_by_code(Vaccine.format_code(params[:vaccine][:code]))
     if @vaccine && @vaccine.take(@current_user.current_participation)
       flash[:notice] = 'You are no longer a zombie'
       redirect_to root_url

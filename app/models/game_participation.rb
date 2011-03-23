@@ -14,6 +14,7 @@ class GameParticipation < ActiveRecord::Base
   
   before_create :generate_user_number
   before_create :set_zombie_expires_at
+  before_save :format_user_number
   
   validate :validate_not_outside_signup_period
   validates_uniqueness_of :user_id, :scope => :game_id
@@ -135,6 +136,19 @@ class GameParticipation < ActiveRecord::Base
   
   def zombification_event
     self.bitten_events.first
+  end
+  
+  def self.format_code(code)
+    if code
+      code = code.strip
+      code = code.gsub('0', 'o')
+      code = code.upcase
+    end
+    return code
+  end
+  
+  def format_user_number
+    self.user_number = self.class.format_code(self.user_number)
   end
     
   protected
