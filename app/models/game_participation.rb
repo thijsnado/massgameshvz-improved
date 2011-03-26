@@ -105,6 +105,16 @@ class GameParticipation < ActiveRecord::Base
     return true if zombie? && self.creature == Zombie::ORIGINAL
   end
   
+  def squad_leader?
+    if squadrin
+      return true
+    elsif self.squad.highest_ranking == self
+      return true
+    else
+      return false
+    end
+  end
+  
   #Used when reporting who a user bit (A zombie reports he bit a human)
   def report_bite(game_participation)
     if zombie? && (game_participation.human? || game_participation.creature == Zombie::SELF_BITTEN)

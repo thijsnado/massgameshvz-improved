@@ -45,6 +45,13 @@ class Squad < ActiveRecord::Base
       @squad_member_usernames
     end
   end
+  
+  def current_leader
+    return squad_leader unless squad_leader.zombie?
+    squad_members.order('rank asc').each do |member|
+      return member if member.human?
+    end
+  end
 
   private 
   
@@ -101,7 +108,7 @@ class Squad < ActiveRecord::Base
   end
   
   def no_duplicate_squad_members
-    self.errors.add(:squad_members, "you can't have the same person listed twice in a squad") if @squad_member_usernames.size != @squad_member_usernames.uniq
+    self.errors.add(:squad_members, "you can't have the same person listed twice in a squad") if @squad_member_usernames.size != @squad_member_usernames.uniq.size
   end
   
   def make_leader_squad_leader

@@ -1,6 +1,10 @@
 Massgameshvz::Application.routes.draw do
 
-  resources :squads
+  resources :squads do
+    collection do
+      get :usernames
+    end
+  end
 
   get "welcome/index"
 
