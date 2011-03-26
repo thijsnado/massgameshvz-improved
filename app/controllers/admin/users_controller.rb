@@ -37,6 +37,8 @@ class Admin::UsersController < AdminController
     end
     @user.confirmed = true
     @user.attributes = params[:user]
+    
+    @user.is_admin = params[:user][:is_admin]
     @game_participation = @user.current_participation ? @user.current_participation : Game.current.game_participations.new rescue nil
     @game_participation.attributes = params[:game_participation] if @game_participation
     @game_participation.user_id = @user.id if @game_participation
@@ -52,6 +54,7 @@ class Admin::UsersController < AdminController
   def create
     @user = User.new(params[:user])
     @user.confirmed = true
+    @user.is_admin = params[:user][:is_admin]
     @game_participation = Game.current.game_participations.new rescue nil
     @game_participation.attributes = params[:game_participation] if @game_participation
     @game_participation.user = @user if @game_participation
