@@ -28,6 +28,7 @@ class Admin::UsersController < AdminController
 
   def update
     @user = User.find(params[:id])
+    set_zombie_expires_at = false
     if @user.current_participation && @user.current_participation.human? && params[:game_participation][:creature_type] == 'Zombie'
       zombie =  Zombie.find_by_id(params[:game_participation][:creature_id])
       unless zombie.immortal || !params[:game_participation][:zombie_expires_at].blank?
