@@ -82,6 +82,6 @@ class Squad < ActiveRecord::Base
   def make_leader_squad_leader
     l = self.squad_leader
     l.creature = Human::SQUAD
-    l.save(false)
+    l.save(:validate => false)
   end
 end

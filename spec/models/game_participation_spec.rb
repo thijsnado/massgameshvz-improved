@@ -8,8 +8,7 @@ describe GameParticipation do
     Factory(:game_participation,
       :creature => Zombie::NORMAL,
       :game => current_game,
-      :zombie_expires_at => current_game.start_at + 4.minutes,
-      :user_number => 'zombie_part'
+      :zombie_expires_at => current_game.start_at + 4.minutes
     )
   end
   let(:self_bitten_zombie_participation) do
@@ -24,6 +23,12 @@ describe GameParticipation do
       :creature => Human::NORMAL,
       :game => current_game,
       :user_number => 'human_part'
+    )
+  end
+  let(:squad_participation) do
+    Factory(:game_participation,
+      :creature => Human::SQUAD,
+      :game => current_game
     )
   end
   let(:unreported_zombie_participation) do
@@ -90,6 +95,12 @@ describe GameParticipation do
       it "gives the unreported zombie credit for biting the human" do
         unreported_zombie_participation.send(:record_bite, human_participation)
         unreported_zombie_participation.biting_events.last.bitten_participation.should == human_participation
+      end
+    end
+    context "a zombie bites a squad leader" do
+      it "makes zombie immortal" do
+        zombie_participation.send(:record_bite, squad_participation)
+        zombie_participation.creature.immortal.should be_true
       end
     end
     context "a zombie bites a self bitten zombie" do
