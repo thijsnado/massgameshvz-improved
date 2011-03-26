@@ -6,6 +6,7 @@ namespace :data do
     User.delete_all(['username != ?', 'admin'])
     Event.delete_all
     LivingArea.delete_all
+    Squad.delete_all
     game = Game.create(:signup_start_at => Time.now,
       :signup_end_at => Time.now + 3.days, 
       :start_at => Time.now + 1.day, 

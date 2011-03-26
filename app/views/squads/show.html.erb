@@ -1,15 +1,52 @@
-<p id="notice"><%= notice %></p>
-
+<div>
+  <%= render :partial => 'layouts/creature_type_key'%>
+</div>
 <p>
-  <b>Squald name:</b>
+  <b>Squad name:</b>
   <%= @squad.squad_name %>
 </p>
 
 <p>
+  <% 
+  game_participation = @squad.squad_leader
+  
+  main_color = nil
+  if game_participation.zombie?
+    if game_participation.dead?
+      main_color = 'green'
+    else
+      main_color = 'red';
+    end
+  elsif game_participation.human?
+    main_color = 'blue'
+  end 
+  
+  %>
   <b>Squad leader:</b>
-  <%= @squad.squad_leader %>
+  <span style="color: <%=main_color%>"><%= @squad.squad_leader_username %></span>
 </p>
 
+<p>
+  <% for squad_member in @squad.squad_members %>
+  <% 
+  game_participation = squad_member
+  username = game_participation.user.username
+  
+  main_color = nil
+  if game_participation.zombie?
+    if game_participation.dead?
+      main_color = 'green'
+    else
+      main_color = 'red';
+    end
+  elsif game_participation.human?
+    main_color = 'blue'
+  end 
+  
+  %>
+  <b>Squad Member:</b>
+  <span style="color: <%= main_color %>"><%= username %></span><br />
+  <% end %>
+</p>
 
-<%= link_to 'Edit', edit_squad_path(@squad) %> |
 <%= link_to 'Back', squads_path %>
