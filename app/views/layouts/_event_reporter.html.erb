@@ -1,0 +1,25 @@
+<% for event in @events %>
+<% if profile %>
+  You
+<% else %>
+  <%= @user.username %>
+<% end %>
+<% if event.target_object == @game_participation %>
+  got
+  <% case event.target_object.class.to_s %>
+  <% when 'GameParticipation' %>
+     bit by <%= event.game_participation.user.username %>
+  <% end %>
+<% else %>
+<% case event.target_object.class.to_s %>
+<% when 'GameParticipation' %>
+   bit <%= event.game_participation.user.username %>
+<% when 'Vaccine' %>
+  took a vaccine
+<% when 'PseudoBite' %>
+  took a psuedo_bite
+<% end %>
+<% end %>
+at <%= event.occured_at %>
+<br />
+<% end %>

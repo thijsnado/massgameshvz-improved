@@ -7,6 +7,7 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @game_participation = @user.current_participation rescue nil
+    @events = Event.belongs_to_game_participation(@game_participation).order(:occured_at) rescue []
 
     respond_to do |format|
       format.html # show.html.erb

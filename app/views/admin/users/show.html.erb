@@ -1,85 +1,19 @@
 <h2>Status</h2>
 <% case @status %>
 <% when :human %>
-  <%= @user.username %> is a human. His/her user number is <% @user.current_participation.user_number %>
+  <%= @user.username %> is a <%= @user.current_participation.creature.name %> human. His/her user number is <% @user.current_participation.user_number %>
 <% when :mortal_zombie %>
-  <%= @user.username %> is a normal zombie. His/her user number is <% @user.current_participation.user_number %>. 
+  <%= @user.username %> is a <%= @user.current_participation.creature.name %> zombie. His/her user number is <% @user.current_participation.user_number %>. 
   if he/she does not eat, he/she will be dead at <%= @user.current_participation.zombie_expires_at %>.
 <% when :immortal_zombie %>
-  <%= @user.username %> is an immortal zombie.
+  <%= @user.username %> is a <%= @user.current_participation.creature.name %> zombie.
 <% when :dead %>
   <%= @user.username %> is dead.
 <% else %>
   <%= @user.username %> has no creature type. This means the user is either an admin, has not been assigned a creature type, or there is no current game playing.
 <% end %>
-<% if false %>
-<% if @user.creature_type == 'Human'%>
-  <%= h(@user.username)%> is a human. His/her user number is <%=h(@user.user_number)%>
-<% elsif @user.creature and @user.creature.immortal %>
-  <%= h(@user.username)%> is an immortal zombie.
-<% elsif not @user.is_expired %>
-  <%= h(@user.username)%> is zombie, if he/she does not eat, he/she will be dead at <%= h(@user.zombie_expiration_date.death_date) %>.
-<% else %>
-  <%= h(@user.username)%> is dead
-<% end %>
-<% end %>
 
-<% if false %>
-<h2><%= h(@user.username)%>s History</h2>
-<% if @stats.size > 0 %>
-<table>
-  <tr>
-    <th>
-      action description
-    </th>
-    <th>
-      when
-    </th>
-  </tr>
-  <% for stat in @stats %>
-  <tr>
-    <td>
-      <%
-      output = ""
-      case stat.action_type.to_s
-      when 'User'
-        user = User.find_by_id(stat.action_id)
-        unless @user == user
-          output = "#{h(@user.username)} bit #{h(user.username)}" rescue "#{h(@user.username)} bit someone"
-        else
-          if stat.action_id == stat.user_id
-            output = "#{h(@user.username)} bit himself"
-          else
-            user = User.find_by_id(stat.user_id)
-            output = "#{h(@user.username)} got bit by #{h(user.username)}" rescue "someone bit #{h(@user.username)}"
-          end
-        end
-      when 'PseudoBite'
-        output = "#{h(@user.username)} received a pseudo bite"
-      when 'Vaccine'
-        output = "#{h(@user.username)} was vaccinated"
-      when 'Share'
-        if stat.user_id != @user.id
-          user = User.find_by_id(stat.user_id)
-          output = "#{h(user.username)} shared a bite with #{h(@user.username)}" rescue "someone shared a bite with #{h(@user.username)}"
-        else
-          user = User.find_by_id(stat.action_id)
-          output = "#{h(@user.username)} shared a bite with #{h(user.username)}" rescue "#{h(@user.username)} shared a bite with someone"
-        end
-      else
-        output = "wtf?"
-      end
-      %>
-      <%= output%>
-    </td>
-    <td>
-      <%= h(stat.created_at)%>
-    </td>
-  </tr>
-  <% end %>
-</table>
-<% else %>
-Has not been bit or anything yet
-<% end %>
-
-<% end %>
+<h2>Events!</h2>
+<div id='events'>
+  <%= render :partial => 'layouts/event_reporter', :locals => {:profile => false}%>
+</div>

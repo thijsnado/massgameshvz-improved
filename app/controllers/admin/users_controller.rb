@@ -84,6 +84,7 @@ class Admin::UsersController < AdminController
     else
       @status = :no_participation
     end
+    @events = Event.belongs_to_game_participation(@current_participation).order(:occured_at) rescue []
   end
   
   def destroy
