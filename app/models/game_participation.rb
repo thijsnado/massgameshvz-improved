@@ -86,7 +86,7 @@ class GameParticipation < ActiveRecord::Base
   end
   
   def dead?
-    return true if mortal? && self.zombie_expires_at < Time.now
+    return true if mortal? && self.zombie_expires_at.to_i < Time.now.to_i
   end
   
   def mortal?
@@ -151,15 +151,15 @@ class GameParticipation < ActiveRecord::Base
     generate_user_number unless self.user_number
     self.user_number = self.class.format_code(self.user_number)
   end
+  
+  def set_zombie_expires_at
+    self.zombie_expires_at = Time.now + self.game.time_per_food.seconds unless self.zombie_expires_at || !self.mortal?
+  end
     
   protected
   
   def generate_user_number
     self.user_number = Digest::SHA1.hexdigest(rand.to_s + "HVZ RAWKS!!!" + Time.now.to_s)[0, 10]
-  end
-  
-  def set_zombie_expires_at
-    self.zombie_expires_at = Time.now + self.game.time_per_food.seconds unless self.zombie_expires_at || !self.mortal?
   end
   
   def record_pseudo_bite(pseudo_bite)

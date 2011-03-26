@@ -73,6 +73,7 @@
     </tr>
   <% for game_participation in living_area.game_participations %>
     <% 
+    next unless game_participation.creature
     main_color = nil
     if game_participation.zombie?
       if game_participation.dead?
@@ -80,11 +81,11 @@
       else
         main_color = 'red';
       end
-    elsif game_participation.chuman?
+    elsif game_participation.human?
       main_color = 'blue'
     end 
     creature_name = game_participation.creature.name
-    creature_name = 'Dead' if game_participation.dead?
+    creature_name = 'Dead' if game_participation.dead? 
     %>
     <tr style="<%="color:" + h(main_color)%>">
       
@@ -98,7 +99,7 @@
         <%= game_participation.user.last_name %>
       </td>
       <td>
-        <%= game_participation.creature.name %>
+        <%= creature_name %>
       </td>
     </tr>
   <% end %>

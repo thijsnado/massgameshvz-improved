@@ -28,10 +28,18 @@ class Admin::UsersController < AdminController
 
   def update
     @user = User.find(params[:id])
+    if @user.current_participation && @user.current_participation.human? && params[:game_participation][:creature_type] == 'Zombie'
+      zombie =  Zombie.find_by_id(params[:game_participation][:creature_id])
+      unless zombie.immortal || !params[:game_participation][:zombie_expires_at].blank?
+        set_zombie_expires_at = true
+      end
+    end
+    @user.confirmed = true
     @user.attributes = params[:user]
     @game_participation = @user.current_participation ? @user.current_participation : Game.current.game_participations.new rescue nil
     @game_participation.attributes = params[:game_participation] if @game_participation
     @game_participation.user_id = @user.id if @game_participation
+    @game_participation.set_zombie_expires_at if set_zombie_expires_at
     respond_to do |format|
       @user.save(:validate => false)
       @game_participation.save(:validate => false) if @game_participation
@@ -42,6 +50,7 @@ class Admin::UsersController < AdminController
   
   def create
     @user = User.new(params[:user])
+    @user.confirmed = true
     @game_participation = Game.current.game_participations.new rescue nil
     @game_participation.attributes = params[:game_participation] if @game_participation
     @game_participation.user = @user if @game_participation
