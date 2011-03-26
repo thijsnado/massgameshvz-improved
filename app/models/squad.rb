@@ -8,7 +8,10 @@ class Squad < ActiveRecord::Base
   before_validation :set_squad_leader_by_username
   before_validation :set_squad_members_by_usernames
   
+  validates_presence_of :squad_name
+  
   after_create :make_leader_squad_leader
+  after_save :set_squad_members
 
   def validate
     no_errors_on_squad_leader
@@ -16,9 +19,9 @@ class Squad < ActiveRecord::Base
   end
   
   def add_squad_members
-    return unless self.squad_members.blank?
-    @squad_member_usernames = []
-    8.times do 
+    @squad_member_usernames = self.squad_member_usernames
+    @squad_member_usernames||= []
+    (8 - @squad_member_usernames.size).times do 
       @squad_member_usernames << nil
     end
   end
@@ -53,14 +56,19 @@ class Squad < ActiveRecord::Base
   
   def set_squad_members_by_usernames
     @add_squad_members_error ||= []
+    @squad_members = []
     @squad_member_usernames.each do |username|
       game_participation = User.find_by_username(username).current_participation rescue nil
       unless game_participation || username.blank?
         @add_squad_members_error << username
       else
-        self.squad_members << game_participation unless username.blank?
+        @squad_members << game_participation unless username.blank?
       end
     end
+  end
+  
+  def set_squad_members
+    self.squad_members = @squad_members
   end
   
   def no_errors_on_squad_leader

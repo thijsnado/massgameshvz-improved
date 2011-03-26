@@ -1,5 +1,6 @@
 <h1>New squad</h1>
+<%= form_for(@squad, :url => admin_squads_url) do |f| %>
+  <%= render :partial => 'form', :locals => {:f => f} %>
+<% end %>
 
-<%= render 'form' %>
-
-<%= link_to 'Back', squads_path %>
+<%= link_to 'Back', admin_squads_path %>

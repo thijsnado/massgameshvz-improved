@@ -1,42 +1,57 @@
-<%= form_for(@squad, :url => admin_squads_url) do |f| %>
-  <% if @squad.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@squad.errors.count, "error") %> prohibited this squad from being saved:</h2>
+<% if @squad.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@squad.errors.count, "error") %> prohibited this squad from being saved:</h2>
 
-      <ul>
-      <% @squad.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :squad_name %><br />
-    <%= f.text_field :squad_name %>
-  </div>
-  <div class="field">
-    <%= f.label :squad_leader_username, "Squad Leader" %><br />
-    <%= f.text_field :squad_leader_username, :id => 'squad_leader_username' %>
-  </div>
-  <div id='squad_leader_usernames' class='autocomplete' style='display: none;'>
-  </div>
-  <script type='text/javascript'>
-    new Ajax.Autocompleter('squad_leader_username', 'squad_leader_usernames', '<%=usernames_admin_squads_url%>', {method: 'get'});
-  </script>
-  <div class='field'>
-    Squad Members:<br />
-    <% i = 0%>
-    <% for squad_member_username in @squad.squad_member_usernames%>
-    <%= text_field_tag 'squad[squad_member_usernames][]', squad_member_username, :id => "squad_leader_usernames_textfield_#{i}" %><br />
-    <div id="squad_member_usernames_<%=i%>" class='autocomplete' style='display: none'></div>
-    <script type='text/javascript'>
-      new Ajax.Autocompleter('squad_leader_usernames_textfield_<%=i%>', 'squad_member_usernames_<%=i%>', '<%=usernames_admin_squads_url%>', {method: 'get'});
-    </script>
-    <% i+= 1%>
+    <ul>
+    <% @squad.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
     <% end %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
+    </ul>
   </div>
 <% end %>
+
+<div class="field">
+  <%= f.label :squad_name %><br />
+  <%= f.text_field :squad_name %>
+</div>
+<div class="field">
+  <%= f.label :squad_leader_username, "Squad Leader" %><br />
+  <%= f.text_field :squad_leader_username, :id => 'squad_leader_username' %>
+</div>
+<div id='squad_leader_usernames' class='autocomplete' style='display: none;'>
+</div>
+<script type='text/javascript'>
+  new Ajax.Autocompleter('squad_leader_username', 'squad_leader_usernames', '<%=usernames_admin_squads_url%>', {method: 'get'});
+</script>
+<div class='field'>
+  Squad Members:<br />
+  <% i = 0%>
+  <% for squad_member_username in @squad.squad_member_usernames%>
+  <%= text_field_tag 'squad[squad_member_usernames][]', squad_member_username, :id => "squad_leader_usernames_textfield_#{i}" %><br />
+  <div id="squad_member_usernames_<%=i%>" class='autocomplete' style='display: none'></div>
+  <script type='text/javascript'>
+    new Ajax.Autocompleter('squad_leader_usernames_textfield_<%=i%>', 'squad_member_usernames_<%=i%>', '<%=usernames_admin_squads_url%>', {method: 'get'});
+  </script>
+  <% i+= 1%>
+  <% end %>
+  <a href='#' id='add_squad_member_link' onclick='return false;'>Add Squad Member</a> 
+  <script type='text/javascript'>
+    squad_member_count = <%= i %>;
+    $('add_squad_member_link').observe('click', function(){
+      var last_id = "squad_leader_usernames_textfield_" + (squad_member_count - 1)
+      var new_id = "squad_leader_usernames_textfield_" + (squad_member_count)
+      var last_input = $(last_id)
+      var new_input = new Element('input', {name: 'squad[squad_member_usernames][]', type: 'text', id: new_id})
+      var br = new Element('br');
+      var div = new Element('div', {className: 'autocomplete', style: 'display: none', id: 'squad_member_usernames_' + squad_member_count})
+      last_input.insert({after: new_input})
+      new_input.insert({before: br})
+      new_input.insert({after: div})
+      new Ajax.Autocompleter(new_input, div, '<%=usernames_admin_squads_url%>', {method: 'get'})
+      squad_member_count++;
+    })
+  </script>
+</div>
+<div class="actions">
+  <%= f.submit %>
+</div>

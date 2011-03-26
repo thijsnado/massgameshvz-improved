@@ -36,6 +36,7 @@ class Admin::SquadsController < AdminController
   # GET /squads/1/edit
   def edit
     @squad = Squad.find(params[:id])
+    @squad.add_squad_members
   end
 
   # POST /squads
@@ -83,7 +84,10 @@ class Admin::SquadsController < AdminController
   end
   
   def usernames
-    @usernames = Game.current.game_participations.includes(:user).where("users.id is not null").map{|gp| gp.user.username }
+    username = params[:squad][:squad_leader_username]
+    username||= params[:squad][:squad_member_usernames].first
+    logger.debug "the username is #{username}"
+    @usernames = Game.current.game_participations.includes(:user).where("users.id is not null and users.username like ? and game_participations.creature_type = ?", "%#{username}%", 'Human').map{|gp| gp.user.username }
     render :layout => false
   end
 end

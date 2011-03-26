@@ -17,7 +17,7 @@ class Human < ActiveRecord::Base
     when :NORMAL
       const_set(:NORMAL, find_by_code(:normal))
     when :SQUAD
-      const_set(:SQUAD, find_by_code(:self_bitten))
+      const_set(:SQUAD, find_by_code(:squad))
     end
   end
 end
