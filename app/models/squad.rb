@@ -14,8 +14,11 @@ class Squad < ActiveRecord::Base
   after_save :set_squad_members
 
   def validate
-    no_errors_on_squad_leader
-    no_errors_on_squad_members
+    no_errors_on_squad_leader_username
+    no_errors_on_squad_member_usernames
+    no_errors_on_squad_member_squads
+    no_errors_on_squad_leader_squad
+    no_duplicate_squad_members
   end
   
   def add_squad_members
@@ -37,7 +40,7 @@ class Squad < ActiveRecord::Base
   
   def squad_member_usernames
     unless @squad_member_usernames
-      self.squad_members.map{|m| m.user.username}
+      self.squad_members.order('rank asc').map{|m| m.user.username}
     else
       @squad_member_usernames
     end
@@ -48,19 +51,23 @@ class Squad < ActiveRecord::Base
   def set_squad_leader_by_username
     game_participation = User.find_by_username(self.squad_leader_username).current_participation rescue nil
     unless game_participation || !self.squad_leader_username
-      @add_squad_leader_error = self.squad_leader_username
+      @squad_leader_username_error = self.squad_leader_username
     else
+      @squad_leader_squad_error = self.squad_leader_username if game_participation.squadrin && game_participation.squadrin != self
       self.squad_leader = game_participation
     end
   end
   
   def set_squad_members_by_usernames
-    @add_squad_members_error ||= []
+    @squad_member_username_error ||= []
+    @squad_member_squad_error ||= []
     @squad_members = []
     @squad_member_usernames.each do |username|
       game_participation = User.find_by_username(username).current_participation rescue nil
-      unless game_participation || username.blank?
-        @add_squad_members_error << username
+      if(!game_participation && !username.blank?)
+        @squad_member_username_error << username 
+      elsif game_participation && game_participation.squad_id && game_participation.squad_id != self.id
+        @squad_member_squad_error << username
       else
         @squad_members << game_participation unless username.blank?
       end
@@ -68,15 +75,33 @@ class Squad < ActiveRecord::Base
   end
   
   def set_squad_members
-    self.squad_members = @squad_members
+    i = 0
+    @squad_members.each do |squad_member|
+      i += 1
+      squad_member.rank = i
+      squad_member.save :validate => false
+      self.squad_members << squad_member
+    end
   end
   
-  def no_errors_on_squad_leader
-    self.errors.add(:squad_leader, "#{@add_squad_leader_error} is not a real username") if @add_squad_leader_error
+  def no_errors_on_squad_leader_username
+    self.errors.add(:squad_leader, "#{@squad_leader_username_error} is not a real username") if @add_squad_leader_error
   end
   
-  def no_errors_on_squad_members
-    self.errors.add(:squad_members, "#{@add_squad_members_error.join(',')} are not real usernames") unless @add_squad_members_error.blank?
+  def no_errors_on_squad_member_usernames
+    self.errors.add(:squad_members, "#{@squad_member_username_error.join(',')} are not real usernames") unless @add_squad_members_error.blank?
+  end
+  
+  def no_errors_on_squad_member_squads
+    self.errors.add(:squad_members, "#{@squad_member_squad_error.join(',')} are already in squads") unless @squad_member_squad_error.blank?
+  end
+  
+  def no_errors_on_squad_leader_squad
+    self.errors.add(:squad_leader, "#{@squad_leader_squad_error} is already in a squad") unless @squad_leader_squad_error.blank?
+  end
+  
+  def no_duplicate_squad_members
+    self.errors.add(:squad_members, "you can't have the same person listed twice in a squad") if @squad_member_usernames.size != @squad_member_usernames.uniq
   end
   
   def make_leader_squad_leader

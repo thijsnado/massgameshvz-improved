@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110326212015) do
+ActiveRecord::Schema.define(:version => 20110326215729) do
 
   create_table "bite_shares", :force => true do |t|
     t.integer  "bite_event_id"
@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(:version => 20110326212015) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "squad_id"
+    t.integer  "rank"
   end
 
   add_index "game_participations", ["creature_type", "creature_id"], :name => "index_game_participations_on_creature_type_and_creature_id"
