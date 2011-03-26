@@ -28,9 +28,11 @@ namespace :data do
       u.first_name = u.username
       u.last_name = 'Last'
       u.confirmed = true
+      u.dont_send_confirmation = true
       u.save :validate => false
       gp = game.game_participations.new
       gp.user = u
+      gp.living_area = living_areas[rand(living_areas.size)]
       creature_type = [zombies, humans][rand(2)]
       gp.creature = creature_type[rand(creature_type.size)]
       gp.save

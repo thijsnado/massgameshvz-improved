@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
   before_create :generate_confirmation_hash
   after_create :send_confirmation_email
   
+  attr_accessor :dont_send_confirmation
+  
   validates :email_address, :email_domain => true
   
   attr_accessor :rules_read
@@ -19,6 +21,7 @@ class User < ActiveRecord::Base
   end
   
   def send_confirmation_email
+    return if dont_send_confirmation
     ConfirmationEmail.confirmation_message(self).deliver
   end
 
