@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110320155512) do
+ActiveRecord::Schema.define(:version => 20110326212015) do
 
   create_table "bite_shares", :force => true do |t|
     t.integer  "bite_event_id"
@@ -18,6 +18,8 @@ ActiveRecord::Schema.define(:version => 20110320155512) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "bite_shares", ["bite_event_id"], :name => "index_bite_shares_on_bite_event_id"
 
   create_table "email_domains", :force => true do |t|
     t.string   "description"
@@ -37,6 +39,9 @@ ActiveRecord::Schema.define(:version => 20110320155512) do
     t.integer  "target_object_id"
   end
 
+  add_index "events", ["game_participation_id"], :name => "index_events_on_game_participation_id"
+  add_index "events", ["target_object_type", "target_object_id"], :name => "index_events_on_target_object_type_and_target_object_id"
+
   create_table "game_participations", :force => true do |t|
     t.integer  "user_id"
     t.integer  "game_id"
@@ -51,6 +56,12 @@ ActiveRecord::Schema.define(:version => 20110320155512) do
     t.datetime "updated_at"
     t.integer  "squad_id"
   end
+
+  add_index "game_participations", ["creature_type", "creature_id"], :name => "index_game_participations_on_creature_type_and_creature_id"
+  add_index "game_participations", ["living_area_id"], :name => "index_game_participations_on_living_area_id"
+  add_index "game_participations", ["squad_id"], :name => "index_game_participations_on_squad_id"
+  add_index "game_participations", ["user_id"], :name => "index_game_participations_on_user_id"
+  add_index "game_participations", ["user_number"], :name => "index_game_participations_on_user_number"
 
   create_table "games", :force => true do |t|
     t.string   "game_name"
@@ -72,6 +83,8 @@ ActiveRecord::Schema.define(:version => 20110320155512) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "humans", ["code"], :name => "index_humans_on_code"
 
   create_table "living_areas", :force => true do |t|
     t.string   "name"
@@ -104,6 +117,8 @@ ActiveRecord::Schema.define(:version => 20110320155512) do
     t.datetime "updated_at"
   end
 
+  add_index "squads", ["squad_leader_id"], :name => "index_squads_on_squad_leader_id"
+
   create_table "users", :force => true do |t|
     t.string   "first_name"
     t.string   "last_name"
@@ -120,6 +135,8 @@ ActiveRecord::Schema.define(:version => 20110320155512) do
     t.datetime "updated_at"
   end
 
+  add_index "users", ["username"], :name => "index_users_on_username", :unique => true
+
   create_table "vaccines", :force => true do |t|
     t.string   "code"
     t.datetime "valid_after"
@@ -128,6 +145,8 @@ ActiveRecord::Schema.define(:version => 20110320155512) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "vaccines", ["code"], :name => "index_vaccines_on_code"
 
   create_table "zombies", :force => true do |t|
     t.string   "code"
@@ -138,5 +157,7 @@ ActiveRecord::Schema.define(:version => 20110320155512) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "zombies", ["code"], :name => "index_zombies_on_code"
 
 end
