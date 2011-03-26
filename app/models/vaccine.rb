@@ -28,7 +28,7 @@ class Vaccine < ActiveRecord::Base
     #vaccine cant be used
     takable = takable && !self.used
     #creature must be vaccinatable zombie
-    takable = takable && game_participation.creature.vaccinatable rescue false
+    takable = takable && game_participation.vaccinatable?
     return takable
   end
   

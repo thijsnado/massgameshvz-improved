@@ -56,9 +56,25 @@ class ApplicationController < ActionController::Base
   
   def must_be_signupable
     if signupable
-      return
+      return true
     else
       redirect_to root_url
+    end
+  end
+  
+  def must_be_zombie
+    return true if current_user && current_user.current_participation && current_user.current_participation.zombie?
+    redirect_to root_url
+  end
+  
+  def must_be_human
+    return true if current_user && current_user.current_participation && current_user.current_participation.human?
+    redirect_to root_url
+  end
+  
+  def must_be_vaccinatable
+    if must_be_zombie
+      current_user.current_participation.vaccinatable?
     end
   end
 end

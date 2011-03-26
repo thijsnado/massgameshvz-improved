@@ -1,4 +1,6 @@
 class SelfBitesController < ApplicationController
+  before_filter :must_be_human
+
   def index
     @sarcastic_comment = SarcasticComment.random.description
   end

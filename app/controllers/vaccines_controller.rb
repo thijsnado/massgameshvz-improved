@@ -1,5 +1,7 @@
 class VaccinesController < ApplicationController
   
+  before_filter :must_be_vaccinatable
+  
   def enter
     @vaccine = Vaccine.new
   end

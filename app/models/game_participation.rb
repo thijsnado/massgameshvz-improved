@@ -97,6 +97,10 @@ class GameParticipation < ActiveRecord::Base
     return !mortal?
   end
   
+  def vaccinatable?
+    return zombie? && self.creature.vaccinatable
+  end
+  
   def original_zombie?
     return true if zombie? && self.creature == Zombie::ORIGINAL
   end
@@ -142,7 +146,12 @@ class GameParticipation < ActiveRecord::Base
   end
   
   def set_zombie_expires_at
-    self.zombie_expires_at = Time.now + self.game.time_per_food.seconds unless self.zombie_expires_at || !self.mortal?
+    if Time.now < self.game.start_at
+      time = self.game.start_at
+    else
+      time = Time.now
+    end
+    self.zombie_expires_at = time + self.game.time_per_food.seconds unless self.zombie_expires_at || !self.mortal?
   end
   
   def generate_user_number

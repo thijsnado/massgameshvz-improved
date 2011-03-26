@@ -21,11 +21,11 @@
       <div class="menu">
         <a href="/">home</a> |
         <%= link_to 'rules', 'http://massgames.org/blog/tag/rules/'%> |
+        <%= link_to 'status', games_url%> |
         <% if @current_user #logged in %>
           <% if @current_user.is_admin %>
             <%= link_to 'admin', admin_url %> |
           <% end %>
-          <%= link_to 'status', games_url%> |
           <%= link_to 'profile', profile_url%> |
           <%= link_to 'logout', logout_url %>
         <% else #all non logged in users %>
@@ -44,7 +44,7 @@
               <%= link_to 'report bite', report_new_bite_url %> |
               <%= link_to 'share bite', bite_shares_url %>
               <% if @current_user.current_participation.creature.vaccinatable%>
-                | <%= link_to 'vaccinate', enter_vaccines_url %> |
+                | <%= link_to 'vaccinate', enter_vaccines_url %> 
               <% end %>
             <% end %>
           <% end %>
