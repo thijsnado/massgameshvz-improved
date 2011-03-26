@@ -182,7 +182,7 @@ class GameParticipation < ActiveRecord::Base
       game_participation.zombie_expires_at = time + self.game.time_per_food
       game_participation.save(:validate => false)
       self.zombie_expires_at = time + self.game.time_per_food
-    elsif game_participation.creature == Zombie::SELF_BITTEN
+    elsif game_participation.creature == Zombie::SELF_BITTEN && !self.creature.immortal
       game_participation.creature = Zombie::NORMAL
       game_participation.save(:validate => false)
       zombie_expires_at = game_participation.zombification_event.zombie_expiration_calculation
