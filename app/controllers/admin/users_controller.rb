@@ -36,11 +36,10 @@ class Admin::UsersController < AdminController
       end
     end
     @user.confirmed = true
-    @user.attributes = params[:user]
+    @user.send "attributes=", params[:user], false
     
-    @user.is_admin = params[:user][:is_admin]
     @game_participation = @user.current_participation ? @user.current_participation : Game.current.game_participations.new rescue nil
-    @game_participation.attributes = params[:game_participation] if @game_participation
+    @game_participation.send("attributes=", params[:game_participation], false) if @game_participation
     @game_participation.user_id = @user.id if @game_participation
     @game_participation.set_zombie_expires_at if set_zombie_expires_at
     respond_to do |format|
@@ -52,11 +51,11 @@ class Admin::UsersController < AdminController
   end
   
   def create
-    @user = User.new(params[:user])
+    @user = User.new
+    @user.send "attributes=", params[:user], false
     @user.confirmed = true
-    @user.is_admin = params[:user][:is_admin]
     @game_participation = Game.current.game_participations.new rescue nil
-    @game_participation.attributes = params[:game_participation] if @game_participation
+    @game_participation.send("attributes=", params[:game_participation], false) if @game_participation
     @game_participation.user = @user if @game_participation
     respond_to do |format|
       @user.save(:validate => false)

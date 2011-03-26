@@ -19,6 +19,12 @@ class GameParticipation < ActiveRecord::Base
   validates_uniqueness_of :user_id, :scope => :game_id
   validates_uniqueness_of :user_number
   
+  attr_protected :user_number
+  attr_protected :creature_type
+  attr_protected :creature_id
+  attr_protected :squad_id
+  attr_protected :rank
+  
   def self.zombie
     where(:creature_type => 'Zombie')
   end
