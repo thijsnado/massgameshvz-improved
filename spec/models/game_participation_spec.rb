@@ -8,7 +8,8 @@ describe GameParticipation do
     Factory(:game_participation,
       :creature => Zombie::NORMAL,
       :game => current_game,
-      :zombie_expires_at => current_game.start_at + 4.minutes
+      :zombie_expires_at => current_game.start_at + 4.minutes,
+      :user_number => 'zombie_part'
     )
   end
   let(:self_bitten_zombie_participation) do
@@ -21,7 +22,8 @@ describe GameParticipation do
   let(:human_participation) do
     Factory(:game_participation,
       :creature => Human::NORMAL,
-      :game => current_game
+      :game => current_game,
+      :user_number => 'human_part'
     )
   end
   let(:unreported_zombie_participation) do
@@ -143,14 +145,26 @@ describe GameParticipation do
   describe "enter_user_number" do
     let(:pseudo_bite){Factory(:pseudo_bite, :used => false, :game => current_game)}
     it "calls report_bite if number is of a game participation and reporter is zombie" do
+      puts "The time is #{Time.now}"
+      zombie_participation
+      human_participation
+      current_game
       zombie_participation.should_receive(:report_bite).with(human_participation)
       zombie_participation.enter_user_number(human_participation.user_number)
     end
     it "calls report_bitten if number is of a game_participation and reporter is a human" do
+      puts "The time is #{Time.now}"
+      zombie_participation
+      human_participation
+      current_game
       human_participation.should_receive(:report_bitten).with(zombie_participation)
       human_participation.enter_user_number(zombie_participation.user_number)
     end
     it "calls record_pseudo_bite if number is of type pseudo_bite and game_participation is zombie" do
+      puts "The time is #{Time.now}"
+      zombie_participation
+      human_participation
+      current_game
       zombie_participation.should_receive(:record_pseudo_bite).with(pseudo_bite)
       zombie_participation.enter_user_number(pseudo_bite.code)
     end
