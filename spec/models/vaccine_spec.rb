@@ -20,6 +20,11 @@ describe Vaccine do
       vaccine.take(zombie_participation)
       zombie_participation.creature.should == Human::NORMAL
     end
+    it "changes zombie participations user number" do
+      original_number = zombie_participation.user_number
+      vaccine.take(zombie_participation)
+      zombie_participation.user_number.should_not == original_number
+    end
     it "should not let a human participation take vaccine" do
       vaccine.take(human_participation)
       vaccine.used.should_not be_true

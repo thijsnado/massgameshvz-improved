@@ -7,6 +7,8 @@ class Vaccine < ActiveRecord::Base
   def take(game_participation)
     if takable(game_participation)
       game_participation.creature = Human::NORMAL
+      game_participation.user_number = nil
+      game_participation.format_user_number
       game_participation.save
       self.used = true
       VaccinationEvent.create(:occured_at => Time.now, :game_participation => game_participation, :target_object => self)
