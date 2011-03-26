@@ -63,7 +63,7 @@ class GameParticipation < ActiveRecord::Base
   end
   
   def enter_user_number(val)
-    val = self.class.format_code(val)
+    val = Codeinator.format_code(val)
     game_participation = Game.current.game_participations.find_by_user_number(val)
     if zombie?
       if game_participation
@@ -104,8 +104,7 @@ class GameParticipation < ActiveRecord::Base
   #Used when reporting who a user bit (A zombie reports he bit a human)
   def report_bite(game_participation)
     if zombie? && (game_participation.human? || game_participation.creature == Zombie::SELF_BITTEN)
-      record_bite(game_participation)
-      return true
+      return record_bite(game_participation)
     else
       return false
     end
@@ -114,8 +113,7 @@ class GameParticipation < ActiveRecord::Base
   #Used when reporting that a user got bitten (A human reports he got bit by a zombie)
   def report_bitten(game_participation)
     if human?
-      game_participation.record_bite(self)
-      return true
+      return game_participation.record_bite(self)
     else
       return false
     end
@@ -138,25 +136,14 @@ class GameParticipation < ActiveRecord::Base
     self.bitten_events.first
   end
   
-  def self.format_code(code)
-    if code
-      code = code.strip
-      code = code.gsub('0', 'o')
-      code = code.upcase
-    end
-    return code
-  end
-  
   def format_user_number
     generate_user_number unless self.user_number
-    self.user_number = self.class.format_code(self.user_number)
+    self.user_number = Codeinator.format_code(self.user_number)
   end
   
   def set_zombie_expires_at
     self.zombie_expires_at = Time.now + self.game.time_per_food.seconds unless self.zombie_expires_at || !self.mortal?
   end
-    
-  protected
   
   def generate_user_number
     self.user_number = Digest::SHA1.hexdigest(rand.to_s + "HVZ RAWKS!!!" + Time.now.to_s)[0, 10]
@@ -183,11 +170,11 @@ class GameParticipation < ActiveRecord::Base
     if game_participation.human?
       game_participation.creature = Zombie::NORMAL
       game_participation.zombie_expires_at = time + self.game.time_per_food
-      game_participation.save
+      game_participation.save(false)
       self.zombie_expires_at = time + self.game.time_per_food
     elsif game_participation.creature == Zombie::SELF_BITTEN
       game_participation.creature = Zombie::NORMAL
-      game_participation.save
+      game_participation.save(false)
       zombie_expires_at = game_participation.zombification_event.zombie_expiration_calculation
       self.zombie_expires_at = zombie_expires_at unless zombie_expires_at < self.zombie_expires_at
     end
@@ -198,7 +185,7 @@ class GameParticipation < ActiveRecord::Base
     bite_event.bitten_participation = game_participation
     bite_event.occured_at = time
     bite_event.zombie_expiration_calculation = self.zombie_expires_at
-    bite_event.save
+    bite_event.save(false)
     
     create_bite_shares(bite_event)
     
@@ -206,7 +193,7 @@ class GameParticipation < ActiveRecord::Base
     if self.human?
       self.creature = Zombie::SELF_BITTEN
     end
-    return save
+    return save(false)
   end
   
   def create_bite_shares(bite_event)

@@ -1,5 +1,5 @@
 class Vaccine < ActiveRecord::Base
-  before_validation :_format_code
+  before_validation :format_code
   before_save :set_game_id
   
   validates_uniqueness_of :code
@@ -14,18 +14,9 @@ class Vaccine < ActiveRecord::Base
     end
   end
   
-  def self.format_code(code)
-    if code
-      code = code.strip
-      code = code.gsub('0', 'o')
-      code = code.upcase
-    end
-    return code
-  end
-  
-  def _format_code
+  def format_code
     set_code_if_not_set
-    self.code = self.class.format_code(self.code)
+    self.code = Codeinator.format_code(self.code)
   end
   
   private

@@ -3,7 +3,7 @@ class PseudoBite < ActiveRecord::Base
   
   validates_uniqueness_of :code
   
-  before_save :_format_code
+  before_save :format_code
   
   private 
   
@@ -11,17 +11,8 @@ class PseudoBite < ActiveRecord::Base
     self.code = Digest::MD5.hexdigest("HVZ RAWKS!!!" + rand(100000000).to_s + Time.now.to_s + rand(100000000).to_s)[0, 10] if self.code.blank?
   end
   
-  def self.format_code(code)
-    if code
-      code = code.strip
-      code = code.gsub('0', 'o')
-      code = code.upcase
-    end
-    return code
-  end
-  
-  def _format_code
+  def format_code
     set_code unless self.code
-    self.code = self.class.format_code(self.code)
+    self.code = Codeinator.format_code(self.code)
   end
 end
