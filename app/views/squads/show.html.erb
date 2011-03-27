@@ -48,5 +48,8 @@
   <span style="color: <%= main_color %>"><%= username %></span><br />
   <% end %>
 </p>
-
+<% if @is_squad_leader %>
+  <%= link_to 'Edit', edit_squad_path(@squad) %> |
+<% end %>
 <%= link_to 'Back', squads_path %>
+

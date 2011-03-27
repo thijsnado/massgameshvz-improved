@@ -1,5 +1,6 @@
 class SquadsController < ApplicationController
   before_filter :must_control_squad, :only => ['edit', 'update']
+  before_filter :is_squad_leader
   
   # GET /squads
   # GET /squads.xml
@@ -53,7 +54,9 @@ class SquadsController < ApplicationController
   
   private 
   
-  
+  def is_squad_leader
+    @is_squad_leader||= current_user && current_user.current_participation == @squad.current_leader
+  end
   
   def must_control_squad
     @squad ||= Squad.find(params[:id])
