@@ -51,6 +51,9 @@
       <th>
         Status
       </th>
+      <th>
+        Zombie Expires/Died At
+      </th>
     </tr>
   <% for game_participation in living_area.game_participations %>
     <% 
@@ -81,6 +84,9 @@
       </td>
       <td>
         <%= creature_name %>
+      </td>
+      <td>
+        <%= game_participation.zombie_expires_at.strftime('%m/%d/%Y %I:%M %p') if game_participation.mortal? %>
       </td>
     </tr>
   <% end %>
