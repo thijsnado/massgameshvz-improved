@@ -18,6 +18,8 @@
   took a vaccine
 <% when 'PseudoBite' %>
   took a psuedo_bite
+<% when 'BiteShare' %>
+  shared a bite with <%= event.target_object.shared_with.user.username %>
 <% end %>
 <% end %>
 at <%= event.occured_at %>
