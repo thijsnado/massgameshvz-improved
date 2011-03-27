@@ -20,7 +20,7 @@ namespace :data do
     living_areas = LivingArea.all
     zombies = Zombie.all
     humans = Human.all.reject{|h| h == Human::SQUAD}
-    usernames = ['bob', 'jim', 'jill', 'mack', 'zack', 'hand_cock', 'keith_roods_p3|\|1s', 'foot_penis']
+    usernames = ['bob', 'jim', 'jill', 'mack', 'zack']
     username_seq = 0
     
     100.times do
@@ -37,6 +37,8 @@ namespace :data do
       creature_type = [zombies, humans][rand(2)]
       gp.creature = creature_type[rand(creature_type.size)]
       gp.save
+      u.username = gp.creature.class.to_s.downcase + '_' + gp.creature.code + username_seq.to_s
+      u.save 
       
       username_seq += 1  
     end
