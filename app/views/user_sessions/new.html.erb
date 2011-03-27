@@ -28,7 +28,7 @@ form below to get your confirmation
 <% end %><br/>
 OR <br /><br />
 Resend Confirmation Email.<br /><br />
-<%= form_tag resend_confirmation_url, :method => 'post' do %>
+<%= form_tag resend_confirmation_users_url, :method => 'post' do %>
 Email Address <%= text_field_tag :email_address %><br />
 <%= submit_tag :resend %>
 <% end %>

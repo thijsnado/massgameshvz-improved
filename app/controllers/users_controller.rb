@@ -71,6 +71,17 @@ class UsersController < ApplicationController
     end
   end
   
+  def resend_confirmation
+    @user = User.find_by_email_address(params[:email_address])
+    if @user
+      @user.send_confirmation_email
+      flash[:notice] = 'Resent Email'
+    else
+      flash[:notice] = 'Bad Email Address'
+    end
+    redirect_to root_url
+  end
+  
   def confirm
     @user = User.find(params[:id])
     if @user.confirmation_hash == params[:confirmation]

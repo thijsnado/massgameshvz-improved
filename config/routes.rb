@@ -13,6 +13,9 @@ Massgameshvz::Application.routes.draw do
     member do
       get :confirm
     end
+    collection do
+      post :resend_confirmation
+    end
   end
   resources :user_sessions
   resources :self_bites
@@ -36,7 +39,6 @@ Massgameshvz::Application.routes.draw do
   match "login", :to => "user_sessions#new"
   match "logout", :to => "user_sessions#destroy"
   match "register", :to => "users#new"
-  match "resend_confirmation", :to => 'TODO'
   match "admin", :to => 'admin#index'
   match "players", :to => 'games#index'
   
