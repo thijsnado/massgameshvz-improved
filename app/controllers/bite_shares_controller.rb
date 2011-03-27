@@ -16,11 +16,10 @@ class BiteSharesController < ApplicationController
     @bite_share = BiteShare.find(params[:id])
     return unless @bite_share.game_participation = @current_user.current_participation
     game_participation = User.find_by_username(params[:username]).current_participation rescue nil
-    if game_participation && game_participation.zombie? && game_participation.mortal?
-      @bite_share.share game_participation
+    if @bite_share.share(game_participation)
       flash[:notice] = 'You shared your bite with ' + params[:username]
     else
-      flash[:notice] = 'The username you entered was either invalid, not a zombie, or an immortal zombie. Please type in the username of a mortal zombie.'
+      flash[:notice] = 'The username you entered was either invalid, not a zombie, dead, or an immortal zombie. Please type in the username of a mortal, living zombie.'
     end
     redirect_to bite_shares_url
   end
