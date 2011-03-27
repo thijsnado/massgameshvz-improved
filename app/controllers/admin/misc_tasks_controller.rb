@@ -11,6 +11,7 @@ class Admin::MiscTasksController < AdminController
     unless Game.current.paused?
       Game.transaction do
         GameParticipation.transaction do
+          GameParticipation.lock
           Game.current.update_attributes(params[:game])
         end
       end
@@ -23,6 +24,7 @@ class Admin::MiscTasksController < AdminController
     if Game.current.paused?
       Game.transaction do
         GameParticipation.transaction do
+          GameParticipation.lock
           Game.current.unpause_game
         end
       end
