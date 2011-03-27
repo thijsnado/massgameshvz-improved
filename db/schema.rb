@@ -10,13 +10,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110327145411) do
+ActiveRecord::Schema.define(:version => 20110327152007) do
 
   create_table "bite_shares", :force => true do |t|
     t.integer  "bite_event_id"
-    t.boolean  "used",          :default => false
+    t.boolean  "used",           :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "shared_with_id"
   end
 
   add_index "bite_shares", ["bite_event_id"], :name => "index_bite_shares_on_bite_event_id"
