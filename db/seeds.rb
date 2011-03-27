@@ -37,3 +37,11 @@ domain.save
 admin = User.new(:username => 'admin', :password => 'test123', :confirmed => true, :email_address => 'tdevries.development@gmail.com')
 admin.is_admin = true
 admin.save(:validate => false)
+
+
+Welcome.contents = <<WELCOME
+h1. Welcome to the Humans Vz Zombies Game Site!
+
+We are currently under construction.
+
+WELCOME
