@@ -176,7 +176,8 @@ class GameParticipation < ActiveRecord::Base
   
   def record_pseudo_bite(pseudo_bite)
     return false if pseudo_bite.used? || dead?
-    self.zombie_expires_at = Time.now + self.game.time_per_food
+    time_increase = Time.now + self.game.time_per_food
+    self.zombie_expires_at = Time.now + self.game.time_per_food unless time_increase < self.zombie_expires_at
     pseudo_bite_event = PseudoBiteEvent.new :pseudo_bite => pseudo_bite, :zombie_participation => self, :zombie_expiration_calculation => self.zombie_expires_at
     create_bite_shares(pseudo_bite_event)
     pseudo_bite_event.save
