@@ -2,6 +2,8 @@
 <% form_for :pseudo_bite, :url => admin_pseudo_bites_url, :method => 'post' do |f|%>
   <%= f.label :valid_after%>
   <%= f.datetime_select :valid_after%><br/ >
+  <%= f.label :code, 'Code: leave blank to auto generate'%>
+  <%= f.text_field :code %>
   <%= submit_tag 'Create Pseudo Bite'%>
 <% end %>
 <table>

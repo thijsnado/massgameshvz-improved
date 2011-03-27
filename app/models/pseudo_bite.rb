@@ -3,7 +3,7 @@ class PseudoBite < ActiveRecord::Base
   
   validates_uniqueness_of :code
   
-  before_save :format_code
+  before_validation :format_code
   before_create :set_game
   
   private 
@@ -17,7 +17,7 @@ class PseudoBite < ActiveRecord::Base
   end
   
   def format_code
-    set_code unless self.code
+    set_code
     self.code = Codeinator.format_code(self.code)
   end
 end

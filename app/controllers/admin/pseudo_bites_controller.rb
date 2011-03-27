@@ -9,7 +9,7 @@ class Admin::PseudoBitesController < AdminController
 
   def update
     @pseudo_bite = PseudoBite.find(params[:id])
-    if @pseudo_bite.save
+    if @pseudo_bite.update_attributes(params[:pseudo_bite])
       redirect_to admin_pseudo_bites_url
     end
   end

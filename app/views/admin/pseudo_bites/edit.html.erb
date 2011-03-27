@@ -4,6 +4,8 @@
 <% form_for @pseudo_bite, :url => admin_pseudo_bite_url do |f| %>
   <%= f.label :valid_after%>
   <%= f.datetime_select :valid_after %><br />
+  <%= f.label :code, 'Code: leave blank to auto generate'%>
+  <%= f.text_field :code %><br />
   <%= f.label :used %>
   <%= f.check_box :used %>
   <%= submit_tag 'save'%>
