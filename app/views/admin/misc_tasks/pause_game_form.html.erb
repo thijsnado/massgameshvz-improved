@@ -1,0 +1,17 @@
+<% unless Game.current.paused? %>
+  <%= form_for Game.current, :url => pause_game_admin_misc_tasks_url do |f| %>
+  <p>
+    <%= f.label :pause_ends_at, "Pause Game Until" %>
+    <%= f.datetime_select :pause_ends_at %>
+  </p>
+  <p>
+    <%= f.submit 'Pause Game'%>
+  </p>
+  <% end %>
+<% else %>
+  <%= form_for Game.current, :url => unpause_game_admin_misc_tasks_url do |f| %>
+  <p>
+    <%= f.submit 'Unpause Game'%>
+  </p>
+  <% end %>
+<% end %>

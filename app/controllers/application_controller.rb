@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
   
   def playable
     @playable = false
-    if current_game && Time.now.between?(current_game.start_at, current_game.end_at)
+    if current_game && Time.now.between?(current_game.start_at, current_game.end_at) && !current_game.paused?
       if current_user && current_user.current_participation
         @playable = true
       end

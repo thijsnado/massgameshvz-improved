@@ -77,6 +77,9 @@ Massgameshvz::Application.routes.draw do
     #misc admin tasks, not really a resource but easier to work with this way
     resources :misc_tasks do
       collection do
+        get 'pause_game_form'
+        put 'pause_game'
+        put 'unpause_game'
         put 'set_unassigned_to_human'
         put 'resurrect_dead'
       end

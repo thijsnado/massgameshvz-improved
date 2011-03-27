@@ -1,4 +1,5 @@
 class SelfBitesController < ApplicationController
+  before_filter :must_be_playable
   before_filter :must_be_human
 
   def index
