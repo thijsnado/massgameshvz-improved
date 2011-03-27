@@ -29,7 +29,7 @@ describe BiteShare do
       Timecop.freeze(current_game.start_at)
     end
     it "should extend the life of another zombie participation to the recorded starve time increase" do
-      zombie_participation.bite_shares.first.share(zombie_participation_2)
+      zombie_participation.bite_shares.first(:readonly => false).share(zombie_participation_2)
       zombie_participation_2.zombie_expires_at.should == zombie_expiration_calculation
     end
   end
