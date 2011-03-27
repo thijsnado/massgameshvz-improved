@@ -22,6 +22,8 @@ class Zombie < ActiveRecord::Base
       const_set(:IMMORTAL, find_by_code(:immortal))
     when :ORIGINAL
       const_set(:ORIGINAL, find_by_code(:original))
+    when :IMMORTAL_SELF_BITTEN
+      const_set(:IMMORTAL_SELF_BITTEN, find_by_code(:immortal_self_bitten))
     end
   end
 end

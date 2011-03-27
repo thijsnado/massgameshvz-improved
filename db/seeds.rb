@@ -9,10 +9,11 @@
 #zombie types
 #name               #vaccinatable, #immortal, #color string, #code
 [
-['Original Zombie', 0,             1,         'FFFFFF',      :original],
-['Regular Zombie',  1,             0,         'F2EA00',      :normal],
-['Self Bitten',     0,             0,         '3BD300',      :self_bitten],
-['Immortal',        1,             1,         'ED004F',      :immortal]
+['Original Zombie',             0,             1,         'FFFFFF',      :original],
+['Regular Zombie',              1,             0,         'F2EA00',      :normal],
+['Self Bitten',                 0,             0,         '3BD300',      :self_bitten],
+['Immortal',                    1,             1,         'ED004F',      :immortal],
+['Immortal Self Bitten',        0,             1,         '3852B7',      :immortal_self_bitten]
 ].each do |zombie|
   Zombie.create(:name => zombie[0], :vaccinatable => zombie[1], :immortal => zombie[2], :color_string => zombie[3], :code => zombie[4])
 end

@@ -8,9 +8,10 @@ class BitesController < ApplicationController
   
   def create
     code = params[:bite_event][:code]
+    zombie = @current_user.current_participation.zombie?
     success = @current_user.current_participation.enter_user_number code
     if success
-      flash[:notice] = "you bit somebody!"
+      flash[:notice] = zombie ? "you bit somebody!" : "somebody bit you!"
       redirect_to root_url
     else
       flash[:notice] = "invalid bite code!"

@@ -102,6 +102,11 @@ describe GameParticipation do
         zombie_participation.send(:record_bite, squad_participation)
         zombie_participation.creature.immortal.should be_true
       end
+      it "makes a self bitten zombie a Immortal Self Bitten" do
+        self_bitten_zombie_participation.send(:record_bite, squad_participation)
+        self_bitten_zombie_participation.creature.immortal.should be_true
+        self_bitten_zombie_participation.creature.should == Zombie::IMMORTAL_SELF_BITTEN
+      end
     end
     context "a zombie bites a self bitten zombie" do
       it "turns the self bitten zombie into a normal zombie" do
