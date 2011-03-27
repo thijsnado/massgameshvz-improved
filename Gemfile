@@ -5,6 +5,8 @@ gem 'authlogic', '2.1.6'
 gem "will_paginate", "3.0.pre2"
 
 gem 'mysql2', :require => 'mysql2'
+gem 'RedCloth'
+
 
 group :development, :test do
   gem 'timecop'

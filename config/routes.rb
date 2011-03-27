@@ -73,6 +73,7 @@ Massgameshvz::Application.routes.draw do
     resources :events
     resources :email_domains
     resource :mailer
+    resource :welcome
     
     #misc admin tasks, not really a resource but easier to work with this way
     resources :misc_tasks do
