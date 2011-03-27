@@ -55,12 +55,12 @@ class SquadsController < ApplicationController
   private 
   
   def is_squad_leader
+    @squad ||= Squad.find(params[:id])
     @is_squad_leader||= current_user && current_user.current_participation == @squad.current_leader
   end
   
   def must_control_squad
-    @squad ||= Squad.find(params[:id])
-    if current_user.current_participation == @squad.current_leader
+    if is_squad_leader
       return true
     end
     redirect_to root_url

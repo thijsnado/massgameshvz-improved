@@ -108,7 +108,7 @@ class Squad < ActiveRecord::Base
   end
   
   def no_duplicate_squad_members
-    self.errors.add(:squad_members, "you can't have the same person listed twice in a squad") if @squad_member_usernames.size != @squad_member_usernames.uniq.size
+    self.errors.add(:squad_members, "you can't have the same person listed twice in a squad") if (@squad_member_usernames.size != @squad_member_usernames.uniq.size) && (@squad_member_usernames.uniq.size == 1 && !@squad_member_usernames.uniq.first.blank?)
   end
   
   def make_leader_squad_leader

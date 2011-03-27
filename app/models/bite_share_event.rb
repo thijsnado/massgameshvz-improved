@@ -1,0 +1,2 @@
+class BiteShareEvent < Event
+end
