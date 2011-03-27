@@ -1,9 +1,12 @@
 <%= form_for @bite_share do |f| %>
-<%= hidden_field_tag :bite_type, 'give' %>
 <p>
-  <%= f.label :game_participation_id, 'Select a User' %>
-  <%= f.select :game_participation_id, @zombie_participations.map{|z| [z.user.username, z.id]} %>
+  Type in who you want to share this bite with.
+  <%= text_field_tag :username, nil, :id => "username_textfield" %>
 </p>
+<div id="username_autocomplete" class='autocomplete' style='display: none'></div>
+<script type='text/javascript'>
+  new Ajax.Autocompleter('username_textfield', 'username_autocomplete', '<%=usernames_bite_shares_url%>', {method: 'get'});
+</script>
 <p>
   <input type='submit' value='submit'>
 </p>

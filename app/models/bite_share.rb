@@ -2,9 +2,14 @@ class BiteShare < ActiveRecord::Base
   belongs_to :bite_event
   belongs_to :game_participation
   
+  def self.not_used
+    where(:used => false)
+  end
   
   def share(game_participation)
     game_participation.zombie_expires_at = self.bite_event.zombie_expiration_calculation 
     game_participation.save
+    self.used = true
+    self.save
   end
 end

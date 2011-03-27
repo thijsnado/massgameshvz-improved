@@ -9,7 +9,7 @@ namespace :data do
     Squad.delete_all
     game = Game.create(:signup_start_at => Time.now,
       :signup_end_at => Time.now + 3.days, 
-      :start_at => Time.now + 1.day, 
+      :start_at => Time.now, 
       :end_at => Time.now + 7.days, 
       :time_per_food => 24.hours, 
       :bite_shares_per_food => 3

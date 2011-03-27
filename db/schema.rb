@@ -10,11 +10,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110326215729) do
+ActiveRecord::Schema.define(:version => 20110327145411) do
 
   create_table "bite_shares", :force => true do |t|
     t.integer  "bite_event_id"
-    t.boolean  "used"
+    t.boolean  "used",          :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

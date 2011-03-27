@@ -28,6 +28,9 @@ Massgameshvz::Application.routes.draw do
     member do
       get :share
     end
+    collection do
+      get :usernames
+    end
   end
   resources :vaccines do
     collection do

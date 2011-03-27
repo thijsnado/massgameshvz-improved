@@ -1,6 +1,6 @@
 class SquadsController < ApplicationController
   before_filter :must_control_squad, :only => ['edit', 'update']
-  before_filter :is_squad_leader
+  before_filter :is_squad_leader, :only => ['edit', 'update', 'show']
   
   # GET /squads
   # GET /squads.xml
@@ -49,7 +49,7 @@ class SquadsController < ApplicationController
     username = params[:squad][:squad_member_usernames].first
     logger.debug "the username is #{username}"
     @usernames = Game.current.game_participations.includes(:user).where("users.id is not null and users.username like ? and game_participations.creature_type = ?", "%#{username}%", 'Human').map{|gp| gp.user.username }
-    render :layout => false
+    render :partial => 'layouts/usernames_autocomplete'
   end
   
   private 

@@ -88,6 +88,6 @@ class Admin::SquadsController < AdminController
     username||= params[:squad][:squad_member_usernames].first
     logger.debug "the username is #{username}"
     @usernames = Game.current.game_participations.includes(:user).where("users.id is not null and users.username like ? and game_participations.creature_type = ?", "%#{username}%", 'Human').map{|gp| gp.user.username }
-    render :layout => false
+    render :partial => 'layouts/usernames_autocomplete'
   end
 end
