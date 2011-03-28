@@ -6,6 +6,14 @@ class Admin::LivingAreasController < AdminController
     @living_areas = LivingArea.all
   end
   
+  def edit
+  end
+  
+  def destroy
+    @living_area.delete
+    redirect_to admin_living_areas_url()
+  end
+  
   def show
   end
   
@@ -20,6 +28,11 @@ class Admin::LivingAreasController < AdminController
     else
       render :action => 'new'
     end
+  end
+  
+  def update
+    @living_area.update_attributes params[:living_areas]
+    redirect_to admin_living_areas_url()
   end
   
   private

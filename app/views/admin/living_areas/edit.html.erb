@@ -1,0 +1,9 @@
+<% form_for @living_area, :url => admin_living_area_url(@living_area) do |f|%>
+  <p>
+    <%= f.label :name%>
+    <%= f.text_field :name%>
+  </p>
+  <p>
+    <%= submit_tag :save%>
+  </p>
+<% end %>

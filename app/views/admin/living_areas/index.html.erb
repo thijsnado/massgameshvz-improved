@@ -10,7 +10,8 @@
         <%=h(la.name)%>
       </td>
       <td>
-        <%= link_to 'edit', edit_admin_living_area_url(la)%>
+        <%= link_to 'edit', edit_admin_living_area_url(la)%> |
+        <%= link_to 'delete', admin_living_area_url(la), :method => 'delete', :confirm => 'are you sure?'%>
       </td>
     </tr>
   <%end%>
