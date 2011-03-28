@@ -9,7 +9,7 @@ class VaccinesController < ApplicationController
   def take
     @vaccine = Vaccine.find_by_code(Codeinator.format_code(params[:vaccine][:code]))
     if @vaccine && @vaccine.take(@current_user.current_participation)
-      flash[:notice] = 'You are no longer a zombie'
+      flash[:notice] = 'You are no longer a zombie. Please go to your profile page to get your new user number.'
       redirect_to root_url
     else
       flash[:notice] = 'Not a valid vaccine code'
