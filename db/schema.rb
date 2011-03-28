@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110327173202) do
+ActiveRecord::Schema.define(:version => 20110328000647) do
 
   create_table "bite_shares", :force => true do |t|
     t.integer  "bite_event_id"
@@ -92,6 +92,13 @@ ActiveRecord::Schema.define(:version => 20110327173202) do
 
   create_table "living_areas", :force => true do |t|
     t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "pages", :force => true do |t|
+    t.string   "name"
+    t.text     "contents"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

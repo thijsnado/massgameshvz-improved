@@ -1,23 +1,14 @@
 class Welcome
-  @file = 'welcome.textile'
+  @name = 'welcome'
   
   def self.contents
-    contents = ''
-    begin
-      File.open(Rails.root.join('redcloth_files', @file), "r") do |f|
-        f.flock(File::LOCK_SH)
-        contents =  f.read
-      end
-    rescue
-    end
+    contents = Page.where(:name => @name).first.contents rescue ''
     return contents
   end
   
   def self.contents=(val)
-    File.open(Rails.root.join('redcloth_files', @file), "w") do |f|
-      f.flock(File::LOCK_EX)
-      f.write(val)
-      f.flush
-    end
+    page = Page.where(:name => @name).first
+    page = Page.create(:name => @name) unless page
+    page.update_attribute(:contents, val)
   end
 end
