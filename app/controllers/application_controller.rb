@@ -63,7 +63,7 @@ class ApplicationController < ActionController::Base
   end
   
   def must_be_zombie
-    return true if current_user && current_user.current_participation && current_user.current_participation.zombie?
+    return true if current_user && current_user.current_participation && current_user.current_participation.zombie? && ! current_user.current_participation.dead?
     redirect_to root_url
   end
   

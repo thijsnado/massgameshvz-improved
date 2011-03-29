@@ -20,14 +20,26 @@
       <%= @user.phone %>
     </p>
     <% if @game_participation %>
-    <p>
-      Living Area:
-      <%= @game_participation.living_area.name %>
-    </p>
-    <p>
-      User Number:
-      <%= @game_participation.user_number %>
-    </p>
+      <p>
+        Living Area:
+        <%= @game_participation.living_area.name %>
+      </p>
+      <p>
+        User Number:
+        <%= @game_participation.user_number %>
+      </p>
+      <% if @game_participation.creature %>
+        <p>
+          You Are A:
+          <%= @game_participation.creature.name %> <%= @game_participation.creature_type %>
+        </p>
+        <% if @game_participation.zombie? && @game_participation.mortal? %>
+          <p>
+            Zombie Expires At:
+            <%= @game_participation.zombie_expires_at %>
+          </p>
+        <% end %>
+      <% end %>
     <% end %>
 </div>
 <h2>Events!</h2>

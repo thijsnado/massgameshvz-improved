@@ -108,7 +108,7 @@ class GameParticipation < ActiveRecord::Base
   end
   
   def vaccinatable?
-    return zombie? && self.creature.vaccinatable
+    return zombie? && self.creature.vaccinatable && !dead?
   end
   
   def original_zombie?
