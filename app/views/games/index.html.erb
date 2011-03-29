@@ -83,7 +83,7 @@ td, th{
             <th>Username</th>
             <th>Expires At</th>
           </tr>
-          <% for zombie in living_area.game_participations.where(:creature_type => 'Zombie').includes(:creature, :user) %>
+          <% for zombie in living_area.game_participations.where(:creature_type => 'Zombie').includes(:creature, :user) %><% next if zombie.dead? %>
             <tr style='color: red;'>
               <td style='color: #<%= zombie.creature.color_string.to_s %>;'><%= zombie.user.username%></td>
               <td><%= zombie.zombie_expires_at.strftime('%m/%d/%Y %I:%M %p') unless zombie.immortal? %></td>

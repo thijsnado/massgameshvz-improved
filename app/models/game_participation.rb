@@ -46,7 +46,7 @@ class GameParticipation < ActiveRecord::Base
   end
   
   def self.dead
-    where("game_participations.zombie_expires_at > ? AND game_participations.creature_type = 'Zombie'", Time.now)
+    where("game_participations.zombie_expires_at < ? AND game_participations.creature_type = 'Zombie'", Time.now)
   end
   
   def self.original_zombie_requests
