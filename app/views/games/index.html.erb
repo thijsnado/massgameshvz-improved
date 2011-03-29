@@ -1,5 +1,5 @@
 <style type='text/css'>
-td{
+td, th{
   vertical-align: top;
   text-align: left;
 }
@@ -91,89 +91,37 @@ td{
     </tr>
     <tr>
       <td colspan='2'>
-        <h3 style='color: green'>Dead/Unassigned</h3>
+        <h3 style='color: green'>Unassigned</h3>
         <p>
           Note: before the game starts all players will be unassigned until the admins make them either a human or a zombie.
         </p>
         <table>
           <tr>
             <th>Username</th>
-            <th>Dead/Unassigned Creature
           </tr>
-          <% for player in living_area.game_participations.where("(creature_type = 'Zombie' AND zombie_expires_at < ?) OR creature_type is null", Time.now).includes(:creature, :user)%>
-          <%
-           next if player.zombie? && player.immortal? 
-           color = player.creature_type == 'Zombie' ? 'green' : 'white'
-          %>
-          <tr style='color: <%=color%>;'>
+          <% for player in living_area.game_participations.where('creature_type is null').includes(:user) %>
+          <tr>
             <td><%= player.user.username %></td>
-            <td><%= player.creature_type == 'Zombie' ? 'Dead' : 'Unassigned'%></td>
           </tr>
           <% end %>
         </table>
       </td>
     </tr>
   <% end %>
-</table>
-<% if false %>
-<div class="types box">
-
-</div>
-<% for living_area in @living_areas%>
-<h1><%=h(living_area.name)%></h1>
-  <table>
-    <tr>
-      <th>
-        Username
-      </th>
-      <th>
-        First Name
-      </th>
-      <th>
-        Last Name
-      </th>
-      <th>
-        Status
-      </th>
-      <th>
-        Zombie Expires/Died At
-      </th>
-    </tr>
-  <% for game_participation in living_area.game_participations %>
-    <% 
-    next unless game_participation.creature rescue next
-    main_color = nil
-    if game_participation.zombie?
-      if game_participation.dead?
-        main_color = 'green'
-      else
-        main_color = 'red';
-      end
-    elsif game_participation.human?
-      main_color = 'blue'
-    end 
-    creature_name = game_participation.creature.name
-    creature_name = 'Dead' if game_participation.dead? 
-    %>
-    <tr style="<%="color:" + h(main_color)%>">
-      
-      <td style="<%="color:\#" + h(game_participation.creature.color_string) if game_participation.creature%>">
-        <%= game_participation.user.username %>
-      </td>
-      <td>
-        <%= game_participation.user.first_name %>
-      </td>
-      <td>
-        <%= game_participation.user.last_name %>
-      </td>
-      <td>
-        <%= creature_name %>
-      </td>
-      <td>
-        <%= game_participation.zombie_expires_at.strftime('%m/%d/%Y %I:%M %p') if game_participation.mortal? %>
-      </td>
-    </tr>
+  <tr>
+    <td colspan='2'>
+      <h3>Dead Zombies</h3>
+    </td>
+  </tr>
+  <tr>
+    <th>Username</th>
+    <th>Died At</th>
+  </tr>
+  <% for dead in Game.current.game_participations.dead %>
+  <% next if dead.immortal? %>
+  <tr style='color: green'>
+    <td><%= dead.user.username %></td>
+    <td><%= dead.zombie_expires_at.strftime('%m/%d/%Y %I:%M %p')%>
+  </tr>
   <% end %>
-  </table>
-<% end %>
-<% end %>
+</table>
