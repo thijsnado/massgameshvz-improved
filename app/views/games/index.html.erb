@@ -1,39 +1,122 @@
+<style type='text/css'>
+td{
+  vertical-align: top;
+  text-align: left;
+}
+</style>
+<table id='players'>
+  <tr>
+    <th style='width: 400px'>
+      <h1>Humans</h1>
+    </th>
+    <th>
+      <h1>Zombie</h1>
+    </th>
+  </tr>
+  <tr>
+    <td>
+      <div class="type" style='vertical-align: top'>
+        <table>
+        <% for human in @humans %>
+          <tr>
+            <td>
+              <%= h(human.name)%>
+            </td>
+            <td>
+              <div style="border: 1px solid red;height: 5px; width: 40px; background-color: #<%=h(human.color_string.to_s)%>"></div>
+            </td>
+          </tr>
+        <% end %>
+        </table>
+      </div>
+    </td>
+    <td>
+      <div class="type">
+        <table>
+        <% for zombie in @zombies %>
+          <tr>
+            <td>
+              <%= h(zombie.name)%>
+            </td>
+            <td>
+              <div style="border: 1px solid red;height: 5px; width: 40px; background-color: #<%=h(zombie.color_string.to_s)%>"></div>
+            </td>
+          </tr>
+        <% end %>
+        </table>
+      </div>
+    </td>
+  </tr>
+  <% for living_area in @living_areas%>
+    <tr>
+      <th colspan='2' style='text-align: left'>
+        <h1>Players Living in <%= living_area.name %></h1>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <h3 style='color: blue;'>Humans</h3>
+      </td>
+      <td>
+        <h3 style='color: red;'>Zombies</h3>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <table>
+          <tr>
+            <th>Username</th>
+          </tr>
+          <% for human in living_area.game_participations.where(:creature_type => 'Human').includes(:creature, :user) %>
+            <tr style='color: blue;'>
+              <td style='color: #<%= human.creature.color_string.to_s %>;'><%= human.user.username%></td>
+            </tr>
+          <% end %>
+        </table>
+      </td>
+      <td>
+        <table>
+          <tr>
+            <th>Username</th>
+            <th>Expires At</th>
+          </tr>
+          <% for zombie in living_area.game_participations.where(:creature_type => 'Zombie').includes(:creature, :user) %>
+            <tr style='color: red;'>
+              <td style='color: #<%= zombie.creature.color_string.to_s %>;'><%= zombie.user.username%></td>
+              <td><%= zombie.zombie_expires_at.strftime('%m/%d/%Y %I:%M %p') unless zombie.immortal? %></td>
+            </tr>
+          <% end %>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td colspan='2'>
+        <h3 style='color: green'>Dead/Unassigned</h3>
+        <p>
+          Note: before the game starts all players will be unassigned until the admins make them either a human or a zombie.
+        </p>
+        <table>
+          <tr>
+            <th>Username</th>
+            <th>Dead/Unassigned Creature
+          </tr>
+          <% for player in living_area.game_participations.where("(creature_type = 'Zombie' AND zombie_expires_at < ?) OR creature_type is null", Time.now).includes(:creature, :user)%>
+          <%
+           color = player.creature_type == 'Zombie' ? 'green' : 'white'
+          %>
+          <tr style='color: <%=color%>;'>
+            <td><%= player.user.username %></td>
+            <td><%= player.creature_type == 'Zombie' ? 'Dead' : 'Unassigned'%></td>
+          </tr>
+          <% end %>
+        </table>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<% if false %>
 <div class="types box">
-  <div class="type">
-    <%= render :partial => 'layouts/creature_type_key'%>
-  </div>
-</div>
-<div class="types box">
-  <div class="type">
-    <h1>Human Types</h1>
-    <table>
-    <% for human in @humans %>
-      <tr>
-        <td>
-          <%= h(human.name)%>
-        </td>
-        <td>
-          <div style="border: 1px solid red;height: 5px; width: 40px; background-color: #<%=h(human.color_string.to_s)%>"></div>
-        </td>
-      </tr>
-    <% end %>
-    </table>
-  </div>
-  <div class="type">
-    <h1>Zombie Types</h1>
-    <table>
-    <% for zombie in @zombies %>
-      <tr>
-        <td>
-          <%= h(zombie.name)%>
-        </td>
-        <td>
-          <div style="border: 1px solid red;height: 5px; width: 40px; background-color: #<%=h(zombie.color_string.to_s)%>"></div>
-        </td>
-      </tr>
-    <% end %>
-    </table>
-  </div>
+
 </div>
 <% for living_area in @living_areas%>
 <h1><%=h(living_area.name)%></h1>
@@ -57,7 +140,7 @@
     </tr>
   <% for game_participation in living_area.game_participations %>
     <% 
-    next unless game_participation.creature
+    next unless game_participation.creature rescue next
     main_color = nil
     if game_participation.zombie?
       if game_participation.dead?
@@ -91,4 +174,5 @@
     </tr>
   <% end %>
   </table>
+<% end %>
 <% end %>
