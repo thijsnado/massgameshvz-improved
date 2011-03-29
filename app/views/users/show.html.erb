@@ -28,7 +28,7 @@
         User Number:
         <%= @game_participation.user_number %>
       </p>
-      <% if @game_participation.creature %>
+      <% if @game_participation.creature_id && @game_participation.creature %>
         <p>
           You Are A:
           <%= @game_participation.creature.name %> <%= @game_participation.creature_type %>
