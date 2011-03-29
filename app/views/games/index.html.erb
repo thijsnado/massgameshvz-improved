@@ -102,7 +102,7 @@ td{
           </tr>
           <% for player in living_area.game_participations.where("(creature_type = 'Zombie' AND zombie_expires_at < ?) OR creature_type is null", Time.now).includes(:creature, :user)%>
           <%
-           next if player.immortal?
+           next if player.zombie? && player.immortal? 
            color = player.creature_type == 'Zombie' ? 'green' : 'white'
           %>
           <tr style='color: <%=color%>;'>
