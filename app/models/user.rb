@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   acts_as_authentic
   
-  has_many :game_participations
+  has_many :game_participations, :dependent => :destroy
   
   before_create :generate_confirmation_hash
   after_create :send_confirmation_email
