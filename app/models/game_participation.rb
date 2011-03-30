@@ -41,6 +41,18 @@ class GameParticipation < ActiveRecord::Base
     zombie.joins_with_zombie.where(:zombies => {:immortal => false})
   end
   
+  def self.humans
+    where(:creature_type => 'Human')
+  end
+  
+  def self.mortal_zombies
+    joins_with_zombie.where(:zombies => {:immortal => false})
+  end
+  
+  def self.immortal_zombies
+    joins_with_zombie.where(:zombies => {:immortal => true})
+  end
+  
   def self.not_dead
     where("zombie_expires_at > ?", Time.now)
   end
