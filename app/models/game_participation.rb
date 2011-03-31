@@ -30,7 +30,7 @@ class GameParticipation < ActiveRecord::Base
   end
   
   def self.joins_with_zombie
-    joins("INNER JOIN zombies on game_participations.creature_id = zombies.id")
+    joins("INNER JOIN zombies on game_participations.creature_id = zombies.id").where("creature_type = 'Zombie'")
   end
   
   def self.original_zombies
