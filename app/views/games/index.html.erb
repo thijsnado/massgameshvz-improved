@@ -111,21 +111,6 @@ td, th{
         </table>
       </td>
     </tr>
-    <tr>
-      <td colspan='2'>
-        <h3>Unassigned</h3>
-        <table>
-          <tr>
-            <th>Username</th>
-          </tr>
-          <% for player in living_area.game_participations.where('creature_type is null').includes(:user) %>
-          <tr>
-            <td><%= player.user.username %></td>
-          </tr>
-          <% end %>
-        </table>
-      </td>
-    </tr>
   <% end %>
   <tr>
     <td colspan='2'>
