@@ -13,6 +13,7 @@ class GameParticipation < ActiveRecord::Base
   has_many :bite_shares, :through => :biting_events
   
   before_create :set_zombie_expires_at
+  before_create :set_to_human_if_not_set
   before_save :format_user_number
   
   validate :validate_not_outside_signup_period
@@ -252,5 +253,9 @@ class GameParticipation < ActiveRecord::Base
     unless Time.now.between? game.signup_start_at, game.signup_end_at or not new_record?
       errors.add(:game, "Signup period for this game has passed")
     end
+  end
+  
+  def set_to_human_if_not_set
+    self.creature = Human::NORMAL unless self.creature_type && self.creature_id
   end
 end
