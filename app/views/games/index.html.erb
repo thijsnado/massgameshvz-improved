@@ -9,6 +9,29 @@ td, th{
 </p>
 <table id='players'>
   <tr>
+    <td colspan='2'><h3>Total Counts</h3></td>
+  </tr>
+  <tr>
+    <td>Humans</td>
+    <td><%= @human_count %></td>
+  </tr>
+  <tr>
+    <td>Zombies</td>
+    <td><%= @zombie_count %></td>
+  </tr>
+  <tr>
+    <td>Unassigned</td>
+    <td><%= @unassigned_count %></td>
+  </tr>
+  <tr>
+    <td>Dead</td>
+    <td><%=  @dead_count %></td>
+  </tr>
+  <tr>
+    <td><strong>Total</strong></td>
+    <td><%= @total_count %></td>
+  </tr>
+  <tr>
     <th style='width: 400px'>
       <h1>Humans</h1>
     </th>
@@ -124,23 +147,4 @@ td, th{
     <td><%= dead.zombie_expires_at.strftime('%m/%d/%Y %I:%M %p')%>
   </tr>
   <% end %>
-  <tr>
-    <td colspan='2'><h3>Total Counts</h3></td>
-  </tr>
-  <tr>
-    <td>Humans</td>
-    <td><%= @human_count %></td>
-  </tr>
-  <tr>
-    <td>Zombies</td>
-    <td><%= @zombie_count %></td>
-  </tr>
-  <tr>
-    <td>Unassigned</td>
-    <td><%= @unassigned_count %></td>
-  </tr>
-  <tr>
-    <td>Dead</td>
-    <td><%=  @dead_count %></td>
-  </tr>
 </table>
