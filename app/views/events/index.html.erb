@@ -10,6 +10,6 @@
 <% when 'BiteShare' %>
   shared a bite with <%= event.target_object.shared_with.user.username %>
 <% end %>
-at <%= event.occured_at %>
+at <%= event.occured_at.strftime('%m/%d/%Y %I:%M %p') %>
 <br />
 <% end %>
