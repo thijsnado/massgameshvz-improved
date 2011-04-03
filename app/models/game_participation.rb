@@ -62,6 +62,10 @@ class GameParticipation < ActiveRecord::Base
     where("game_participations.zombie_expires_at < ? AND game_participations.creature_type = 'Zombie'", Time.now)
   end
   
+  def self.top_zombies
+    joins(:biting_events).select('count(`events`.`id`) as bite_count, `game_participations`.`id`, `game_participations`.`user_id`').group(:game_participation_id).order('bite_count desc')
+  end
+  
   def self.original_zombie_requests
     where(:original_zombie_request => true)
   end
