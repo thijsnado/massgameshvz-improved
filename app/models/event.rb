@@ -2,6 +2,8 @@ class Event < ActiveRecord::Base
   belongs_to :game_participation
   belongs_to :target_object, :polymorphic => true
   
+  before_save :set_occured_at
+  
   def self.belongs_to_game_participation(game_participation)
     where(
       "
@@ -12,5 +14,9 @@ class Event < ActiveRecord::Base
         )
       ", game_participation.id, 'GameParticipation', game_participation.id
     )
+  end
+  
+  def set_occured_at
+    self.occured_at = Time.now unless self.occured_at
   end
 end
