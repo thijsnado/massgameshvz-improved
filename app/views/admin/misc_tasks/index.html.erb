@@ -17,3 +17,9 @@ for the final mission.
 <h3>Pause Game</h3>
 Click Below to pause/unpause game.<br /> <%= link_to 'Pause Game', pause_game_form_admin_misc_tasks_url %>
 <hr>
+
+<h3>Reward Zombies (hint, use negative numbers to punish zombies!)</h3>
+<%= form_tag increase_zombie_expires_at_admin_misc_tasks_url, :method => :put do %>
+Hours: <%= text_field_tag 'hours'%><br />
+<%= submit_tag 'Reward Zombies'%>
+<% end %>

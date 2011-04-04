@@ -32,6 +32,15 @@ class Admin::MiscTasksController < AdminController
     flash[:notice] = "The game has been unpaused"
     redirect_to admin_misc_tasks_url
   end
+  
+  def increase_zombie_expires_at
+    Game.transaction do
+      GameParticipation.transaction do
+        Game.current.reward_zombies params[:hours]
+      end
+    end
+    redirect_to admin_misc_tasks_url
+  end
 
   def set_unassigned_to_human
     GameParticipation.update_all(["creature_type = 'Human', creature_id = ?", Human::NORMAL], ['creature_type is null AND game_id = ?', Game.current.id])

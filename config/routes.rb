@@ -84,6 +84,7 @@ Massgameshvz::Application.routes.draw do
         put 'unpause_game'
         put 'set_unassigned_to_human'
         put 'resurrect_dead'
+        put 'increase_zombie_expires_at'
       end
     end
   end

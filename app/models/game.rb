@@ -43,4 +43,11 @@ class Game < ActiveRecord::Base
     write_attribute(:pause_ends_at, time)
   end
   
+  def reward_zombies(hours)
+    game_participations.where(:creature_type => 'Zombie').each do |gp|
+      next if gp.immortal? || gp.dead?
+      gp.update_attribute :zombie_expires_at, gp.zombie_expires_at + hours.to_i.hours
+    end
+  end
+  
 end
