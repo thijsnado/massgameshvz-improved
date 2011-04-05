@@ -10,6 +10,7 @@ class GamesController < ApplicationController
     @dead_count = @game.game_participations.mortal_zombies.dead.count
     @total_count = @human_count + @zombie_count + @dead_count
     @living_areas = LivingArea.includes(:game_participations => :user)
+    @dead_participations = Game.current.game_participations.dead.includes(:user)
 
     respond_to do |format|
       format.html # index.html.erb

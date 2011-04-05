@@ -1,3 +1,5 @@
+<h2>Events</h2>
+<%= will_paginate @events %>
 <% for event in @events %>
 <%= event.game_participation.user.username %>
 <% case event.target_object.class.to_s %>
@@ -10,6 +12,7 @@
 <% when 'BiteShare' %>
   shared a bite with <%= event.target_object.shared_with.user.username %>
 <% end %>
-at <%= event.occured_at %>
-<br />
+at <%= event.occured_at.strftime('%m/%d/%Y %I:%M %p') %>
+<br /><br />
 <% end %>
+<%= will_paginate @events %>

@@ -26,6 +26,7 @@
 
 
 <h2>Events</h2>
+<%= will_paginate @events %>
 <% for event in @events %>
 <%= event.game_participation.user.username %>
 <% case event.target_object.class.to_s %>
@@ -41,3 +42,4 @@
 at <%= event.occured_at.strftime('%m/%d/%Y %I:%M %p') %>
 <br /><br />
 <% end %>
+<%= will_paginate @events %>
