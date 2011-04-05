@@ -63,7 +63,13 @@ class GameParticipation < ActiveRecord::Base
   end
   
   def self.top_zombies
-    joins(:biting_events).select('count(`events`.`id`) as bite_count, `game_participations`.`id`, `game_participations`.`user_id`').group(:game_participation_id).order('bite_count desc')
+    case ActiveRecord::Base.connection.adapter_name
+    when 'PostgreSQL'
+      count_select = 'count("events"."id") as bite_count'
+    else
+      count_select = 'count(`events`.`id`) as bite_count'
+    end
+    joins(:biting_events).select([count_select, :game_participation_id, :user_id]).group([:game_participation_id, :user_id]).order('bite_count desc')
   end
   
   def self.original_zombie_requests
