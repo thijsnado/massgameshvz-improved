@@ -3,7 +3,7 @@ atom_feed do |feed|
   feed.updated(@posts.first.created_at)
 
   for post in @posts
-    feed.entry(post, :url => root_url) do |entry|
+    feed.entry(post, :url => post_url(post)) do |entry|
       entry.title(post.title)
       entry.content(raw(RedCloth.new(post.body).to_html), :type => 'html')
 
