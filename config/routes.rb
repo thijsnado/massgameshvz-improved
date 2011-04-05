@@ -74,7 +74,7 @@ Massgameshvz::Application.routes.draw do
     resources :events
     resources :email_domains
     resource :mailer
-    resource :welcome
+    resources :posts
     
     #misc admin tasks, not really a resource but easier to work with this way
     resources :misc_tasks do
@@ -90,4 +90,5 @@ Massgameshvz::Application.routes.draw do
   end
 
   root :to => "welcome#index"
+  match "index", "welcome#index"
 end

@@ -1,0 +1,13 @@
+<%= form_for @post, :url => admin_post_url(@post) do |f| %>
+<p>
+  <%= f.label :title %>
+  <%= f.text_field :title %>
+</p>
+<p>
+  <%= f.label :body %>
+  <%= f.text_area :body, :cols => 60, :rows => 30 %>
+</p>
+<p>
+  <%= f.submit %>
+</p>
+<% end %>

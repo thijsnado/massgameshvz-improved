@@ -1,0 +1,16 @@
+<% for post in @posts %>
+<div class='post'>
+  <p>
+    Title: <%= post.title %>
+  </p>
+  <p>
+    Body:<br /> 
+    <%= raw RedCloth.new(post.body).to_html%>
+  </p>
+  <p>
+    <%= link_to 'edit', edit_admin_post_url(post)%>
+  </p>
+</div>
+<hr />
+<% end %>
+<%= link_to 'New', new_admin_post_url %>
