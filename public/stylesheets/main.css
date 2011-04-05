@@ -72,9 +72,10 @@ div.autocomplete ul li {
 .feed_link {
   display: block;
   height: 50px;
-  width: 230px;
-  font-size: 20px;
-  padding-left: 60px;
+  width: 300px;
+  font-size: 33px;
+  padding-top: 10px;
+  padding-left: 40px;
   background-image: url('/images/feed_icon.png');
   background-repeat: no-repeat;
   background-position: left;
