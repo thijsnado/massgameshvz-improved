@@ -90,5 +90,4 @@ Massgameshvz::Application.routes.draw do
   end
 
   root :to => "welcome#index"
-  match "index", "welcome#index"
 end
