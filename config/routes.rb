@@ -8,7 +8,11 @@ Massgameshvz::Application.routes.draw do
 
   get "welcome/index"
 
-  resources :games
+  resources :games do
+    collection do
+      get '_show'
+    end
+  end
   resources :users do
     member do
       get :confirm
@@ -38,7 +42,11 @@ Massgameshvz::Application.routes.draw do
       put :take
     end
   end
-  resources :events
+  resources :events do
+    collection do
+      get '_show'
+    end
+  end
   resources :posts
   
   match "login", :to => "user_sessions#new"
@@ -71,7 +79,7 @@ Massgameshvz::Application.routes.draw do
       end
     end
     resources :sarcastic_comments
-    resources :games 
+    resources :games
     resources :events
     resources :email_domains
     resource :mailer

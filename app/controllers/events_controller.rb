@@ -1,8 +1,23 @@
 class EventsController < ApplicationController
   
   def index
-    @top_zombies = GameParticipation.top_zombies.limit(5).includes(:user)
-    @events = Event.joins(:game_participation).where(:game_participations => {:game_id => Game.current.id}).order('occured_at desc').includes(:game_participation => :user).paginate(:page => params[:page], :per_page => 15)
+    @game = Game.current
+    if @game
+      show
+      render :action => 'show'
+    else
+      @games = Game.order('end_at desc')
+    end
+  end
+  
+  def show
+    @game ||= Game.find(params[:id])
+    @top_zombies = @game.game_participations.top_zombies.limit(5).includes(:user)
+    @events = Event.joins(:game_participation).where(:game_participations => {:game_id => @game.id}).order('occured_at desc').includes(:game_participation => :user).paginate(:page => params[:page], :per_page => 15)
+  end
+  
+  def _show
+    redirect_to event_url(params[:id])
   end
   
 end

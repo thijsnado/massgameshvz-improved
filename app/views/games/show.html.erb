@@ -1,5 +1,134 @@
-<p id="notice"><%= notice %></p>
-
-
-<%= link_to 'Edit', edit_game_path(@game) %> |
-<%= link_to 'Back', games_path %>
+<style type='text/css'>
+td, th{
+  vertical-align: top;
+  text-align: left;
+}
+</style>
+<p>
+  Note: before the game starts all players will be unassigned until the admins make them either a human or a zombie.
+</p>
+<table id='players'>
+  <tr>
+    <td colspan='2'><h3>Total Counts</h3></td>
+  </tr>
+  <tr>
+    <td>Humans</td>
+    <td><%= @human_count %></td>
+  </tr>
+  <tr>
+    <td>Zombies</td>
+    <td><%= @zombie_count %></td>
+  </tr>
+  <tr>
+    <td>Dead</td>
+    <td><%=  @dead_count %></td>
+  </tr>
+  <tr>
+    <td><strong>Total</strong></td>
+    <td><%= @total_count %></td>
+  </tr>
+  <tr>
+    <th style='width: 400px'>
+      <h1>Humans</h1>
+    </th>
+    <th>
+      <h1>Zombie</h1>
+    </th>
+  </tr>
+  <tr>
+    <td>
+      <div class="type" style='vertical-align: top'>
+        <table>
+        <% for human in @humans %>
+          <tr>
+            <td>
+              <%= h(human.name)%>
+            </td>
+            <td>
+              <div style="border: 1px solid red;height: 5px; width: 40px; background-color: #<%=h(human.color_string.to_s)%>"></div>
+            </td>
+          </tr>
+        <% end %>
+        </table>
+      </div>
+    </td>
+    <td>
+      <div class="type">
+        <table>
+        <% for zombie in @zombies %>
+          <tr>
+            <td>
+              <%= h(zombie.name)%>
+            </td>
+            <td>
+              <div style="border: 1px solid red;height: 5px; width: 40px; background-color: #<%=h(zombie.color_string.to_s)%>"></div>
+            </td>
+          </tr>
+        <% end %>
+        </table>
+      </div>
+    </td>
+  </tr>
+  <% for living_area in @living_areas%>
+    <tr>
+      <th colspan='2' style='text-align: left'>
+        <h1>Players Living in <%= living_area.name %></h1>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <h3 style='color: blue;'>Humans</h3>
+      </td>
+      <td>
+        <h3 style='color: red;'>Zombies</h3>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <table>
+          <tr>
+            <th>Username</th>
+          </tr>
+          <% for human in living_area.game_participations.reject{|gp| gp.creature_type != 'Human'}%>
+            <tr style='color: blue;'>
+              <td style='color: #<%= human.creature.color_string.to_s %>;'><%= human.user.username%></td>
+            </tr>
+          <% end %>
+        </table>
+      </td>
+      <td>
+        <table>
+          <tr>
+            <th>Username</th>
+            <th>Expires At</th>
+          </tr>
+          <% for zombie in living_area.game_participations.reject{|gp| gp.creature_type != 'Zombie'} %>
+          <% next if @is_current_game && zombie.dead? %>
+            <tr style='color: red;'>
+              <td style='color: #<%= zombie.creature.color_string.to_s %>;'><%= zombie.user.username%></td>
+              <td><%= zombie.zombie_expires_at.strftime('%m/%d/%Y %I:%M %p') unless zombie.immortal? %></td>
+            </tr>
+          <% end %>
+        </table>
+      </td>
+    </tr>
+  <% end %>
+  <tr>
+    <td colspan='2'>
+      <h3>Dead Zombies</h3>
+    </td>
+  </tr>
+  <tr>
+    <th>Username</th>
+    <th>Died At</th>
+  </tr>
+  <% if @is_current_game %>
+    <% for dead in @dead_participations %>
+    <% next if dead.immortal? %>
+    <tr style='color: green'>
+      <td><%= dead.user.username %></td>
+      <td><%= dead.zombie_expires_at.strftime('%m/%d/%Y %I:%M %p')%>
+    </tr>
+    <% end %>
+  <% end %>
+</table>

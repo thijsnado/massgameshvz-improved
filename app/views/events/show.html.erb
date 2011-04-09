@@ -1,0 +1,45 @@
+
+<style type='text/css'>
+  #top_zombies {
+    border-collapse: seperate; 
+    border: 1px solid white;
+  }
+  
+  #top_zombies td, th{
+    border: 1px solid white;
+  }
+</style>
+
+<h2>Top Zombies</h2>
+<table id='top_zombies'>
+  <tr>
+    <th>Username</th>
+    <th>Bite Count</th>
+  </tr>
+  <% for zombie in @top_zombies %>
+  <tr>
+    <td><%= zombie.user.username %></td>
+    <td><%= zombie.bite_count %></td>
+  </tr>
+  <% end %>
+</table><br /><br />
+
+
+<h2>Events</h2>
+<%= will_paginate @events %>
+<% for event in @events %>
+<%= event.game_participation.user.username %>
+<% case event.target_object.class.to_s %>
+<% when 'GameParticipation' %>
+   bit <%= event.target_object.user.username %>
+<% when 'Vaccine' %>
+  took a vaccine
+<% when 'PseudoBite' %>
+  took a psuedo_bite
+<% when 'BiteShare' %>
+  shared a bite with <%= event.target_object.shared_with.user.username %>
+<% end %>
+at <%= event.occured_at.strftime('%m/%d/%Y %I:%M %p') %>
+<br /><br />
+<% end %>
+<%= will_paginate @events %>
