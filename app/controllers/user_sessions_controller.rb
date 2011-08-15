@@ -1,6 +1,6 @@
 class UserSessionsController < ApplicationController
   before_filter :authenticate, :only => :destroy
-  
+  skip_filter :check_if_has_participation
   
   def new
     @from = params[:from]
@@ -27,6 +27,7 @@ class UserSessionsController < ApplicationController
   def destroy
     @user_session = UserSession.find
     @user_session.destroy
+    reset_session
     flash[:notice] = "Successfully logged out."
     redirect_to root_url
   end

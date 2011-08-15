@@ -13,6 +13,7 @@ Massgameshvz::Application.routes.draw do
       get '_show'
     end
   end
+  resources :game_participations
   resources :users do
     member do
       get :confirm
@@ -54,6 +55,8 @@ Massgameshvz::Application.routes.draw do
   match "register", :to => "users#new"
   match "admin", :to => 'admin#index'
   match "players", :to => 'games#index'
+  match 'ask_about_game_registration', :to => 'game_participations#ask_about_game_registration'
+  match 'existing_user_registration', :to => 'game_participations#new'
   
   
   namespace :admin do

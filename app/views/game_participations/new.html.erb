@@ -1,0 +1,16 @@
+<%= form_for @game_participation do |f| %>
+  <p>
+    Please fill out the following information if you want to register for the current game.
+  </p>
+  <p>
+    <%= f.label :living_area_id%>
+    <%= f.collection_select :living_area_id, @living_areas, :id, :name %>
+  </p>
+  <p>
+    <%= f.label :original_zombie_request %>
+    <%= f.check_box :original_zombie_request %>
+  </p>
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>

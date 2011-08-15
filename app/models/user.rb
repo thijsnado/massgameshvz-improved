@@ -27,5 +27,8 @@ class User < ActiveRecord::Base
     ConfirmationEmail.confirmation_message(self).deliver
   end
 
+  def has_not_signed_up
+    return !current_participation
+  end
   
 end

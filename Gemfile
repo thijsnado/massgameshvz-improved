@@ -9,14 +9,15 @@ gem 'mysql2', :require => 'mysql2'
 gem 'RedCloth'
 gem 'yaml_db'
 
-group :development, :test do
-  gem 'timecop'
-  gem 'rspec-rails'
-  gem 'cucumber-rails'
+group :development do
+  gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
 end
 
-group :test do
+group :test, :development do
   gem 'capybara'
   gem 'database_cleaner'
   gem 'factory_girl'
+  gem 'rspec-rails'
+  gem 'cucumber-rails'
+  gem 'timecop'
 end
