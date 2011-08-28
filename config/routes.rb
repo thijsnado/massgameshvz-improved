@@ -49,7 +49,9 @@ Massgameshvz::Application.routes.draw do
     end
   end
   resources :posts
-  
+
+  resources :player_statuses
+
   match "login", :to => "user_sessions#new"
   match "logout", :to => "user_sessions#destroy"
   match "register", :to => "users#new"
