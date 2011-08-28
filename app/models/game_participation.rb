@@ -1,10 +1,10 @@
 class GameParticipation < ActiveRecord::Base
   
-  belongs_to :game
-  belongs_to :user
+  belongs_to :game, :touch => true
+  belongs_to :user, :touch => true
   belongs_to :creature, :polymorphic => true
   belongs_to :living_area
-  belongs_to :squad
+  belongs_to :squad, :touch => true
   has_one :squadrin, :class_name => 'Squad', :foreign_key => 'squad_leader_id'
   
   has_many :biting_events, :class_name => 'BiteEvent'
