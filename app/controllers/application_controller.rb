@@ -80,7 +80,7 @@ class ApplicationController < ActionController::Base
   end
   
   def check_if_has_participation
-    if current_game && current_user && current_user.has_not_signed_up
+    if current_game && current_user && current_user.has_not_signed_up && !current_user.is_admin
       unless has_been_asked_about_participation
         session[:been_asked] = true
         redirect_to ask_about_game_registration_url
