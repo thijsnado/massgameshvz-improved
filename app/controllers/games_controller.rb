@@ -4,15 +4,23 @@ class GamesController < ApplicationController
   def index
     @game = Game.current
     
-    if @game
-      show
+    if @game && stale?(:etag => @game, :last_modified => @game.updated_at, :public => true)
+      show_game
       render :action => 'show'
     else
-      @games = Game.order('end_at desc')
+      @games = games
     end
   end
   
   def show
+    @game = Game.find(params[:id])
+    if stale?(:etag => @game, :last_modified => @game.updated_at, :public => true)
+      show_game
+    end
+  end
+  
+  
+  def show_game
     @game ||= Game.find(params[:id])
     @humans = Human.find(:all)
     @zombies = Zombie.find(:all)
@@ -27,6 +35,10 @@ class GamesController < ApplicationController
   
   def _show
     redirect_to game_url(params[:id])
+  end
+  
+  def games
+    Game.order('end_at desc')
   end
 
 end
