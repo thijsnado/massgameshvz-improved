@@ -9,9 +9,6 @@ gem 'mysql2', :require => 'mysql2'
 gem 'RedCloth'
 gem 'yaml_db'
 
-group :development do
-  gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
-end
 
 group :test, :development do
   gem 'capybara'
