@@ -1,6 +1,6 @@
 <div>
   <%=form_for @user do |f|%>
-    <% if @user.errors.any? || @game_participation.errors.any? %>
+    <% if @user.try(:errors).present? || @game_participation.try(:errors).present? %>
       <div id="error_explanation">
         <h2><%= pluralize(@user.errors.count, "error") %> prevented you from saving:</h2>
 
@@ -42,15 +42,17 @@
       <%=f.label :phone%>
       <%=f.text_field :phone%>
     </p>
-    <%= fields_for @game_participation do |g| %>
-      <p>
-        <%= g.label :living_area_id%>
-        <%= g.collection_select :living_area_id, @living_areas, :id, :name %>
-      </p>
-      <p>
-        <%= g.label :original_zombie_request %>
-        <%= g.check_box :original_zombie_request %>
-      </p>
+    <% if @game_participation %>
+      <%= fields_for @game_participation do |g| %>
+        <p>
+          <%= g.label :living_area_id%>
+          <%= g.collection_select :living_area_id, @living_areas, :id, :name %>
+        </p>
+        <p>
+          <%= g.label :original_zombie_request %>
+          <%= g.check_box :original_zombie_request %>
+        </p>
+      <% end %>
     <% end %>
     <p>
       By checking and submitting this Player Agreement Statement, I hereby agree and acknowledge that it is my sole responsibility to follow all rules and policies displayed and stated by the Mass Games game administrators and those of the University of Massachusetts. My potential ignorance of the rules is not an excuse for anything.

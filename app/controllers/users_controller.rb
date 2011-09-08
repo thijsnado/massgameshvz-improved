@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :must_be_signupable, :only => [:new, :create]
+  #before_filter :must_be_signupable, :only => [:new, :create]
   before_filter :can_only_view_edit_delete_self, :only => [:show, :edit, :update]
   
   # GET /users/1
@@ -19,7 +19,7 @@ class UsersController < ApplicationController
   # GET /users/new.xml
   def new
     @user = User.new
-    @game_participation = Game.current.game_participations.new
+    @game_participation = Game.current.game_participations.new rescue nil
     @living_areas = LivingArea.all
 
     respond_to do |format|
@@ -39,14 +39,16 @@ class UsersController < ApplicationController
   # POST /users.xml
   def create
     @user = User.new(params[:user])
-    @game_participation = Game.current.game_participations.new(params[:game_participation])
+    @game_participation = Game.current.game_participations.new(params[:game_participation]) rescue nil
     @living_areas = LivingArea.all
+    valid = @user.valid?
+    valid = valid && @game_participation.valid? if @game_participation
 
     respond_to do |format|
-      if @user.valid? && @game_participation.valid?
+      if valid
         @user.save
-        @game_participation.user_id = @user.id
-        @game_participation.save
+        @game_participation.user_id = @user.id if @game_participation
+        @game_participation.save if @game_participation
         format.html { redirect_to(root_url, :notice => 'You have registered, please check email for confirmation') }
         format.xml  { render :xml => @user, :status => :created, :location => @user }
       else
