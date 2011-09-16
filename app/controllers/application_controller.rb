@@ -92,4 +92,9 @@ class ApplicationController < ActionController::Base
     been_asked = session[:been_asked]
     been_asked
   end
+  
+  def stale?(options = {})
+    options[:etag] = [options[:etag], current_user]
+    super options
+  end
 end

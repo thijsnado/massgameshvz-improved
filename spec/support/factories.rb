@@ -15,9 +15,16 @@ end
 
 Factory.define :game_participation do |f|
   f.association :user, :factory => :user
+  f.association :game, :factory => :game
 end
 
 Factory.define :game do |f|
+  f.start_at "2010-01-10 00:00:00"
+  f.end_at "2010-01-20 23:59:59"
+  f.signup_start_at "2010-01-08 00:00:00"
+  f.signup_end_at "2010-01-11 23:59:59"
+  f.time_per_food 1.day
+  f.bite_shares_per_food 1
 end
 
 Factory.define :human do |f|
@@ -31,6 +38,10 @@ end
 
 Factory.sequence :email_address do |n|
   "email#{n}@umass.edu"
+end
+
+Factory.define :squad do |f|
+  f.squad_name "The crazy cary killers"
 end
 
 Factory.sequence :username do |n|

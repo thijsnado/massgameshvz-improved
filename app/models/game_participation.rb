@@ -5,7 +5,7 @@ class GameParticipation < ActiveRecord::Base
   belongs_to :creature, :polymorphic => true
   belongs_to :living_area
   belongs_to :squad, :touch => true
-  has_one :squadrin, :class_name => 'Squad', :foreign_key => 'squad_leader_id'
+  has_one :squadron, :class_name => 'Squad', :foreign_key => 'squad_leader_id'
   
   has_many :biting_events, :class_name => 'BiteEvent'
   has_many :bitten_events, :class_name => 'BiteEvent', :as => :target_object
@@ -139,7 +139,7 @@ class GameParticipation < ActiveRecord::Base
   end
   
   def squad_leader?
-    if squadrin
+    if squadron
       return true
     elsif self.squad.highest_ranking == self
       return true

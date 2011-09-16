@@ -13,13 +13,11 @@ class Squad < ActiveRecord::Base
   after_create :make_leader_squad_leader
   after_save :set_squad_members
 
-  def validate
-    no_errors_on_squad_leader_username
-    no_errors_on_squad_member_usernames
-    no_errors_on_squad_member_squads
-    no_errors_on_squad_leader_squad
-    no_duplicate_squad_members
-  end
+  validate :no_errors_on_squad_leader_username
+  validate :no_errors_on_squad_member_usernames
+  validate :no_errors_on_squad_member_squads
+  validate :no_errors_on_squad_leader_squad
+  validate :no_duplicate_squad_members
   
   def add_squad_members
     @squad_member_usernames = self.squad_member_usernames
@@ -60,7 +58,7 @@ class Squad < ActiveRecord::Base
     unless game_participation || !self.squad_leader_username
       @squad_leader_username_error = self.squad_leader_username
     else
-      @squad_leader_squad_error = self.squad_leader_username if game_participation.squadrin && game_participation.squadrin != self
+      @squad_leader_squad_error = self.squad_leader_username if game_participation.squadron && game_participation.squadron != self
       self.squad_leader = game_participation
     end
   end

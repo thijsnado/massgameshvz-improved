@@ -5,7 +5,7 @@ class SquadsController < ApplicationController
   # GET /squads
   # GET /squads.xml
   def index
-    @squads = Squad.all
+    @squads = current_game.squads
 
     respond_to do |format|
       format.html # index.html.erb

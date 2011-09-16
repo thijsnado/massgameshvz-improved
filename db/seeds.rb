@@ -8,6 +8,7 @@
 
 #zombie types
 #name               #vaccinatable, #immortal, #color string, #code
+Zombie.delete_all
 [
 ['Original Zombie',             0,             1,         'FFFFFF',      :original],
 ['Regular Zombie',              1,             0,         'F2EA00',      :normal],
@@ -20,6 +21,7 @@ end
 
 #human types
 #name,               #immortal when bitten,   #color string
+Human.delete_all
 [
 ['Normal',           0,                       'FFFFFF',       :normal],
 ['Squad Leader',     1,                       '0008F2',       :squad]
@@ -28,6 +30,7 @@ end
 end
 
 #email_domains
+EmailDomain.delete_all
 domain = EmailDomain.new
 domain.description = 'UMass Email Address'
 domain.rule = 'umass'

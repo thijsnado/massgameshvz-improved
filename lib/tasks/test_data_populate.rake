@@ -12,7 +12,8 @@ namespace :data do
       :start_at => Time.now, 
       :end_at => Time.now + 7.days, 
       :time_per_food => 24.hours, 
-      :bite_shares_per_food => 3
+      :bite_shares_per_food => 3,
+      :game_name => 'OMG Test Data'
     )
     ['South West', 'North', 'Orchard Hill'].each do |living_area|
       LivingArea.create(:name => living_area)

@@ -1,6 +1,10 @@
 class Game < ActiveRecord::Base
   has_many :game_participations
   has_many :pseudo_bites
+
+  def squads
+    Squad.joins(:squad_leader).where("game_participations.game_id = ?", self.id)
+  end
   
   def self.current
     return where("? BETWEEN signup_start_at AND end_at", Time.now).first
