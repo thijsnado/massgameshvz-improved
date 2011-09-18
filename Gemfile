@@ -10,6 +10,7 @@ gem 'mysql2', :require => 'mysql2'
 #gem 'pg', :require => 'pg'
 gem 'RedCloth'
 gem 'yaml_db'
+gem "paperclip", "~> 2.4"
 
 
 group :test, :development do

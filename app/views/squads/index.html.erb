@@ -7,6 +7,7 @@
 
 <table>
   <tr>
+    <th></th>
     <th>Squald name</th>
     <th>Squad leader</th>
     <th></th>
@@ -14,6 +15,7 @@
 
 <% @squads.each do |squad| %>
   <tr>
+    <td><%= image_tag squad.avatar.url(:thumb), :size => "100x100" %></td>
     <td><%= squad.squad_name %></td>
     <td><%= squad.squad_leader.user.username %></td>
     <td><%= link_to 'Show', squad %></td>

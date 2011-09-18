@@ -1,6 +1,7 @@
 class Squad < ActiveRecord::Base
   belongs_to :squad_leader, :class_name => 'GameParticipation'
   has_many :squad_members, :class_name => 'GameParticipation'
+  has_attached_file :avatar, :styles => { :large => ["700x700>", :png], :medium => ["300x300>", :png], :thumb => ["100x100>", :png] }
   
   attr_writer :squad_leader_username
   attr_writer :squad_member_usernames
@@ -18,6 +19,7 @@ class Squad < ActiveRecord::Base
   validate :no_errors_on_squad_member_squads
   validate :no_errors_on_squad_leader_squad
   validate :no_duplicate_squad_members
+  validates_attachment_content_type :avatar, :content_type=>['image/jpeg', 'image/png', 'image/gif'], :less_than => 10.megabyte
   
   def add_squad_members
     @squad_member_usernames = self.squad_member_usernames

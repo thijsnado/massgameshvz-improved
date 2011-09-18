@@ -1,4 +1,8 @@
 <div>
+  <%= image_tag @squad.avatar.url(:large), :size => '700x700' unless @squad.avatar_file_size.nil? %>
+</div>
+
+<div>
   <%= render :partial => 'layouts/creature_type_key'%>
 </div>
 <p>

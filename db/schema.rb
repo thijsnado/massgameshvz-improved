@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110404234929) do
+ActiveRecord::Schema.define(:version => 20111008130558) do
 
   create_table "bite_shares", :force => true do |t|
     t.integer  "bite_event_id"
@@ -133,6 +133,10 @@ ActiveRecord::Schema.define(:version => 20110404234929) do
     t.integer  "squad_leader_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "avatar_file_name"
+    t.string   "avatar_content_type"
+    t.integer  "avatar_file_size"
+    t.datetime "avatar_updated_at"
   end
 
   add_index "squads", ["squad_leader_id"], :name => "index_squads_on_squad_leader_id"
