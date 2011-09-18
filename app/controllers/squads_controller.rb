@@ -1,16 +1,11 @@
 class SquadsController < ApplicationController
   before_filter :must_control_squad, :only => ['edit', 'update']
   before_filter :is_squad_leader, :only => ['edit', 'update', 'show']
-  
-  # GET /squads
-  # GET /squads.xml
-  def index
-    @squads = current_game.squads
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @squads }
-    end
+  def index
+    @game = Game.find_by_id(params[:game_id]) || current_game
+    @squads = @game.squads if @game
+    @games = Game.order('end_at desc')
   end
 
   # GET /squads/1

@@ -1,4 +1,9 @@
-<h1>Listing squads</h1>
+<h1>Listing squads from 
+  <%= form_tag squads_url, :method => 'get', :style => 'display: inline;' do %>
+    <%= select_tag "game_id", options_from_collection_for_select(@games, "id", "game_name", @game) %><br />
+    <%= submit_tag 'Get Squads'%>
+  <% end %>
+</h1>
 
 <table>
   <tr>
