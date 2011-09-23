@@ -1,7 +1,7 @@
 class WelcomeController < ApplicationController
   
   def index
-    post = posts.last
+    post = Post.order('updated_at desc').select('updated_at').last
     if (!post) || stale?(
         :etag => post,
         :last_modified => post.updated_at.utc
