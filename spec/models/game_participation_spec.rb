@@ -40,6 +40,9 @@ describe GameParticipation do
   before do
     Timecop.freeze(current_game.start_at)
   end
+  after do
+    Timecop.return
+  end
   describe 'report_bite' do
     it "allows a zombie participation to report biting a human" do
       zombie_participation.should_receive(:record_bite).with(human_participation)

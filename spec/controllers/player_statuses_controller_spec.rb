@@ -10,6 +10,10 @@ describe PlayerStatusesController do
       Timecop.freeze(current_game.start_at + 1.second)
     end
     
+    after do
+      Timecop.return
+    end
+    
     it 'should return an xml representation of a players status if given an id' do
       user = game_participation.user
       request.env["HTTP_ACCEPT"] = "application/xml"

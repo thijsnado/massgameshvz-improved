@@ -9,14 +9,7 @@ class Game < ActiveRecord::Base
   def self.current
     return where("? BETWEEN signup_start_at AND end_at", Time.now).first
   end
-  
-  def signup(user)
-    participation = GameParticipation.new
-    participation.user = user
-    participation.game = self
-    return participation.save
-  end
-  
+
   def paused?
     return false if pause_starts_at.blank? || pause_ends_at.blank?
     return true if Time.now.between?(pause_starts_at, pause_ends_at)
@@ -45,6 +38,11 @@ class Game < ActiveRecord::Base
     end
     self.pause_starts_at = now_time
     write_attribute(:pause_ends_at, time)
+  end
+  
+  def pause_until(time)
+    self.pause_ends_at = time
+    save
   end
   
   def reward_zombies(hours)

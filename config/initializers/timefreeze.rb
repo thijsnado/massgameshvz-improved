@@ -1,1 +1,1 @@
-Timecop.freeze(Time.now + 20.days) if Rails.env == 'development'
+#Timecop.freeze(Time.now + 20.days) if Rails.env == 'development'

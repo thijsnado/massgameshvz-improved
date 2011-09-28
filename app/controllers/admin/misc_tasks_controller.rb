@@ -9,11 +9,9 @@ class Admin::MiscTasksController < AdminController
   
   def pause_game
     unless Game.current.paused?
-      Game.transaction do
-        GameParticipation.transaction do
-          GameParticipation.lock
-          Game.current.update_attributes(params[:game])
-        end
+      ActiveRecord::Base.transaction do
+        GameParticipation.lock
+        Game.current.update_attributes(params[:game])
       end
     end
     flash[:notice] = "The game is paused until #{params[:game][:pause_ends_at]}"
@@ -22,11 +20,9 @@ class Admin::MiscTasksController < AdminController
   
   def unpause_game
     if Game.current.paused?
-      Game.transaction do
-        GameParticipation.transaction do
-          GameParticipation.lock
-          Game.current.unpause_game
-        end
+      ActiveRecord::Base.transaction do
+        GameParticipation.lock
+        Game.current.unpause_game
       end
     end
     flash[:notice] = "The game has been unpaused"

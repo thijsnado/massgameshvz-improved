@@ -6,6 +6,10 @@ describe User do
     Timecop.freeze(current_game.start_at)
   end
   
+  after do
+    Timecop.return
+  end
+  
   describe 'has_not_signed_up' do
     let(:current_game){ Factory(:current_game) }
     let(:user){ Factory(:user) }
