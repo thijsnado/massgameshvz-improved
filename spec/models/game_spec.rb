@@ -102,15 +102,9 @@ describe Game do
     it 'if game is paused, unpauses and sets back expiration dates for mortal zombies' do
       Timecop.freeze game.pause_starts_at + 2.hours
       game.unpause_game
-      zombie_id = zombie.id
-      self_bitten_zombie_id = self_bitten_zombie.id
-      immortal_zombie_id = immortal_zombie.id
-      zombie = GameParticipation.find(zombie_id)
-      self_bitten_zombie = GameParticipation.find(self_bitten_zombie_id)
-      immortal_zombie = GameParticipation.find(immortal_zombie_id)
-      zombie.zombie_expires_at.should== zombie_time + 2.hours
-      self_bitten_zombie.zombie_expires_at.should == self_bitten_zombie_time + 2.hours
-      immortal_zombie.zombie_expires_at.should_not == immortal_zombie_time + 2.hours
+      zombie.reload.zombie_expires_at.should== zombie_time + 2.hours
+      self_bitten_zombie.reload.zombie_expires_at.should == self_bitten_zombie_time + 2.hours
+      immortal_zombie.reload.zombie_expires_at.should_not == immortal_zombie_time + 2.hours
       game.pause_ends_at.should be_nil
     end
   end

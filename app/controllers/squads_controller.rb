@@ -5,6 +5,7 @@ class SquadsController < ApplicationController
   def index
     @game = Game.find_by_id(params[:game_id]) || current_game
     @squads = @game.squads if @game
+    @squads ||= []
     @games = Game.order('end_at desc')
   end
 

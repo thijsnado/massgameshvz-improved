@@ -16,39 +16,47 @@ class Game < ActiveRecord::Base
   end
   
   def unpause_game
-    return unless paused?
-    now_time = Time.now
-    difference_in_seconds = self.pause_ends_at - now_time
-    game_participations.where(:creature_type => 'Zombie').each do |gp|
-      next if gp.immortal? || gp.dead?
-      gp.update_attribute :zombie_expires_at, gp.zombie_expires_at - difference_in_seconds
+    ActiveRecord::Base.transaction do
+      return unless paused?
+      now_time = Time.now
+      difference_in_seconds = self.pause_ends_at - now_time
+      game_participations.where(:creature_type => 'Zombie').each do |gp|
+        next if gp.immortal? || gp.dead?
+        gp.update_attribute :zombie_expires_at, gp.zombie_expires_at - difference_in_seconds
+      end
+      self.pause_starts_at = nil
+      write_attribute(:pause_ends_at, nil)
+      save
     end
-    self.pause_starts_at = nil
-    write_attribute(:pause_ends_at, nil)
-    save
   end
   
   def pause_ends_at=(time)
-    now_time = Time.now
-    difference_in_seconds = time - now_time
-    return if difference_in_seconds < 0
-    game_participations.where(:creature_type => 'Zombie').each do |gp|
-      next if gp.immortal? || gp.dead?
-      gp.update_attribute :zombie_expires_at, gp.zombie_expires_at + difference_in_seconds
+    ActiveRecord::Base.transaction do
+      now_time = Time.now
+      difference_in_seconds = time - now_time
+      return if difference_in_seconds < 0
+      game_participations.where(:creature_type => 'Zombie').each do |gp|
+        next if gp.immortal? || gp.dead?
+        gp.update_attribute :zombie_expires_at, gp.zombie_expires_at + difference_in_seconds
+      end
+      self.pause_starts_at = now_time
+      write_attribute(:pause_ends_at, time)
     end
-    self.pause_starts_at = now_time
-    write_attribute(:pause_ends_at, time)
   end
   
   def pause_until(time)
-    self.pause_ends_at = time
-    save
+    ActiveRecord::Base.transaction do
+      self.pause_ends_at = time
+      save
+    end
   end
   
   def reward_zombies(hours)
-    game_participations.where(:creature_type => 'Zombie').each do |gp|
-      next if gp.immortal? || gp.dead?
-      gp.update_attribute :zombie_expires_at, gp.zombie_expires_at + hours.to_i.hours
+    ActiveRecord::Base.transaction do
+      game_participations.where(:creature_type => 'Zombie').each do |gp|
+        next if gp.immortal? || gp.dead?
+        gp.update_attribute :zombie_expires_at, gp.zombie_expires_at + hours.to_i.hours
+      end
     end
   end
   
