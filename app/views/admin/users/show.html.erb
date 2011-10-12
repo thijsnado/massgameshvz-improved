@@ -1,9 +1,9 @@
 <h2>Status</h2>
 <% case @status %>
 <% when :human %>
-  <%= @user.username %> is a <%= @user.current_participation.creature.name %> human. His/her user number is <% @user.current_participation.user_number %>
+  <%= @user.username %> is a <%= @user.current_participation.creature.name %> human. His/her user number is <%= @user.current_participation.user_number %>
 <% when :mortal_zombie %>
-  <%= @user.username %> is a <%= @user.current_participation.creature.name %> zombie. His/her user number is <% @user.current_participation.user_number %>. 
+  <%= @user.username %> is a <%= @user.current_participation.creature.name %> zombie. His/her user number is <%= @user.current_participation.user_number %>. 
   if he/she does not eat, he/she will be dead at <%= @user.current_participation.zombie_expires_at %>.
 <% when :immortal_zombie %>
   <%= @user.username %> is a <%= @user.current_participation.creature.name %> zombie.
