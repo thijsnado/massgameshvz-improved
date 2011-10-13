@@ -56,7 +56,8 @@ class Squad < ActiveRecord::Base
   private 
   
   def set_squad_leader_by_username
-    game_participation = User.find_by_username(self.squad_leader_username).current_participation rescue nil
+    user = User.find_by_username(self.squad_leader_username)
+    game_participation = user.current_participation || user.game_participations.new(:game_id => Game.current.id)
     unless game_participation || !self.squad_leader_username
       @squad_leader_username_error = self.squad_leader_username
     else
