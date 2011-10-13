@@ -9,7 +9,11 @@
     </ul>
   </div>
 <% end %>
-
+<div class="field">
+  <%= image_tag @squad.avatar.url(:thumb), :size => "100x100" %>
+  <%= f.label :avatar %>
+  <%= f.file_field :avatar %>
+</div>
 <div class="field">
   <%= f.label :squad_name %><br />
   <%= f.text_field :squad_name %>
