@@ -1,9 +1,5 @@
 <% for event in @events %>
-<% if profile %>
-  You
-<% else %>
-  <%= @user.username %>
-<% end %>
+<%= event.game_participation.user.username %>
 <% if event.target_object == @game_participation %>
   got
   <% case event.target_object.class.to_s %>
