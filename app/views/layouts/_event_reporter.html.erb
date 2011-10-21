@@ -13,7 +13,7 @@
 <% else %>
 <% case event.target_object.class.to_s %>
 <% when 'GameParticipation' %>
-   bit <%= event.game_participation.user.username %>
+   bit <%= event.target_object.user.username %>
 <% when 'Vaccine' %>
   took a vaccine
 <% when 'PseudoBite' %>
