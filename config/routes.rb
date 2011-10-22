@@ -79,6 +79,9 @@ Massgameshvz::Application.routes.draw do
     resources :vaccines
     resources :pseudo_bites
     resources :users do
+      member do
+        put :update_user_number 
+      end
       collection do
         get 'get_creatures'
       end

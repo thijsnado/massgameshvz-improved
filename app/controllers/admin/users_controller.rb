@@ -65,7 +65,13 @@ class Admin::UsersController < AdminController
     end
   end
   
-
+  def update_user_number
+    current_participation = @user.current_participation
+    current_participation.user_number = nil
+    current_participation.format_user_number
+    current_participation.save
+    redirect_to admin_user_url(@user), :notice => 'User number updated.'
+  end
 
   def show
     @current_participation = @user.current_participation

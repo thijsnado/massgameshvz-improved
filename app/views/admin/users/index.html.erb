@@ -30,6 +30,7 @@
     <td>
       <%= link_to 'edit', edit_admin_user_url(user)%> | 
       <%= link_to 'show', admin_user_url(user)%> |
+      <%= link_to 'generate new number', update_user_number_admin_user_url(user), :method => 'put' if user.current_participation %> | 
       <%= link_to 'delete', admin_user_url(user), :method => 'delete', :confirm => 'are you sure? this is not reversible!'%>
   </tr>
 <% end %>
