@@ -52,7 +52,7 @@ Factory.define :user do |f|
   f.email_address { Factory.next(:email_address) }
   f.username { Factory.next(:username) }
   f.password 'password'
-  f.password_confirmation 'password'
+  f.password_confirmation { |u| u.password }
 end
 
 Factory.define :vaccine do |f|

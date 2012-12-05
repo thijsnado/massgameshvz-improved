@@ -15,10 +15,9 @@ gem "paperclip", "~> 2.4"
 
 group :test, :development do
   gem 'rcov'
-  gem 'capybara'
   gem 'database_cleaner'
   gem 'factory_girl'
   gem 'rspec-rails'
-  gem 'cucumber-rails'
+  gem 'cucumber-rails', :require => false
   gem 'timecop'
 end
