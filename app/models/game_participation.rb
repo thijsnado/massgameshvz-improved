@@ -31,15 +31,11 @@ class GameParticipation < ActiveRecord::Base
   end
 
   def self.joins_with_zombie
-    joins("INNER JOIN zombies on game_participations.creature_id = zombies.id").where("creature_type = 'Zombie'")
-  end
-
-  def self.original_zombies
-    zombie.joins_with_zombie.where(:zombies => {:id => Zombie::ORIGINAL.id})
+    zombie.joins("INNER JOIN zombies on game_participations.creature_id = zombies.id")
   end
 
   def self.not_immortal
-    zombie.joins_with_zombie.where(:zombies => {:immortal => false})
+    joins_with_zombie.where(:zombies => {:immortal => false})
   end
 
   def self.humans
@@ -72,13 +68,6 @@ class GameParticipation < ActiveRecord::Base
     joins(:biting_events).select([count_select, :game_participation_id, :user_id]).group([:game_participation_id, :user_id]).order('bite_count desc')
   end
 
-  def self.original_zombie_requests
-    where(:original_zombie_request => true)
-  end
-
-  def self.original_zombie_requests_not_zombies
-    original_zombie_requests.where("creature_type != 'Zombie' OR creature_type is null")
-  end
 
   def self.original_zombies_and_zombie_requests
     current_game = Game.current
