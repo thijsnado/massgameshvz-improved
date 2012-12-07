@@ -7,7 +7,7 @@
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 
 #zombie types
-#name               #vaccinatable, #immortal, #color string, #code
+#name                          #vaccinatable, #immortal, #color string, #code
 Zombie.delete_all
 [
 ['Original Zombie',             0,             1,         'FFFFFF',      :original],
@@ -37,7 +37,7 @@ domain.rule = 'umass'
 domain.save
 
 if Rails.env != 'test'
-#admin, change password immediatly after deploying. 
+#admin, change password immediatly after deploying.
   admin = User.new(:username => 'admin', :password => 'test123', :confirmed => true, :email_address => 'tdevries.development@gmail.com')
   admin.is_admin = true
   admin.save(:validate => false)

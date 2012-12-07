@@ -3,7 +3,6 @@ Feature: Navigate Admin Page
   As an administrator
   I need a page that can change game settings
 
-  @javascript
   Scenario: Logged In Admin
     Given I am logged in as an admin
     When I go to the admin page
