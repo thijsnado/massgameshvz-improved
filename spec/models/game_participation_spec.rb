@@ -51,20 +51,6 @@ describe GameParticipation do
     Timecop.return
   end
 
-  describe '#self.original_zombies_and_zombie_requests' do
-    it "should return all original zombies and original zombie requests" do
-      original_zombie = Factory(:game_participation, :creature => Zombie::ORIGINAL, :game => current_game)
-      unassigned_zombie_request = Factory(:game_participation, :original_zombie_request => true, :game => current_game)
-      human_zombie_request = Factory(:game_participation, :original_zombie_request => true, :creature => Human::NORMAL, :game => current_game)
-
-      results = GameParticipation.original_zombies_and_zombie_requests
-      results.size.should == 3
-      results.should include(original_zombie)
-      results.should include(unassigned_zombie_request)
-      results.should include(human_zombie_request)
-    end
-  end
-
   describe 'report_bite' do
     it "allows a zombie participation to report biting a human" do
       zombie_participation.should_receive(:record_bite).with(human_participation)
