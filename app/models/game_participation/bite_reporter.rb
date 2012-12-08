@@ -7,6 +7,12 @@ class GameParticipation
     end
 
     def initialize(zombie, victim)
+      unless zombie.zombie?
+        raise ArgumentError.new "First argument must be zombie."
+      end
+      unless victim.human? || victim.creature == Zombie::SELF_BITTEN
+        raise ArgumentError.new "Second argument must be human or self bitten zombie."
+      end
       @zombie, @victim = zombie, victim
     end
 
@@ -24,10 +30,15 @@ class GameParticipation
     end
 
     def increment_zombie_expiration_date
-      zombie.zombie_expires_at = time + time_per_food
+      if victim.creature == Zombie::SELF_BITTEN
+        zombie.zombie_expires_at = victim.zombification_event.zombie_expiration_calculation
+      else
+        zombie.zombie_expires_at = time + time_per_food
+      end
     end
 
     def set_zombie_creature_type
+      return if victim.zombie?
       return if zombie.immortal?
       if victim.creature.immortal_when_bitten
         if zombie.creature == Zombie::SELF_BITTEN
@@ -39,8 +50,8 @@ class GameParticipation
     end
 
     def zombify_victim
+      victim.zombie_expires_at = time + time_per_food unless victim.creature == Zombie::SELF_BITTEN
       victim.creature = Zombie::NORMAL
-      victim.zombie_expires_at = time + time_per_food
     end
 
     def save_participants

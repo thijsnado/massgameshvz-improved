@@ -8,7 +8,8 @@ class GameParticipation
     let(:current_game) do
       Factory(:current_game,
               :time_per_food => current_value_of_food,
-              :bite_shares_per_food => bite_shares_per_food)
+              :bite_shares_per_food => bite_shares_per_food
+             )
     end
 
     let(:normal_zombie_participation) do
@@ -23,7 +24,13 @@ class GameParticipation
       Factory(:game_participation,
         :creature => Zombie::SELF_BITTEN,
         :game => current_game,
-        :bitten_events => [Factory(:bite_event, :occured_at => current_game.start_at + 1.second, :zombie_expiration_calculation => current_game.start_at + current_game.time_per_food)]
+        :zombie_expires_at => current_game.start_at + 3.hours + current_value_of_food,
+        :bitten_events => [
+          Factory(:bite_event,
+                  :occured_at => current_game.start_at + 3.hours,
+                  :zombie_expiration_calculation => current_game.start_at + current_game.time_per_food
+                 )
+          ]
       )
     end
 
@@ -59,7 +66,7 @@ class GameParticipation
     end
 
     def record_bite
-      BiteReporter.new(zombie_participation, human_participation).record_bite
+      BiteReporter.record_bite(zombie_participation, human_participation)
     end
 
     def updated_human_participation
@@ -71,6 +78,29 @@ class GameParticipation
 
     def updated_zombie_participation
       GameParticipation.find(zombie_participation.id)
+    end
+
+    describe '#initialize' do
+      it "does not allow human for zombie value" do
+        human = normal_human_participation
+        expect {
+          BiteReporter.new(human, human)
+        }.to raise_error(ArgumentError, "First argument must be zombie.")
+      end
+
+      it "does not allow zombie unless self bitten for zombie value" do
+        human = normal_human_participation
+        zombie = normal_zombie_participation
+        self_bitten = self_bitten_zombie_participation
+
+        expect {
+          BiteReporter.new(zombie, zombie)
+        }.to raise_error(ArgumentError, "Second argument must be human or self bitten zombie.")
+
+        expect {
+          BiteReporter.new(zombie, self_bitten)
+        }.to_not raise_error(ArgumentError, "Second argument must be human or self bitten zombie.")
+      end
     end
 
     shared_examples "any zombie with human victim" do
@@ -111,8 +141,6 @@ class GameParticipation
         let(:human_participation){ squad_leader_human_participation }
         let(:zombie_participation){ normal_zombie_participation }
 
-        it_behaves_like "any zombie with human victim"
-
         it "sets creature to Zombie::IMMORTAL" do
           record_bite
           updated_zombie_participation.creature.should == Zombie::IMMORTAL
@@ -140,6 +168,34 @@ class GameParticipation
         it "sets creature to Zombie::IMMORTAL_SELF_BITTEN" do
           record_bite
           updated_zombie_participation.creature.should == Zombie::IMMORTAL_SELF_BITTEN
+        end
+      end
+
+      context "normal zombie biting self bitten zombie" do
+        # Essentially we are covering the edge case where a human
+        # gave the bite number to a zombie and then accidently reported
+        # themselves as being self bitten. This allows the zombie
+        # to retroactively take credit.
+        let(:zombie_participation){ normal_zombie_participation }
+        let(:human_participation){ self_bitten_zombie_participation }
+
+        it "converts self bitten zombie into a normal zombie" do
+          record_bite
+          updated_human_participation.creature.should == Zombie::NORMAL
+        end
+
+        it "should not change victims zombie expires at time" do
+          original_zombie_expires_at = human_participation.zombie_expires_at
+          record_bite
+          updated_human_participation.zombie_expires_at.should == original_zombie_expires_at
+        end
+
+        it "updates zombie expiration time based on zombification event instead of current time" do
+          Timecop.freeze(current_game.start_at + 5.hours)
+          record_bite
+          zombie_expires_at = updated_zombie_participation.zombie_expires_at.to_time
+          zombie_expires_at.should_not == Time.now + current_value_of_food
+          zombie_expires_at.should == human_participation.zombification_event.zombie_expiration_calculation
         end
       end
     end
