@@ -68,21 +68,6 @@ class GameParticipation < ActiveRecord::Base
     joins(:biting_events).select([count_select, :game_participation_id, :user_id]).group([:game_participation_id, :user_id]).order('bite_count desc')
   end
 
-
-  def self.original_zombies_and_zombie_requests
-    current_game = Game.current
-    if current_game
-      original_zombies = current_game.game_participations.original_zombies.select('game_participations.id')
-      original_zombie_requests = current_game.game_participations.original_zombie_requests_not_zombies.select('game_participations.id')
-
-      GameParticipation.where(
-        "game_participations.id in (#{original_zombies.to_sql}) OR game_participations.id in (#{original_zombie_requests.to_sql})"
-      ).includes('user').order(:user => :username)
-    else
-      return []
-    end
-  end
-
   def self_bite
     time = Time.now
     self.creature = Zombie::SELF_BITTEN
