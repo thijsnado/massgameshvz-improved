@@ -2,6 +2,10 @@ class GameParticipation
   class BiteReporter
     attr_accessor :zombie, :victim
 
+    def self.record_bite(zombie, victim)
+      new(zombie, victim).record_bite
+    end
+
     def initialize(zombie, victim)
       @zombie, @victim = zombie, victim
     end
@@ -20,7 +24,7 @@ class GameParticipation
     end
 
     def increment_zombie_expiration_date
-      zombie.zombie_expires_at = Time.now + time_per_food
+      zombie.zombie_expires_at = time + time_per_food
     end
 
     def set_zombie_creature_type
@@ -36,7 +40,7 @@ class GameParticipation
 
     def zombify_victim
       victim.creature = Zombie::NORMAL
-      victim.zombie_expires_at = Time.now + time_per_food
+      victim.zombie_expires_at = time + time_per_food
     end
 
     def save_participants
@@ -46,6 +50,10 @@ class GameParticipation
 
     def time_per_food
       Game.current.time_per_food
+    end
+
+    def time
+      @time ||= Time.now
     end
   end
 end
