@@ -1,6 +1,6 @@
 class Admin::OriginalZombiesController < AdminController
   def index
-    @game_participations = OriginalZombiesReport.original_zombies_and_zombie_requests
+    @game_participations = GameParticipation::OriginalZombiesReport.original_zombies_and_zombie_requests
   end
 
   def show
