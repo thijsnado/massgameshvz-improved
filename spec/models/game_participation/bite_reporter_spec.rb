@@ -103,6 +103,26 @@ class GameParticipation
       end
     end
 
+    shared_examples "any zombie" do
+      it "records a bite event" do
+        record_bite
+        bite_event = BiteEvent.last
+        bite_event.bitten_participation.should == updated_human_participation
+        bite_event.biter_participation.should == updated_zombie_participation
+        bite_event.occured_at.should == Time.now
+        bite_event.zombie_expiration_calculation.should == updated_zombie_participation.zombie_expires_at
+      end
+
+      it "records bite shares" do
+        record_bite
+        bite_event = BiteEvent.last
+        updated_zombie_participation.bite_shares.count.should == bite_shares_per_food
+        updated_zombie_participation.bite_shares.each do |bite_share|
+          bite_share.bite_event.should == bite_event
+        end
+      end
+    end
+
     shared_examples "any zombie with human victim" do
       it "converts a human into a Zombie" do
         record_bite
@@ -113,6 +133,11 @@ class GameParticipation
         record_bite
         updated_human_participation.zombie_expires_at.should == Time.now + current_value_of_food
       end
+
+      # it "gives bite shares according to current game" do
+      #   record_bite
+      #   updated_zombie_participation.bite_shares.count.should == bite_shares_per_food
+      # end
     end
 
     shared_examples "mortal zombie with normal human victim" do
@@ -133,6 +158,7 @@ class GameParticipation
         let(:human_participation){ normal_human_participation }
         let(:zombie_participation){ normal_zombie_participation }
 
+        it_behaves_like "any zombie"
         it_behaves_like "any zombie with human victim"
         it_behaves_like "mortal zombie with normal human victim"
       end
@@ -140,6 +166,9 @@ class GameParticipation
       context "non-immortal zombie with human that causes immortality when bitten (generally squad leaders)" do
         let(:human_participation){ squad_leader_human_participation }
         let(:zombie_participation){ normal_zombie_participation }
+
+        it_behaves_like "any zombie"
+        it_behaves_like "any zombie with human victim"
 
         it "sets creature to Zombie::IMMORTAL" do
           record_bite
@@ -151,6 +180,7 @@ class GameParticipation
         let(:human_participation){ squad_leader_human_participation }
         let(:zombie_participation){ self_bitten_zombie_participation }
 
+        it_behaves_like "any zombie"
         it_behaves_like "any zombie with human victim"
 
         it "sets creature to Zombie::IMMORTAL_SELF_BITTEN" do
@@ -163,6 +193,7 @@ class GameParticipation
         let(:human_participation){ squad_leader_human_participation }
         let(:zombie_participation){ immortal_self_bitten_zombie_participation }
 
+        it_behaves_like "any zombie"
         it_behaves_like "any zombie with human victim"
 
         it "sets creature to Zombie::IMMORTAL_SELF_BITTEN" do
@@ -178,6 +209,8 @@ class GameParticipation
         # to retroactively take credit.
         let(:zombie_participation){ normal_zombie_participation }
         let(:human_participation){ self_bitten_zombie_participation }
+
+        it_behaves_like "any zombie"
 
         it "converts self bitten zombie into a normal zombie" do
           record_bite
