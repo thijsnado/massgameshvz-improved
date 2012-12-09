@@ -133,11 +133,6 @@ class GameParticipation
         record_bite
         updated_human_participation.zombie_expires_at.should == Time.now + current_value_of_food
       end
-
-      # it "gives bite shares according to current game" do
-      #   record_bite
-      #   updated_zombie_participation.bite_shares.count.should == bite_shares_per_food
-      # end
     end
 
     shared_examples "mortal zombie with normal human victim" do
@@ -226,9 +221,20 @@ class GameParticipation
         it "updates zombie expiration time based on zombification event instead of current time" do
           Timecop.freeze(current_game.start_at + 5.hours)
           record_bite
-          zombie_expires_at = updated_zombie_participation.zombie_expires_at.to_time
+          zombie_expires_at = updated_zombie_participation.zombie_expires_at
           zombie_expires_at.should_not == Time.now + current_value_of_food
           zombie_expires_at.should == human_participation.zombification_event.zombie_expiration_calculation
+        end
+
+        it "should not negatively adjust zombie_expires_at" do
+          expected_time = Time.now + 15.hours
+          zombie_participation.zombie_expires_at = expected_time
+          zombie_participation.save(:validate => false)
+          Timecop.freeze(current_game.start_at + 5.hours)
+          record_bite
+          zombie_expires_at = updated_zombie_participation.zombie_expires_at
+          zombie_expires_at.should == expected_time
+          zombie_expires_at.should_not == human_participation.zombification_event.zombie_expiration_calculation
         end
       end
     end

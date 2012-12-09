@@ -33,7 +33,10 @@ class GameParticipation
 
     def increment_zombie_expiration_date
       if victim.creature == Zombie::SELF_BITTEN
-        zombie.zombie_expires_at = victim.zombification_event.zombie_expiration_calculation
+        zombie_expires_at = victim.zombification_event.zombie_expiration_calculation
+        unless zombie_expires_at < zombie.zombie_expires_at
+          zombie.zombie_expires_at = zombie_expires_at
+        end
       else
         zombie.zombie_expires_at = time + time_per_food
       end
@@ -52,7 +55,7 @@ class GameParticipation
     end
 
     def set_bite_shares
-      Game.current.bite_shares_per_food.times do
+      bite_shares_per_food.times do
         bite_event.bite_shares.build
       end
     end
@@ -77,7 +80,11 @@ class GameParticipation
     end
 
     def time_per_food
-      Game.current.time_per_food
+      @time_per_food ||= Game.current.time_per_food
+    end
+
+    def bite_shares_per_food
+      @bite_shares_per_food ||= Game.current.bite_shares_per_food
     end
 
     def time

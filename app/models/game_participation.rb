@@ -195,41 +195,44 @@ class GameParticipation < ActiveRecord::Base
   end
 
   def record_bite(game_participation)
-    time = Time.now
-    if dead?
-      return false
-    end
+    return false if dead?
+    BiteReporter.record_bite(self, game_participation)
+    return true
+    # time = Time.now
+    # if dead?
+    #   return false
+    # end
 
-    #adjust starvation time
-    if game_participation.human?
-      self.creature = Zombie::IMMORTAL if game_participation.creature.immortal_when_bitten && !(self.creature.immortal || self.creature == Zombie::SELF_BITTEN)
-      self.creature = Zombie::IMMORTAL_SELF_BITTEN if game_participation.creature.immortal_when_bitten && self.creature == Zombie::SELF_BITTEN
-      game_participation.creature = Zombie::NORMAL
-      game_participation.zombie_expires_at = time + self.game.time_per_food
-      game_participation.save(:validate => false)
-      self.zombie_expires_at = time + self.game.time_per_food
-    elsif game_participation.creature == Zombie::SELF_BITTEN
-      game_participation.creature = Zombie::NORMAL
-      game_participation.save(:validate => false)
-      zombie_expires_at = game_participation.zombification_event.zombie_expiration_calculation
-      self.zombie_expires_at = zombie_expires_at unless zombie_expires_at < self.zombie_expires_at
-    end
+    # #adjust starvation time
+    # if game_participation.human?
+    #   self.creature = Zombie::IMMORTAL if game_participation.creature.immortal_when_bitten && !(self.creature.immortal || self.creature == Zombie::SELF_BITTEN)
+    #   self.creature = Zombie::IMMORTAL_SELF_BITTEN if game_participation.creature.immortal_when_bitten && self.creature == Zombie::SELF_BITTEN
+    #   game_participation.creature = Zombie::NORMAL
+    #   game_participation.zombie_expires_at = time + self.game.time_per_food
+    #   game_participation.save(:validate => false)
+    #   self.zombie_expires_at = time + self.game.time_per_food
+    # elsif game_participation.creature == Zombie::SELF_BITTEN
+    #   game_participation.creature = Zombie::NORMAL
+    #   game_participation.save(:validate => false)
+    #   zombie_expires_at = game_participation.zombification_event.zombie_expiration_calculation
+    #   self.zombie_expires_at = zombie_expires_at unless zombie_expires_at < self.zombie_expires_at
+    # end
 
-    #record bite event
-    bite_event = BiteEvent.new
-    bite_event.biter_participation = self
-    bite_event.bitten_participation = game_participation
-    bite_event.occured_at = time
-    bite_event.zombie_expiration_calculation = self.zombie_expires_at
-    bite_event.save(:validate => false)
+    # #record bite event
+    # bite_event = BiteEvent.new
+    # bite_event.biter_participation = self
+    # bite_event.bitten_participation = game_participation
+    # bite_event.occured_at = time
+    # bite_event.zombie_expiration_calculation = self.zombie_expires_at
+    # bite_event.save(:validate => false)
 
-    create_bite_shares(bite_event)
+    # create_bite_shares(bite_event)
 
-    #handle different creature types
-    if self.human?
-      self.creature = Zombie::SELF_BITTEN
-    end
-    return save(:validate => false)
+    # #handle different creature types
+    # if self.human?
+    #   self.creature = Zombie::SELF_BITTEN
+    # end
+    # return save(:validate => false)
   end
 
   def create_bite_shares(bite_event)
