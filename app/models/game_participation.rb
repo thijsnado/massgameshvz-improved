@@ -34,10 +34,6 @@ class GameParticipation < ActiveRecord::Base
     zombie.joins("INNER JOIN zombies on game_participations.creature_id = zombies.id")
   end
 
-  def self.not_immortal
-    joins_with_zombie.where(:zombies => {:immortal => false})
-  end
-
   def self.humans
     where(:creature_type => 'Human')
   end
@@ -147,17 +143,8 @@ class GameParticipation < ActiveRecord::Base
     end
   end
 
-  def current_parent
-    if zombie?
-      return bitten_events.order('occured_at desc').first.biter_participation
-    else
-      return nil
-    end
-  end
-
   def is_expired
     return self.zombie_expires_at < Time.now unless self.creature.immortal
-    return false
   end
 
   def zombification_event
@@ -198,41 +185,6 @@ class GameParticipation < ActiveRecord::Base
     return false if dead?
     BiteReporter.record_bite(self, game_participation)
     return true
-    # time = Time.now
-    # if dead?
-    #   return false
-    # end
-
-    # #adjust starvation time
-    # if game_participation.human?
-    #   self.creature = Zombie::IMMORTAL if game_participation.creature.immortal_when_bitten && !(self.creature.immortal || self.creature == Zombie::SELF_BITTEN)
-    #   self.creature = Zombie::IMMORTAL_SELF_BITTEN if game_participation.creature.immortal_when_bitten && self.creature == Zombie::SELF_BITTEN
-    #   game_participation.creature = Zombie::NORMAL
-    #   game_participation.zombie_expires_at = time + self.game.time_per_food
-    #   game_participation.save(:validate => false)
-    #   self.zombie_expires_at = time + self.game.time_per_food
-    # elsif game_participation.creature == Zombie::SELF_BITTEN
-    #   game_participation.creature = Zombie::NORMAL
-    #   game_participation.save(:validate => false)
-    #   zombie_expires_at = game_participation.zombification_event.zombie_expiration_calculation
-    #   self.zombie_expires_at = zombie_expires_at unless zombie_expires_at < self.zombie_expires_at
-    # end
-
-    # #record bite event
-    # bite_event = BiteEvent.new
-    # bite_event.biter_participation = self
-    # bite_event.bitten_participation = game_participation
-    # bite_event.occured_at = time
-    # bite_event.zombie_expiration_calculation = self.zombie_expires_at
-    # bite_event.save(:validate => false)
-
-    # create_bite_shares(bite_event)
-
-    # #handle different creature types
-    # if self.human?
-    #   self.creature = Zombie::SELF_BITTEN
-    # end
-    # return save(:validate => false)
   end
 
   def create_bite_shares(bite_event)
